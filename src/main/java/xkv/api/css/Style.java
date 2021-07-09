@@ -2,9 +2,13 @@ package xkv.api.css;
 
 import javafx.scene.layout.Region;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public enum Style
 {
     ;
+
     private final String css;
 
     Style(String css)
@@ -25,6 +29,13 @@ public enum Style
         }
     }
 
+    public static void apply(Region region, String styles)
+    {
+        for (String style : styles.split(" "))
+        {
+            region.getStyleClass().add(style);
+        }
+    }
 
     @Override
     public String toString()
