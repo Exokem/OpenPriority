@@ -1,0 +1,22 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://dl.bintray.com/ijabz/maven"
+    }
+}
+
+dependencies {
+
+}
+
+javafx {
+    version = "11"
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.media' ]
+}
+
+mainClassName = 'xkv.OpenPriority'
