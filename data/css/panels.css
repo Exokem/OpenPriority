@@ -1,0 +1,10 @@
+.debug {
+  /* -fx-border-style: solid;
+  -fx-border-color: red;
+  -fx-grid-lines-visible: true; */
+
+}
+
+.debug Line {
+  -fx-stroke: pink;
+}
