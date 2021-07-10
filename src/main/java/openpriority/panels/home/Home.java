@@ -1,10 +1,15 @@
-package xkv.panels.home;
+package openpriority.panels.home;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.layout.Priority;
-import xkv.api.components.Uniform;
-import xkv.api.css.Style;
-import xkv.api.factories.GridFactory;
+import openpriority.OpenPriority;
+import openpriority.api.components.Uniform;
+import openpriority.api.css.Style;
+import openpriority.api.factories.GridFactory;
+
+import static openpriority.api.css.Style.*;
 
 public final class Home
 {
@@ -19,11 +24,13 @@ public final class Home
     {
         private static Uniform root()
         {
-            Uniform root = GridFactory.autoUniform(10, 1, 1, "debug");
+            Uniform root = GridFactory.autoUniform(10, 1, 1, BG0);
 
             root.setPrefSize(Data.WIDTH, Data.HEIGHT);
 
             Button test = new Button("test_button");
+
+            test.setOnAction((a) -> OpenPriority.refreshStylesheets());
 
             Style.apply(test, "test-style");
 

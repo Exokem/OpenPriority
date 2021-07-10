@@ -1,11 +1,9 @@
-package xkv.api.importers;
+package openpriority.api.importers;
 
-import xkv.OPIO;
-import xkv.OpenPriority;
+import openpriority.OPIO;
+import openpriority.OpenPriority;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;

@@ -1,4 +1,4 @@
-package xkv.api.responsive;
+package openpriority.api.responsive;
 
 import javafx.application.Platform;
 import javafx.scene.layout.Region;

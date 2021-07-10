@@ -1,17 +1,21 @@
-package xkv.api.components;
+package openpriority.api.components;
 
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.shape.Rectangle;
-import xkv.api.factories.GridFactory;
 
 public class Uniform extends GridPane
 {
     public Uniform(int columns, int rows)
     {
-        super();
+        this();
         pad(columns, rows);
+    }
+
+    public Uniform()
+    {
+        super();
         setSnapToPixel(true);
     }
 
@@ -31,7 +35,17 @@ public class Uniform extends GridPane
 
     public Uniform add(Node child, int column, int row, Priority horizontal, Priority vertical)
     {
-        super.add(child, column, row);
+        return add(child, column, row, 1, 1, horizontal, vertical);
+    }
+
+    public Uniform add(Node child, int column, int row, Priority... expansions)
+    {
+        return add(child, column, row, 1, 1, expansions);
+    }
+
+    public Uniform add(Node child, int column, int row, int colSpan, int rowSpan, Priority horizontal, Priority vertical)
+    {
+        super.add(child, column, row, colSpan, rowSpan);
 
         if (horizontal != null) GridPane.setHgrow(child, horizontal);
         if (vertical != null) GridPane.setVgrow(child, vertical);
@@ -39,7 +53,7 @@ public class Uniform extends GridPane
         return this;
     }
 
-    public Uniform add(Node child, int column, int row, Priority... expansions)
+    public Uniform add(Node child, int column, int row, int colSpan, int rowSpan, Priority... expansions)
     {
         Priority horizontal = null, vertical = null;
 
@@ -52,7 +66,7 @@ public class Uniform extends GridPane
 
         }
 
-        add(child, column, row, horizontal, vertical);
+        add(child, column, row, colSpan, rowSpan, horizontal, vertical);
 
         return this;
     }

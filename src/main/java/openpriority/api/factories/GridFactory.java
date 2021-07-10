@@ -1,8 +1,8 @@
-package xkv.api.factories;
+package openpriority.api.factories;
 
-import xkv.api.components.Uniform;
-import xkv.api.css.Style;
-import xkv.api.css.StyleApplicator;
+import openpriority.api.components.Uniform;
+import openpriority.api.css.Style;
+import openpriority.api.css.StyleApplicator;
 
 public final class GridFactory
 {

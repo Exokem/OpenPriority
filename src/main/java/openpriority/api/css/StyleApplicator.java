@@ -1,4 +1,4 @@
-package xkv.api.css;
+package openpriority.api.css;
 
 import javafx.scene.layout.Region;
 

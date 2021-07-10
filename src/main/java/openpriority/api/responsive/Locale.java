@@ -1,17 +1,16 @@
-package xkv.api.responsive;
+package openpriority.api.responsive;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonReader;
-import xkv.OPIO;
-import xkv.api.importers.GeneralImporter;
+import openpriority.OPIO;
+import openpriority.api.importers.GeneralImporter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
