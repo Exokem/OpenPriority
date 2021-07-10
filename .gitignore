@@ -5,3 +5,5 @@
 /gradlew
 /gradlew.bat
 /settings.gradle
+/out/
+/src/main/resources/META-INF/

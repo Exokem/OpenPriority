@@ -1,6 +1,7 @@
 plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'org.beryx.jlink' version '2.23.1'
 }
 
 repositories {
@@ -16,7 +17,13 @@ dependencies {
 
 javafx {
     version = "11"
-    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.media' ]
+    modules = [ 'javafx.base', 'javafx.controls' ]
 }
 
-mainClassName = 'xkv.OpenPriority'
+mainClassName = 'openpriority.OpenPriority'
+
+jlink {
+    launcher {
+        name = 'openpriority'
+    }
+}
