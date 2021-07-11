@@ -83,16 +83,16 @@ public final class Home
                 }
             });
 
-            applyLocale.setMaxHeight(Double.MAX_VALUE);
+//            applyLocale.setMaxHeight(Double.MAX_VALUE);
 
             Label localeLabel = ControlFactory.label("label-language-select", Size.REGULAR, TEXT0);
 
-            Uniform localeSelection = GridFactory.uniform(10, 3, 1)
+            Uniform localeSelection = GridFactory.uniform(20, 3, 1)
                 .add(localeLabel, 0, 0, Priority.NEVER)
                 .add(localeSelect, 1, 0, Priority.SOMETIMES)
                 .add(applyLocale, 2, 0, Priority.ALWAYS, Priority.ALWAYS);
 
-            Uniform generalOptions = GridFactory.autoUniform(20, 1, 3, BG0)
+            Uniform generalOptions = GridFactory.autoUniform(20, 1, 2, BG0)
                 .add(generalLabel, 1, 1, Priority.ALWAYS)
                 .add(localeSelection, 1, 2, Priority.ALWAYS);
 

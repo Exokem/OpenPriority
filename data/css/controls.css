@@ -1,17 +1,15 @@
 .button {
   -fx-border-radius: 0;
   -fx-background-radius: 0;
-  -fx-border: 1px;
-  -fx-border-color: #363337;
-  -fx-background-color: #2d2a2e;
-  -fx-text-fill: white;
+  -fx-background-color: -ui-1;
+  -fx-text-fill: -text-0;
   -fx-border-insets: 0px;
   -fx-background-insets: 0px;
   -fx-font-size: 1.1em;
 }
 
 .button:hover {
-  -fx-background-color: #363337;
+  -fx-background-color: -ui-2;
 }
 
 .button:focused {
@@ -19,27 +17,21 @@
   -fx-border: none;
 }
 
-/* .label {
-  -fx-text-fill: gainsboro;
-} */
-
 .check-box {
-  -fx-font-family: 'IBM Plex Sans Regular';
   -fx-font-size: 15;
-  -fx-text-fill: gainsboro;
+  -fx-text-fill: -text-0;
 }
 
 .check-box .box {
   -fx-border-radius: 0;
   -fx-background-radius: 0;
-  -fx-background-color: #5b595c;
+  -fx-background-color: -ui-3;
   /* -fx-stroke-color: #939293; */
   -fx-border: none;
 }
 
 .check-box:selected .mark {
-  /* 939293 */
-  -fx-background-color: gainsboro;
+  -fx-background-color: -text-0;
   -fx-background-radius: 0;
 }
 
@@ -48,40 +40,35 @@
 } */
 
 .choice-box {
-  -fx-background-color: #2d2a2e;
+  -fx-background-color: -ui-1;
   -fx-border-radius: 0;
-  -fx-border: 1px;
-  -fx-border-color: #363337;
   -fx-background-radius: 0;
-  -fx-mark-color: gainsboro;
+  -fx-mark-color: -text-0;
+  -fx-shadow: none;
 }
 
 .choice-box > .label {
-  -fx-font-family: 'IBM Plex Sans';
-  -fx-text-fill: gainsboro;
+  -fx-text-fill: -text-0;
 }
 
 .choice-box:hover {
-  -fx-background-color: #363337;
+  -fx-background-color: -ui-2;
 }
 
 .choice-box .context-menu {
-  -fx-border: 1px;
-  -fx-border-color: #363337;
-  -fx-background-color: #2d2a2e;
+  -fx-background-color: -ui-1;
 }
 
 .choice-box .menu-item:focused {
-  -fx-background-color: #363337;
+  -fx-background-color: -ui-2;
 }
 
 .choice-box .menu-item:hover {
-  -fx-background-color: #363337;
+  -fx-background-color: -ui-2;
 }
 
 .choice-box .menu-item > .label {
-  -fx-font-family: 'IBM Plex Sans';
-  -fx-text-fill: gainsboro;
+  -fx-text-fill: -text-0;
 }
 /* // Text color of focused item in the list */
 .choice-box .menu-item:focused > .label {
@@ -89,20 +76,21 @@
 }
 
 .section-button {
-  -fx-background-color: #2d2a2e;
-  -fx-border-color: #363337;
+  -fx-background-color: -ui-1;
+  -fx-border-color: -ui-2;
   -fx-border-width: 0px 1px 1px 0px;
-  -fx-text-fill: white;
+  /* -fx-background-size: 1px; */
+  -fx-text-fill: -text-0;
 }
 
 .section-button:hover {
-  -fx-background-color: #363337;
-  -fx-border-color: #363337;
+  -fx-background-color: -ui-2;
+  -fx-border-color: -ui-2;
 }
 
 .section-button-selected {
-  -fx-background-color: #363337;
-  -fx-border-color: #363337 #363337 yellow #363337;
+  -fx-background-color: -ui-2;
+  -fx-border-color: -ui-2 -ui-2 -accent-1 -ui-2;
   -fx-border-width: 0px 1px 1px 0px;
-  -fx-text-fill: yellow;
+  -fx-text-fill: -accent-1;
 }

@@ -1,8 +1,16 @@
+.root {
+  -accent-1: #ff6188;
+  -ui-0: #221f22;
+  -ui-1: #2d2a2e;
+  -ui-2: #363337;
+  -ui-3: #5b595c;
+  -text-0: #dcdcdc;
+}
+
 .background-0 {
-  -fx-background-color: #221f22;
+  -fx-background-color: -ui-0;
 }
 
 .background-1 {
-  -fx-background-color: #2d2a2e;
-
+  -fx-background-color: -ui-1;
 }
