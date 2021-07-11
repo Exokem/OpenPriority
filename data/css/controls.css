@@ -8,7 +8,7 @@
   -fx-font-size: 1.1em;
 }
 
-.button:hover {
+.hoverable:hover {
   -fx-background-color: -ui-2;
 }
 
@@ -83,7 +83,7 @@
   -fx-text-fill: -text-0;
 }
 
-.section-button:hover {
+.hoverable .section-button:hover {
   -fx-background-color: -ui-2;
   -fx-border-color: -ui-2;
 }

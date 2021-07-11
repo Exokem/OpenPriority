@@ -5,7 +5,8 @@ import javafx.scene.layout.Region;
 public enum Style implements IStyle
 {
     DEBUG("debug"), SECTION_BUTTON("section-button"), SECTION_BUTTON_SELECTED("section-button-selected"),
-    BG0("background-0"), BG1("background-1"), TEXT0("gainsboro");
+    BG0("background-0"), BG1("background-1"), TEXT0("gainsboro"),
+    HOVERABLE("hoverable");
 
     private final String css;
 
