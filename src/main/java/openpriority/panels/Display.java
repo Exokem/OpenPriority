@@ -8,6 +8,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import openpriority.api.components.Uniform;
 import openpriority.api.components.controls.SectionButton;
+import openpriority.api.css.Style;
+import openpriority.api.css.Weight;
 import openpriority.api.factories.GridFactory;
 import openpriority.api.responsive.Locale;
 import openpriority.api.responsive.Scale;
@@ -55,10 +57,14 @@ public final class Display
             .bindSection(Home.PANEL, Display::shiftSection)
             .adjustWidth(Scale.MINOR.adjust(Data.CONSTANT));
 
-        Uniform sections = GridFactory.uniform(0, 3, 1, "section-button-tab")
+        SectionButton empty = new SectionButton("")
+            .limitWidth(Double.MAX_VALUE);
+
+        Uniform sections = GridFactory.uniform(0, 3, 1)
             .add(home, 0, 0, Priority.NEVER, Priority.NEVER)
             .add(tasks, 1, 0, Priority.NEVER, Priority.NEVER)
-            .add(misc, 2, 0, Priority.NEVER);
+            .add(misc, 2, 0, Priority.NEVER)
+            .add(empty, 3, 0, Priority.SOMETIMES);
 
         ACTIVE_SECTION = home.setSelected(true);
 

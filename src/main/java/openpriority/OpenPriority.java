@@ -1,17 +1,24 @@
 package openpriority;
 
+import com.google.gson.JsonObject;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import openpriority.api.Options;
 import openpriority.api.components.Uniform;
+import openpriority.api.components.window.WindowControl;
 import openpriority.api.importers.GeneralImporter;
 import openpriority.api.responsive.DynamicResizable;
 import openpriority.api.responsive.Locale;
 import openpriority.panels.Display;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -21,6 +28,7 @@ public final class OpenPriority extends Application
     {
         private static final String TITLE = "OpenPriority";
         private static final Set<String> STYLESHEETS = new HashSet<>();
+        private static final List<String> DEFAULT_STYLESHEETS = List.of("fonts", "colors", "panels", "controls");
 
         private static Stage OPEN_PRIORITY;
         private static Uniform CONTENT;
@@ -43,13 +51,39 @@ public final class OpenPriority extends Application
                 OPIO.warnf("Failed to import stylesheet '%s'", sheet);
             }
         }
+
+        private static void importData()
+        {
+            GeneralImporter.genericImport("data.json", Options::receiveJson);
+        }
+
+        private static void exportData()
+        {
+            JsonObject data = new JsonObject();
+            Options.exportOptions(data);
+
+            try
+            {
+                GeneralImporter.genericExport("data.json", data.toString());
+            }
+
+            catch (IOException e)
+            {
+                OPIO.warnf("Export failed for program options: %s", e.getLocalizedMessage());
+            }
+        }
     }
 
-    public static void refreshStylesheets()
+    public static void updateStylesheets()
     {
+        OPIO.inff("Updating active stylesheets");
         Data.OPEN_PRIORITY.getScene().getStylesheets().clear();
         Data.OPEN_PRIORITY.getScene().getStylesheets().addAll(Data.STYLESHEETS);
-        OPIO.inff("Refreshed active stylesheets");
+    }
+
+    public static void updateLocale()
+    {
+        Locale.configureLocale("en_gb");
     }
 
     @Override
@@ -57,7 +91,8 @@ public final class OpenPriority extends Application
     {
         // TODO: read config from file
 
-        Locale.configureLocale("en_uk");
+        Data.importData();
+        updateLocale();
 
         Data.OPEN_PRIORITY = stage;
         Data.CONTENT = Display.CONTENT;
@@ -76,6 +111,13 @@ public final class OpenPriority extends Application
 
         scene.widthProperty().addListener((obs, prev, next) -> Platform.runLater(DynamicResizable::resizeAll));
         scene.heightProperty().addListener((obs, prev, next) -> Platform.runLater(DynamicResizable::resizeAll));
+    }
+
+    @Override
+    public void stop() throws Exception
+    {
+        super.stop();
+        Data.exportData();
     }
 
     public static double width()

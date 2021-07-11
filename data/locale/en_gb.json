@@ -1,0 +1,10 @@
+{
+  "section-home": "Home",
+
+  "label-options-debug": "Debug Options",
+
+  "option-locale-debug": "Show localisation keys",
+
+  "action-update-css": "Update CSS",
+  "action-update-locale": "Update Locale"
+}

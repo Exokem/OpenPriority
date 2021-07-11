@@ -3,7 +3,9 @@ package openpriority.api.importers;
 import openpriority.OPIO;
 import openpriority.OpenPriority;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -93,9 +95,9 @@ public class GeneralImporter
         return false;
     }
 
-    public static boolean genericImport(String header, String name, String extension, Consumer<File> applicator)
+    public static boolean genericImport(String path, Consumer<File> applicator)
     {
-        File file = new File(EXTERNAL + header + name + extension);
+        File file = new File(EXTERNAL + path);
 
         if (file.exists())
         {
@@ -115,5 +117,32 @@ public class GeneralImporter
         }
 
         return false;
+    }
+
+    public static boolean genericImport(String header, String name, String extension, Consumer<File> applicator)
+    {
+        return genericImport(header + name + extension, applicator);
+    }
+
+    public static void genericExport(String path, String content) throws IOException
+    {
+        File file = new File(EXTERNAL + path);
+
+        if (!file.exists() && !file.createNewFile())
+        {
+            OPIO.warnf("Data could not be exported to file '%s'", file.getPath());
+        }
+
+        else
+        {
+            BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file));
+            fileWriter.write(content);
+            fileWriter.close();
+        }
+    }
+
+    public static void genericExport(String header, String name, String extension, String content) throws IOException
+    {
+        genericExport(header + name + extension, content);
     }
 }

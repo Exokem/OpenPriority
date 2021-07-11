@@ -2,20 +2,22 @@ package openpriority.api.components.controls;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.Region;
+import openpriority.api.css.IStyle;
 import openpriority.api.css.Style;
-import openpriority.api.css.StyleApplicator;
+import openpriority.api.css.Weight;
 import openpriority.api.responsive.Locale;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Consumer;
 
 public class SectionButton extends Button
 {
-    public SectionButton(String title)
+    public SectionButton(String title, IStyle... styles)
     {
         super(Locale.get(title));
         this.title = title;
+        Locale.bind(title, this::setTitle);
+        IStyle.apply(this, styles);
+        IStyle.apply(this, Weight.REGULAR);
         setSelected(false);
     }
 
@@ -28,7 +30,7 @@ public class SectionButton extends Button
         return this;
     }
 
-    private final String title;
+    private String title;
     private boolean selected = false;
     private Region region;
     private Consumer<SectionButton> applicator;
@@ -36,8 +38,8 @@ public class SectionButton extends Button
     public SectionButton setSelected(boolean selected)
     {
         this.selected = selected;
-        Style.remove(this, this.selected ? Style.SECTION_BUTTON : Style.SECTION_BUTTON_SELECTED);
-        Style.apply(this, this.selected ? Style.SECTION_BUTTON_SELECTED : Style.SECTION_BUTTON);
+        IStyle.remove(this, this.selected ? Style.SECTION_BUTTON : Style.SECTION_BUTTON_SELECTED);
+        IStyle.apply(this, this.selected ? Style.SECTION_BUTTON_SELECTED : Style.SECTION_BUTTON);
         return this;
     }
 
@@ -61,5 +63,11 @@ public class SectionButton extends Button
     public boolean matches(SectionButton other)
     {
         return other.title.equals(title);
+    }
+
+    public void setTitle(String title)
+    {
+        this.title = title;
+        this.setText(title);
     }
 }
