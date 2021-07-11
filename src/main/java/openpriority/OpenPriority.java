@@ -83,7 +83,7 @@ public final class OpenPriority extends Application
 
     public static void updateLocale()
     {
-        Locale.configureLocale("en_gb");
+        Locale.setLocaleVariantAndUpdate(Options.General.ACTIVE_LOCALE.get());
     }
 
     @Override

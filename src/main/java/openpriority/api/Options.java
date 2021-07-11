@@ -58,7 +58,7 @@ public final class Options
     {
         public static final String KEY = "options_general";
 
-        public static Option<Locale.Variant> ACTIVE_LOCALE = new Option<>("active_locale", Locale.Variant.EN_GB, Locale.Variant::exportJson);
+        public static Option<Locale.Variant> ACTIVE_LOCALE = new Option<>("active_locale", Locale.Variant.EN_US, Locale.Variant::exportJson);
 
         public static void importOptions(JsonObject source)
         {

@@ -24,12 +24,18 @@ public final class Locale
     private static Variant localeVariant = Variant.EN_GB;
 
     private static final Map<String, Consumer<String>> GLOBAL_REFRESH_APPLICATORS = new HashMap<>();
+    private static final Set<Runnable> SPECIALIZED_REFRESH_APPLICATORS = new HashSet<>();
 
     public static String bind(String key, Consumer<String> applicator)
     {
         GLOBAL_REFRESH_APPLICATORS.put(key, applicator);
 
         return get(key);
+    }
+
+    public static void bind(Runnable applicator)
+    {
+        SPECIALIZED_REFRESH_APPLICATORS.add(applicator);
     }
 
     public static String get(String key)
@@ -39,6 +45,12 @@ public final class Locale
         return localeVariant.bindings.getOrDefault(key, key);
     }
 
+    public static void setLocaleVariantAndUpdate(Variant variant)
+    {
+        localeVariant = variant;
+        Variant.importBindings(localeVariant);
+    }
+
     public static void refreshIndices()
     {
         OpenPriority.updateLocale();
@@ -46,22 +58,8 @@ public final class Locale
         {
             GLOBAL_REFRESH_APPLICATORS.get(key).accept(get(key));
         }
-    }
 
-    public static void configureLocale(String locale)
-    {
-        try
-        {
-            localeVariant = Variant.valueOfTranslationKey(locale);
-        }
-
-        catch (IllegalArgumentException i)
-        {
-            OPIO.warnf("Registered locale variant not found for locale '%s', using default", locale);
-            localeVariant = Variant.EN_GB;
-        }
-
-        Variant.importBindings(localeVariant);
+        SPECIALIZED_REFRESH_APPLICATORS.forEach(Runnable::run);
     }
 
     public enum Variant
@@ -69,6 +67,7 @@ public final class Locale
         EN_GB, EN_US, ES_ES;
 
         private final Map<String, String> bindings = new HashMap<>();
+        private final Map<String, String> localeReverseBindings = new HashMap<>();
 
         private static final String header = "locale/";
 
@@ -111,6 +110,15 @@ public final class Locale
                         if (primitive.isString())
                         {
                             localeVariant.bindings.put(key, primitive.getAsString());
+
+                            try
+                            {
+                                Variant variant = valueOfTranslationKey(key);
+                                localeVariant.localeReverseBindings.put(primitive.getAsString(), key);
+                            }
+
+                            catch (Exception ignored) {}
+
                             indices ++;
                         }
                     }
@@ -125,13 +133,28 @@ public final class Locale
             return valueOf(key.replaceAll("-", "_").toUpperCase());
         }
 
+        public String translationKey()
+        {
+            return name().toLowerCase().replaceAll("_", "-");
+        }
+
+        public Variant inverseRetrieve(String translated)
+        {
+            String key = localeReverseBindings.get(translated);
+
+            if (key == null) return Variant.valueOfTranslationKey(translated);
+
+            return Variant.valueOfTranslationKey(key);
+        }
+
         public static Set<String> translationKeySet()
         {
             Set<String> keys = new HashSet<>();
 
             for (Variant variant : Variant.values())
             {
-                keys.add(variant.name().toLowerCase().replaceAll("_", "-"));
+                String key = variant.translationKey();
+                keys.add(Locale.get(key));
             }
 
             return keys;

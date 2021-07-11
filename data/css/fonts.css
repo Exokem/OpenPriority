@@ -76,3 +76,15 @@
 .weight-bold {
   -fx-font-family: 'IBM Plex Sans Bold';
 }
+
+.text-size-15 {
+  -fx-font-size: 15;
+}
+
+.text-size-40 {
+  -fx-font-size: 40;
+}
+
+.gainsboro {
+  -fx-text-fill: gainsboro;
+}

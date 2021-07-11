@@ -19,9 +19,9 @@
   -fx-border: none;
 }
 
-.label {
-  -fx-font-size: 40;
-}
+/* .label {
+  -fx-text-fill: gainsboro;
+} */
 
 .check-box {
   -fx-font-family: 'IBM Plex Sans Regular';
@@ -43,8 +43,49 @@
   -fx-background-radius: 0;
 }
 
-.check-box > .box > .mark {
+/* .check-box > .box > .mark {
   -fx-shape: "M-0.25,6.083c0.843-0.758,4.583,4.833,5.75,4.833S14.5-1.5,15.917-0.917c1.292,0.532-8.75,17.083-10.5,17.083C3,16.167-1.083,6.833-0.25,6.083z";
+} */
+
+.choice-box {
+  -fx-background-color: #2d2a2e;
+  -fx-border-radius: 0;
+  -fx-border: 1px;
+  -fx-border-color: #363337;
+  -fx-background-radius: 0;
+  -fx-mark-color: gainsboro;
+}
+
+.choice-box > .label {
+  -fx-font-family: 'IBM Plex Sans';
+  -fx-text-fill: gainsboro;
+}
+
+.choice-box:hover {
+  -fx-background-color: #363337;
+}
+
+.choice-box .context-menu {
+  -fx-border: 1px;
+  -fx-border-color: #363337;
+  -fx-background-color: #2d2a2e;
+}
+
+.choice-box .menu-item:focused {
+  -fx-background-color: #363337;
+}
+
+.choice-box .menu-item:hover {
+  -fx-background-color: #363337;
+}
+
+.choice-box .menu-item > .label {
+  -fx-font-family: 'IBM Plex Sans';
+  -fx-text-fill: gainsboro;
+}
+/* // Text color of focused item in the list */
+.choice-box .menu-item:focused > .label {
+  /* -fx-text-fill: black; */
 }
 
 .section-button {
