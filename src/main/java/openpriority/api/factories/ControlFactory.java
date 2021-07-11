@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import openpriority.api.css.IStyle;
+import openpriority.api.css.Style;
 import openpriority.api.responsive.Locale;
 
 public class ControlFactory
@@ -27,16 +28,37 @@ public class ControlFactory
         button.setOnAction(a -> action.run());
 
         IStyle.apply(button, styles);
+        IStyle.apply(button, Style.HOVERABLE);
 
         return button;
     }
 
     public static Label label(String key, IStyle... styles)
     {
-        Label label = new Label(Locale.get(key));
-        Locale.bind(key, label::setText);
+        Label label;
+
+        if (key.isEmpty() || key.isBlank())
+        {
+            label = new Label();
+        }
+
+        else
+        {
+            label = new Label(Locale.get(key));
+            Locale.bind(key, label::setText);
+        }
 
         IStyle.apply(label, styles);
+
+        return label;
+    }
+
+    public static Label sizedLabel(String key, double maxWidth, double maxHeight, IStyle... styles)
+    {
+        Label label = label(key, styles);
+
+        label.setMaxWidth(maxWidth);
+        label.setMaxHeight(maxHeight);
 
         return label;
     }

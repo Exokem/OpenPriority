@@ -1,21 +1,35 @@
 package openpriority.api.responsive;
 
+import javafx.application.Platform;
+import javafx.scene.layout.Region;
 import openpriority.OpenPriority;
+
+import java.util.function.Supplier;
 
 public enum Scale
 {
-    MINOR(0.195D), MAJOR(0.805);
+    MINOR(0.2D), MAJOR(0.8D);
 
-    final double factor;
+    private final double factor;
 
     Scale(double factor)
     {
         this.factor = factor;
     }
 
-    private double factor()
+    public double factor()
     {
         return factor;
+    }
+
+    public double half()
+    {
+        return adjust(0.5D);
+    }
+
+    public double quarter()
+    {
+        return adjust(0.25D);
     }
 
     public double adjust(double factor)
@@ -31,5 +45,28 @@ public enum Scale
     public static double scaleWidth(double factor)
     {
         return OpenPriority.width() * factor;
+    }
+
+    public static <V extends Region> V scalePrefWidth(V region, Supplier<Double> widthBasis, double factor)
+    {
+        DynamicResizable.addListener(() -> region.setPrefWidth(widthBasis.get() * factor));
+
+        return region;
+    }
+
+    public static <V extends Region> V scaleMaxWidth(V region, Supplier<Double> widthBasis, double factor)
+    {
+        Platform.runLater(() -> region.setPrefWidth(widthBasis.get() * factor));
+
+        DynamicResizable.addListener(() -> region.setMaxWidth(widthBasis.get() * factor));
+
+        return region;
+    }
+
+    public static <V extends Region> V scaleMinWidth(V region, Supplier<Double> widthBasis, double factor)
+    {
+        Platform.runLater(() -> region.setMinWidth(widthBasis.get() * factor));
+
+        return region;
     }
 }

@@ -5,13 +5,29 @@ import javafx.scene.layout.Region;
 import openpriority.api.css.IStyle;
 import openpriority.api.css.Style;
 import openpriority.api.css.Weight;
+import openpriority.api.responsive.DynamicResizable;
 import openpriority.api.responsive.Locale;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class SectionButton extends Button
 {
-    public SectionButton(String title, IStyle... styles)
+    public static SectionButton unhoverable(String title, IStyle... styles)
+    {
+        return new SectionButton(title, styles);
+    }
+
+    public static SectionButton hoverable(String title, IStyle... styles)
+    {
+        SectionButton button = new SectionButton(title, styles);
+
+        IStyle.apply(button, Style.HOVERABLE);
+
+        return button;
+    }
+
+    private SectionButton(String title, IStyle... styles)
     {
         super(Locale.get(title));
         this.title = title;
@@ -52,6 +68,20 @@ public class SectionButton extends Button
     public SectionButton adjustWidth(double width)
     {
         this.setPrefWidth(width);
+        return this;
+    }
+
+    public SectionButton scalePreferred(Supplier<Double> widthBasis, double widthFactor)
+    {
+        DynamicResizable.addListener(() -> setPrefWidth(widthBasis.get() * widthFactor));
+
+        return this;
+    }
+
+    public SectionButton scaleMax(Supplier<Double> widthBasis, double widthFactor)
+    {
+        DynamicResizable.addListener(() -> setMaxWidth(widthBasis.get() * widthFactor));
+
         return this;
     }
 

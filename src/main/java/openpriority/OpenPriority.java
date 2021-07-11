@@ -5,17 +5,13 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import openpriority.api.Options;
 import openpriority.api.components.Uniform;
-import openpriority.api.components.window.WindowControl;
 import openpriority.api.importers.GeneralImporter;
 import openpriority.api.responsive.DynamicResizable;
 import openpriority.api.responsive.Locale;
 import openpriority.panels.Display;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
