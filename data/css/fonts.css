@@ -1,5 +1,78 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital@0;1&family=IBM+Plex+Sans+Condensed:ital@0;1&family=IBM+Plex+Sans:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&family=IBM+Plex+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap');
 
-* {
-  -fx-font-family: 'IBM Plex Sans', sans-serif;
+/* @font-face {
+  font-family: 'IBM Plex Sans Thin';
+  font-style: normal;
+  font-weight: 100;
+  src: local('fonts/IBM_Plex_Sans/IBMPlexSans-Thin.ttf');
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans ExtraLight';
+  font-style: normal;
+  font-weight: 200;
+  src: local('fonts/IBM_Plex_Sans/IBMPlexSans-ExtraLight.ttf');
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans Light';
+  font-style: normal;
+  font-weight: 300;
+  src: local('fonts/IBM_Plex_Sans/IBMPlexSans-Light.ttf');
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans Medium';
+  font-style: normal;
+  font-weight: 500;
+  src: local('fonts/IBM_Plex_Sans/IBMPlexSans-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans SemiBold';
+  font-style: normal;
+  font-weight: 600;
+  src: local('fonts/IBM_Plex_Sans/IBMPlexSans-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local('fonts/IBM_Plex_Sans/IBMPlexSans-Bold.ttf');
+} */
+
+.weight-thin {
+  -fx-font-family: 'IBM Plex Sans Thin';
+}
+
+.weight-extralight {
+  -fx-font-family: 'IBM Plex Sans ExtraLight';
+}
+
+.weight-light {
+  -fx-font-family: 'IBM Plex Sans Light';
+}
+
+.weight-regular {
+  -fx-font-family: 'IBM Plex Sans';
+}
+
+.weight-medium {
+  -fx-font-family: 'IBM Plex Sans Medium';
+}
+
+.weight-semibold {
+  -fx-font-family: 'IBM Plex Sans SemiBold';
+}
+
+.weight-bold {
+  -fx-font-family: 'IBM Plex Sans Bold';
 }

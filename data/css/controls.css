@@ -1,10 +1,17 @@
 .button {
   -fx-border-radius: 0;
   -fx-background-radius: 0;
-  -fx-border: none;
+  -fx-border: 1px;
+  -fx-border-color: #363337;
+  -fx-background-color: #2d2a2e;
+  -fx-text-fill: white;
   -fx-border-insets: 0px;
   -fx-background-insets: 0px;
   -fx-font-size: 1.1em;
+}
+
+.button:hover {
+  -fx-background-color: #363337;
 }
 
 .button:focused {
@@ -12,28 +19,49 @@
   -fx-border: none;
 }
 
-.section-button-tab {
-  -fx-border-width: 1px 0.5px 1px 0.5px;
-  -fx-border-color: #363337;
-  /* -fx-border-insets: 1px; */
+.label {
+  -fx-font-size: 40;
+}
+
+.check-box {
+  -fx-font-family: 'IBM Plex Sans Regular';
+  -fx-font-size: 15;
+  -fx-text-fill: gainsboro;
+}
+
+.check-box .box {
+  -fx-border-radius: 0;
+  -fx-background-radius: 0;
+  -fx-background-color: #5b595c;
+  /* -fx-stroke-color: #939293; */
+  -fx-border: none;
+}
+
+.check-box:selected .mark {
+  /* 939293 */
+  -fx-background-color: gainsboro;
+  -fx-background-radius: 0;
+}
+
+.check-box > .box > .mark {
+  -fx-shape: "M-0.25,6.083c0.843-0.758,4.583,4.833,5.75,4.833S14.5-1.5,15.917-0.917c1.292,0.532-8.75,17.083-10.5,17.083C3,16.167-1.083,6.833-0.25,6.083z";
 }
 
 .section-button {
   -fx-background-color: #2d2a2e;
-  -fx-border-width: 1px 0.5px 0px 0.5px;
-  -fx-border-insets: 0px;
   -fx-border-color: #363337;
+  -fx-border-width: 0px 1px 1px 0px;
   -fx-text-fill: white;
 }
 
 .section-button:hover {
   -fx-background-color: #363337;
   -fx-border-color: #363337;
-  -fx-border-width: 1px 0.5px 1px 0.5px;
 }
 
 .section-button-selected {
-  -fx-border-color: #363337;
   -fx-background-color: #363337;
-  -fx-text-fill: white;
+  -fx-border-color: #363337 #363337 yellow #363337;
+  -fx-border-width: 0px 1px 1px 0px;
+  -fx-text-fill: yellow;
 }
