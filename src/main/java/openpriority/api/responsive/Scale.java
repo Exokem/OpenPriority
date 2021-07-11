@@ -69,4 +69,10 @@ public enum Scale
 
         return region;
     }
+
+    public static <V extends Region> V preferSize(V region, double width, double height)
+    {
+        region.setPrefSize(width, height);
+        return region;
+    }
 }

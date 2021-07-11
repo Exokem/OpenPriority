@@ -12,7 +12,7 @@ public enum Weight implements IStyle
     private final String css;
 
     @Override
-    public String css()
+    public String css(Part part)
     {
         return css;
     }

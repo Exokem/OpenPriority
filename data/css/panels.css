@@ -1,9 +1,51 @@
 .debug {
-  /* -fx-border-style: solid;
+  -fx-border-style: solid;
   -fx-border-color: red;
-  -fx-grid-lines-visible: true; */
+  -fx-grid-lines-visible: true;
 }
 
 .debug Line {
   -fx-stroke: pink;
+}
+
+.scroll-pane {
+    -fx-background-color: -ui-1;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical {
+    -fx-background-color:transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-stroke: pink;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar > .increment-button > .increment-arrow,
+.scroll-bar > .decrement-button > .decrement-arrow {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: -ui-3;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical {
+  -fx-pref-width: 13px;
+  -fx-block-increment: 40;
+  -fx-unit-increment: 2000;
+}
+
+.scroll-pane > .corner {
+    -fx-background-color: transparent;
 }

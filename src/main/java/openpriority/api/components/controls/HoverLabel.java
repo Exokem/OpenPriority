@@ -2,11 +2,10 @@ package openpriority.api.components.controls;
 
 import javafx.animation.FadeTransition;
 import javafx.scene.control.Label;
-import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 import openpriority.api.components.Uniform;
+import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
-import openpriority.api.css.Style;
 import openpriority.api.responsive.Locale;
 
 public class HoverLabel extends Uniform
@@ -15,7 +14,7 @@ public class HoverLabel extends Uniform
 
     private final FadeTransition fade;
 
-    public static final double FADE_DURATION = 300;
+    public static final double FADE_DURATION = 450;
 
     private HoverLabel(String text, IStyle... styles)
     {
@@ -43,17 +42,16 @@ public class HoverLabel extends Uniform
 
         setPickOnBounds(false);
 
-
         add(label, 0, 0);
         add(hoveredLabel, 0, 0);
     }
 
-    public static HoverLabel configure(String text, String color, String hoveredColor, IStyle... styles)
+    public static HoverLabel configure(String text, Color base, Color hovered, IStyle... styles)
     {
         HoverLabel label = new HoverLabel(text, styles);
 
-        label.label.setTextFill(Paint.valueOf(color));
-        label.hoveredLabel.setTextFill(Paint.valueOf(hoveredColor));
+        IStyle.applyVarious(label.label, base, IStyle.Part.TEXT);
+        IStyle.applyVarious(label.hoveredLabel, hovered, IStyle.Part.TEXT);
 
         return label;
     }
@@ -62,12 +60,9 @@ public class HoverLabel extends Uniform
     public HoverLabel resizeText(double size)
     {
         String style = String.format(".size-%f { -fx-font-size: %f; }", size, size);
-
         IStyle.apply(label, style);
         IStyle.apply(hoveredLabel, style);
 
-//        label.setStyle(String.format("-fx-font-size: %f", size));
-//        hoveredLabel.setStyle(String.format("-fx-font-size: %f", size));
         return this;
     }
 
@@ -76,15 +71,5 @@ public class HoverLabel extends Uniform
         label.setText(text);
         hoveredLabel.setText(text);
         return this;
-    }
-
-    public void setTextFill(Paint paint)
-    {
-        label.setTextFill(paint);
-    }
-
-    public void setHoveredTextFill(Paint paint)
-    {
-        hoveredLabel.setTextFill(paint);
     }
 }

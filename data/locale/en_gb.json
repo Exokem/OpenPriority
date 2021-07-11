@@ -1,12 +1,17 @@
 {
   "section-home": "Home",
+  "section-options": "Options",
 
   "label-options-general": "General Options",
+  "label-options-interface": "Interface Options",
   "label-options-debug": "Debug Options",
   "label-language-select": "Language:",
 
+  "option-show-information": "Display top information",
+  "option-show-time": "Display system time",
   "option-locale-debug": "Show localisation keys",
 
+  "action-update-interface": "Update Interface",
   "action-update-css": "Update CSS",
   "action-update-locale": "Update Locale",
   "action-apply-locale": "Apply",

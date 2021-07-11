@@ -1,7 +1,5 @@
 package openpriority.api.css;
 
-import javafx.scene.layout.Region;
-
 public enum Style implements IStyle
 {
     DEBUG("debug"), SECTION_BUTTON("section-button"), SECTION_BUTTON_SELECTED("section-button-selected"),
@@ -15,13 +13,14 @@ public enum Style implements IStyle
         this.css = css;
     }
 
-    public String css()
+    @Override
+    public String toString()
     {
         return css;
     }
 
     @Override
-    public String toString()
+    public String css(Part part)
     {
         return css;
     }
