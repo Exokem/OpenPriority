@@ -1,25 +1,21 @@
 package openpriority.panels;
 
-import javafx.application.Platform;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
+import javafx.util.Duration;
+import openpriority.OpenPriority;
 import openpriority.api.components.Uniform;
 import openpriority.api.components.controls.SectionButton;
-import openpriority.api.css.Style;
-import openpriority.api.css.Weight;
 import openpriority.api.factories.GridFactory;
-import openpriority.api.responsive.Locale;
 import openpriority.api.responsive.Scale;
 import openpriority.panels.home.Home;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
-import static openpriority.api.css.Style.*;
+import static openpriority.api.css.Style.BG1;
 
 public final class Display
 {
@@ -40,37 +36,52 @@ public final class Display
         }
 
         ACTIVE_SECTION = control.setSelected(true);
-        CONTENT.add(ACTIVE_SECTION.region(), 0, 1, Priority.ALWAYS, Priority.ALWAYS);
+        CONTENT.add(ACTIVE_SECTION.region(), 0, 2, Priority.ALWAYS, Priority.ALWAYS);
     }
 
     private static Uniform content()
     {
-        SectionButton home = new SectionButton("section-home")
-            .bindSection(Home.PANEL, Display::shiftSection)
-            .adjustWidth(Scale.MINOR.adjust(Data.CONSTANT));
+        SectionButton time = Scale.scaleMinWidth(SectionButton.unhoverable(""),
+            OpenPriority::width, Scale.MINOR.quarter());
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        final Timeline timeline = new Timeline
+        (
+            new KeyFrame
+            (
+                Duration.millis(500),
+                event -> time.setText(timeFormat.format(System.currentTimeMillis()))
+            )
+        );
 
-        SectionButton tasks = new SectionButton("section-tasks")
-            .bindSection(Home.PANEL, Display::shiftSection)
-            .adjustWidth(Scale.MINOR.adjust(Data.CONSTANT));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
 
-        SectionButton misc = new SectionButton("temp")
-            .bindSection(Home.PANEL, Display::shiftSection)
-            .adjustWidth(Scale.MINOR.adjust(Data.CONSTANT));
+        Uniform information = GridFactory.uniform(0, 2, 1)
+            .add(SectionButton.unhoverable("").limitWidth(Double.MAX_VALUE), 0, 0, Priority.SOMETIMES)
+            .add(time, 1, 0, Priority.NEVER);
 
-        SectionButton empty = new SectionButton("")
+        SectionButton home = Scale.scaleMaxWidth(SectionButton.hoverable("section-home")
+            .bindSection(Home.PANEL, Display::shiftSection),
+            OpenPriority::width, Scale.MINOR.half());
+
+        SectionButton tasks = Scale.scaleMaxWidth(SectionButton.hoverable("section-tasks")
+            .bindSection(Home.PANEL, Display::shiftSection),
+            OpenPriority::width, Scale.MINOR.half());
+
+        SectionButton empty = SectionButton.unhoverable("")
             .limitWidth(Double.MAX_VALUE);
 
         Uniform sections = GridFactory.uniform(0, 3, 1)
             .add(home, 0, 0, Priority.NEVER, Priority.NEVER)
             .add(tasks, 1, 0, Priority.NEVER, Priority.NEVER)
-            .add(misc, 2, 0, Priority.NEVER)
-            .add(empty, 3, 0, Priority.SOMETIMES);
+            .add(empty, 2, 0, Priority.SOMETIMES);
 
         ACTIVE_SECTION = home.setSelected(true);
 
-        Uniform content = GridFactory.uniform(0, 1, 2, BG1)
-            .add(sections, 0, 0, Priority.NEVER)
-            .add(ACTIVE_SECTION.region(), 0, 1, Priority.ALWAYS, Priority.ALWAYS);
+        Uniform content = GridFactory.uniform(0, 1, 3, BG1)
+            .add(information, 0, 0, Priority.ALWAYS)
+            .add(sections, 0, 1, Priority.ALWAYS)
+            .add(ACTIVE_SECTION.region(), 0, 2, Priority.ALWAYS, Priority.ALWAYS);
 
         return content;
     }
