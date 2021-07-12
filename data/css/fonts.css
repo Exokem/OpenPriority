@@ -86,12 +86,16 @@
   /* -fx-font-weight: 700; */
 }
 
-.text-size-15 {
+.text-size-regular {
   -fx-font-size: 15;
 }
 
-.text-size-40 {
+.text-size-large {
   -fx-font-size: 40;
+}
+
+.text-size-large-1 {
+  -fx-font-size: 70;
 }
 
 .gainsboro {

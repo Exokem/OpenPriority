@@ -29,6 +29,13 @@ public class HoverLabel extends Uniform
         fade.setFromValue(0.0D);
         fade.setNode(hoveredLabel);
 
+        FadeTransition altFade = new FadeTransition();
+        altFade.setDuration(Duration.millis(FADE_DURATION));
+        altFade.setToValue(0.0D);
+        altFade.setFromValue(1.0D);
+        altFade.setNode(label);
+
+
         IStyle.apply(label, styles);
         IStyle.apply(hoveredLabel, styles);
 
@@ -37,7 +44,10 @@ public class HoverLabel extends Uniform
         hoverProperty().addListener((v, wsHov, isHov) ->
         {
             fade.setRate(isHov ? 1.0D : -1.0D);
+            altFade.setRate(isHov ? 1.0D : -1.0D);
+
             fade.play();
+            altFade.play();
         });
 
         setPickOnBounds(false);
