@@ -3,7 +3,6 @@ package openpriority.panels;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Priority;
 import javafx.util.Duration;
 import openpriority.OpenPriority;
@@ -30,7 +29,7 @@ public final class Display
     }
 
     private static SectionButton ACTIVE_SECTION;
-    private static ScrollPane SECTION_CONTAINER;
+    private static UniformScrollPane SECTION_CONTAINER;
     public static Uniform CONTENT = content();
 
     private static class Components
@@ -107,7 +106,7 @@ public final class Display
             .add(empty, 2, 0, Priority.SOMETIMES)
             .add(options, 3, 0, Priority.NEVER);
 
-        ACTIVE_SECTION = options.setSelected(true);
+        ACTIVE_SECTION = home.setSelected(true);
 
         SECTION_CONTAINER = Scale.preferSize(new UniformScrollPane(ACTIVE_SECTION.region()), Data.WIDTH, Data.HEIGHT);
 

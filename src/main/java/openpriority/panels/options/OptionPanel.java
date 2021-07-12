@@ -5,7 +5,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Priority;
-import javafx.scene.shape.Rectangle;
 import openpriority.OpenPriority;
 import openpriority.api.Options;
 import openpriority.api.components.Uniform;
@@ -20,6 +19,7 @@ import openpriority.api.responsive.DynamicRectangle;
 import openpriority.api.responsive.Locale;
 import openpriority.api.responsive.Scale;
 import openpriority.panels.Display;
+import openpriority.panels.UniformMargins;
 
 import static openpriority.api.css.Style.*;
 
@@ -39,14 +39,14 @@ public final class OptionPanel
                 .width(OpenPriority::width, 0.25D);
 
             Uniform root = GridFactory.autoUniform(0, 3, 4, BG1)
-                .add(left, 0, 0, Priority.NEVER, Priority.NEVER)
-                .add(left.copy(), 2, 0, Priority.NEVER, Priority.NEVER)
-                .add(DynamicRectangle.heightOnly(OpenPriority::height, 0.05D), 1, 0, Priority.NEVER)
+                .add(UniformMargins.defaultMarginSide(), 0, 0, Priority.NEVER, Priority.NEVER)
+                .add(UniformMargins.defaultMarginSide(), 2, 0, Priority.NEVER, Priority.NEVER)
+                .add(UniformMargins.defaultMarginTop(), 1, 0, Priority.NEVER)
 
                 .add(generalOptions(), 1, 1, Priority.SOMETIMES)
-                .add(new Rectangle(0, 20), 1, 2, Priority.NEVER)
+                .add(UniformMargins.defaultSpacerVertical(), 1, 2, Priority.NEVER)
                 .add(interfaceOptions(), 1, 3, Priority.SOMETIMES)
-                .add(new Rectangle(0, 20), 1, 4, Priority.NEVER)
+                .add(UniformMargins.defaultSpacerVertical(), 1, 4, Priority.NEVER)
                 .add(debugOptions(), 1, 5, Priority.SOMETIMES)
                 ;
 
