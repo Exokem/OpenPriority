@@ -4,8 +4,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import openpriority.api.Option;
-import openpriority.api.css.IStyle;
-import openpriority.api.css.Style;
+import openpriority.api.components.controls.HoverLabel;
+import openpriority.api.css.*;
 import openpriority.api.responsive.Locale;
 import openpriority.api.responsive.Scale;
 
@@ -93,5 +93,27 @@ public class ControlFactory
         label.setMaxHeight(maxHeight);
 
         return label;
+    }
+
+    public static final HoverLabelFactory HEADING_FACTORY = new HoverLabelFactory(Color.TEXT_0, Color.ACCENT_1, Weight.SEMIBOLD, Size.LARGE);
+
+    public static final class HoverLabelFactory
+    {
+        private final Color normal, hovered;
+        private final Weight weight;
+        private final Size size;
+
+        public HoverLabelFactory(Color normal, Color hovered, Weight weight, Size size)
+        {
+            this.normal = normal;
+            this.hovered = hovered;
+            this.weight = weight;
+            this.size = size;
+        }
+
+        public HoverLabel produce(String key)
+        {
+            return HoverLabel.configure(key, normal, hovered, weight, size);
+        }
     }
 }
