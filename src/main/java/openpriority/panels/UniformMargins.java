@@ -1,7 +1,8 @@
 package openpriority.panels;
 
 import openpriority.OpenPriority;
-import openpriority.api.responsive.DynamicRectangle;
+import openpriority.api.css.IStyle;
+import openpriority.api.responsive.DynamicRegion;
 
 public final class UniformMargins
 {
@@ -12,22 +13,22 @@ public final class UniformMargins
         DEFAULT_HORIZONTAL_INSET = 0.01D
     ;
 
-    private static final DynamicRectangle DEFAULT_MARGIN_SIDE = DynamicRectangle.widthOnly(OpenPriority::width, DEFAULT_MARGIN_SIDE_FACTOR);
-    private static final DynamicRectangle DEFAULT_MARGIN_TOP = DynamicRectangle.heightOnly(OpenPriority::height, DEFAULT_MARGIN_TOP_FACTOR);
-    private static final DynamicRectangle DEFAULT_SPACER_VERTICAL = DynamicRectangle.heightOnly(OpenPriority::height, DEFAULT_SPACER_VERTICAL_FACTOR);
+    private static final DynamicRegion DEFAULT_MARGIN_SIDE = DynamicRegion.widthOnly(OpenPriority::width, DEFAULT_MARGIN_SIDE_FACTOR);
+    private static final DynamicRegion DEFAULT_MARGIN_TOP = DynamicRegion.heightOnly(OpenPriority::height, DEFAULT_MARGIN_TOP_FACTOR);
+    private static final DynamicRegion DEFAULT_SPACER_VERTICAL = DynamicRegion.heightOnly(OpenPriority::height, DEFAULT_SPACER_VERTICAL_FACTOR);
 
-    public static DynamicRectangle defaultMarginSide()
+    public static DynamicRegion defaultMarginSide(IStyle... styles)
     {
-        return DEFAULT_MARGIN_SIDE.copy();
+        return IStyle.apply(DEFAULT_MARGIN_SIDE.copy(), styles);
     }
 
-    public static DynamicRectangle defaultMarginTop()
+    public static DynamicRegion defaultMarginTop(IStyle... styles)
     {
-        return DEFAULT_MARGIN_TOP.copy();
+        return IStyle.apply(DEFAULT_MARGIN_TOP.copy(), styles);
     }
 
-    public static DynamicRectangle defaultSpacerVertical()
+    public static DynamicRegion defaultSpacerVertical(IStyle... styles)
     {
-        return DEFAULT_SPACER_VERTICAL.copy();
+        return IStyle.apply(DEFAULT_SPACER_VERTICAL.copy(), styles);
     }
 }
