@@ -50,20 +50,6 @@ public class Uniform extends GridPane
         return this;
     }
 
-    public Uniform padEdgesOnly(int padding)
-    {
-        for (int col = 0; col < columns; col = columns - 1)
-        {
-            for (int row = 0; row < rows; row = rows - 1)
-            {
-                Rectangle r = new Rectangle(0, 0);
-                add(r, col, row);
-            }
-        }
-
-        return this;
-    }
-
     public Uniform add(Node child, int column, int row, Priority horizontal, Priority vertical)
     {
         return add(child, column, row, 1, 1, horizontal, vertical);

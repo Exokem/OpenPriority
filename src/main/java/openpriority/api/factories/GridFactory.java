@@ -1,7 +1,6 @@
 package openpriority.api.factories;
 
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.Priority;
 import javafx.scene.shape.Rectangle;
@@ -52,13 +51,13 @@ public final class GridFactory
         return uniform(gap, innerColumns + 2, innerRows + 2, styles);
     }
 
-    public static Uniform uniformButtonBar(double gap, Button... buttons)
+    public static Uniform uniformButtonBar(double gap, Node... buttons)
     {
-        Uniform container = uniform(gap, buttons.length, 1);
-        for (int ix = 0; ix < buttons.length; ix ++)
-        {
-            container.add(buttons[ix], ix, 1, Priority.SOMETIMES);
-        }
+        Uniform container = AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+            .withGap(gap)
+            .defaultPriorities(Priority.SOMETIMES)
+            .addAll(buttons)
+            .build();
 
         ColumnConstraints constraints = new ColumnConstraints();
         constraints.setPercentWidth(100.0D / (double) buttons.length);
@@ -99,6 +98,7 @@ public final class GridFactory
 
         private final Alignment axis;
         private double padding = 0;
+        private double hGap, vGap;
         private Uniform uniform;
 
         private boolean skipFirst = true;
@@ -122,6 +122,16 @@ public final class GridFactory
             return this;
         }
 
+        public AlignedUniformBuilder addAll(Node... nodes)
+        {
+            for (Node node : nodes)
+            {
+                add(node, defaultPriorities);
+            }
+
+            return this;
+        }
+
         public AlignedUniformBuilder withPadding(double padding)
         {
             this.padding = padding;
@@ -141,6 +151,19 @@ public final class GridFactory
             return this;
         }
 
+        public AlignedUniformBuilder withGap(double gap)
+        {
+            this.hGap = this.vGap = gap;
+            return this;
+        }
+
+        public AlignedUniformBuilder withGap(double hGap, double vGap)
+        {
+            this.hGap = hGap;
+            this.vGap = vGap;
+            return this;
+        }
+
         public AlignedUniformBuilder defaultPriorities(Priority... priorities)
         {
             if (priorities.length != 0) this.defaultPriorities = priorities;
@@ -157,6 +180,9 @@ public final class GridFactory
         public Uniform build(IStyle... styles)
         {
             Uniform uniform = new Uniform();
+
+            uniform.setHgap(hGap);
+            uniform.setVgap(vGap);
 
             if (padding != 0) uniform.inset(padding);
 
