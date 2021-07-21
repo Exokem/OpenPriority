@@ -1,5 +1,6 @@
 package openpriority.api.components;
 
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -25,6 +26,7 @@ public class Uniform extends GridPane
         setSnapToPixel(true);
     }
 
+    @Deprecated
     protected Uniform pad(int columns, int rows)
     {
         for (int col = 0; col < columns; col++)
@@ -35,6 +37,15 @@ public class Uniform extends GridPane
                 add(r, col, row);
             }
         }
+
+        return this;
+    }
+
+    public Uniform inset(double inset)
+    {
+        Insets insets = new Insets(inset);
+
+        setPadding(insets);
 
         return this;
     }

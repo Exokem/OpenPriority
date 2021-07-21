@@ -1,6 +1,5 @@
 package openpriority.api.factories;
 
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.ColumnConstraints;
@@ -159,7 +158,7 @@ public final class GridFactory
         {
             Uniform uniform = new Uniform();
 
-            if (padding != 0) uniform.setPadding(new Insets(padding));
+            if (padding != 0) uniform.inset(padding);
 
             int index = 0;
 
