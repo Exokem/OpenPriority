@@ -56,6 +56,11 @@ public interface IStyle
         return part -> String.format("%s-%s", a.css(part), b.css(part));
     }
 
+    static IStyle custom(String classes)
+    {
+        return part -> classes;
+    }
+
     enum Part implements IStyle
     {
         BACKGROUND, FOREGROUND, TEXT, BORDER, NONE;

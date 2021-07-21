@@ -70,6 +70,22 @@ public enum Scale
         return region;
     }
 
+    public static <V extends Region> V scaleMaxHeight(V region, Supplier<Double> heightBasis, double factor)
+    {
+        Platform.runLater(() -> region.setPrefWidth(heightBasis.get() * factor));
+
+        DynamicResizable.addListener(() -> region.setMaxHeight(heightBasis.get() * factor));
+
+        return region;
+    }
+
+    public static <V extends Region> V scaleMinHeight(V region, Supplier<Double> heightBasis, double factor)
+    {
+        Platform.runLater(() -> region.setMinHeight(heightBasis.get() * factor));
+
+        return region;
+    }
+
     public static <V extends Region> V preferSize(V region, double width, double height)
     {
         region.setPrefSize(width, height);

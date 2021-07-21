@@ -5,12 +5,16 @@ import openpriority.api.responsive.DynamicRectangle;
 
 public final class UniformMargins
 {
-    private static final DynamicRectangle DEFAULT_MARGIN_SIDE = DynamicRectangle.empty()
-        .width(OpenPriority::width, 0.25D);
+    public static final double
+        DEFAULT_MARGIN_SIDE_FACTOR = 0.20D,
+        DEFAULT_MARGIN_TOP_FACTOR = 0.05D,
+        DEFAULT_SPACER_VERTICAL_FACTOR = 0.02D,
+        DEFAULT_HORIZONTAL_INSET = 0.01D
+    ;
 
-    private static final DynamicRectangle DEFAULT_MARGIN_TOP = DynamicRectangle.heightOnly(OpenPriority::height, 0.05D);
-
-    private static final DynamicRectangle DEFAULT_SPACER_VERTICAL = DynamicRectangle.heightOnly(OpenPriority::height, 0.02D);
+    private static final DynamicRectangle DEFAULT_MARGIN_SIDE = DynamicRectangle.widthOnly(OpenPriority::width, DEFAULT_MARGIN_SIDE_FACTOR);
+    private static final DynamicRectangle DEFAULT_MARGIN_TOP = DynamicRectangle.heightOnly(OpenPriority::height, DEFAULT_MARGIN_TOP_FACTOR);
+    private static final DynamicRectangle DEFAULT_SPACER_VERTICAL = DynamicRectangle.heightOnly(OpenPriority::height, DEFAULT_SPACER_VERTICAL_FACTOR);
 
     public static DynamicRectangle defaultMarginSide()
     {
