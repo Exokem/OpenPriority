@@ -83,13 +83,14 @@ public final class Display
         Components.INFORMATION = GridFactory.uniform(0, 2, 1)
             .add(SectionButton.unhoverable("").limitWidth(Double.MAX_VALUE), 0, 0, Priority.SOMETIMES);
 
-        if (Options.Interface.SHOW_TIME.get()) Components.INFORMATION.add(Components.TIME, 1, 0, Priority.NEVER);
+        if (Options.Interface.SHOW_TIME.get())
+            Components.INFORMATION.add(Components.TIME, 1, 0, Priority.NEVER);
 
         SectionButton home = Scale.scaleMaxWidth(SectionButton.hoverable("section-home")
             .bindSection(HomePanel.PANEL, Display::shiftSection),
             OpenPriority::width, Scale.MINOR.half());
 
-        SectionButton options = Scale.scaleMaxWidth(SectionButton.hoverable("section-options")
+        SectionButton options = Scale.scaleMinWidth(SectionButton.hoverable("section-options")
             .bindSection(OptionPanel.PANEL, Display::shiftSection),
             OpenPriority::width, Scale.MINOR.half());
 

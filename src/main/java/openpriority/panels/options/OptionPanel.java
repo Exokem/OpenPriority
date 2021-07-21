@@ -15,7 +15,7 @@ import openpriority.api.css.Size;
 import openpriority.api.css.Weight;
 import openpriority.api.factories.ControlFactory;
 import openpriority.api.factories.GridFactory;
-import openpriority.api.responsive.DynamicRectangle;
+import openpriority.api.responsive.DynamicInsets;
 import openpriority.api.responsive.Locale;
 import openpriority.api.responsive.Scale;
 import openpriority.panels.Display;
@@ -31,26 +31,37 @@ public final class OptionPanel
     {
         private static Uniform panel()
         {
-            Button test = new Button("test_button");
-            test.setMaxWidth(Double.MAX_VALUE);
-            test.setOnAction((a) -> OpenPriority.updateStylesheets());
-
-            DynamicRectangle left = DynamicRectangle.empty()
-                .width(OpenPriority::width, 0.25D);
-
-            Uniform root = GridFactory.autoUniform(0, 3, 4, BG1)
+            Uniform root = GridFactory.autoUniform(0, 3, 2, BG1)
                 .add(UniformMargins.defaultMarginSide(), 0, 0, Priority.NEVER, Priority.NEVER)
                 .add(UniformMargins.defaultMarginSide(), 2, 0, Priority.NEVER, Priority.NEVER)
                 .add(UniformMargins.defaultMarginTop(), 1, 0, Priority.NEVER)
 
-                .add(generalOptions(), 1, 1, Priority.SOMETIMES)
-                .add(UniformMargins.defaultSpacerVertical(), 1, 2, Priority.NEVER)
-                .add(interfaceOptions(), 1, 3, Priority.SOMETIMES)
-                .add(UniformMargins.defaultSpacerVertical(), 1, 4, Priority.NEVER)
-                .add(debugOptions(), 1, 5, Priority.SOMETIMES)
+                .add(allOptions(), 1, 1, Priority.ALWAYS)
                 ;
 
             return root;
+        }
+
+        private static Uniform allOptions()
+        {
+            HoverLabel optionsLabel = HoverLabel.configure("section-options", Color.TEXT_0, Color.ACCENT_1, Weight.BOLD, Size.LARGE_1);
+
+            Uniform allOptions = GridFactory.autoUniform(0, 1, 7, BG1)
+                .add(optionsLabel, 0, 0, Priority.SOMETIMES)
+                .add(UniformMargins.defaultSpacerVertical(), 0, 1, Priority.NEVER)
+
+                .add(generalOptions(), 0, 2, Priority.SOMETIMES)
+                .add(UniformMargins.defaultSpacerVertical(), 0, 3, Priority.NEVER)
+
+                .add(interfaceOptions(), 0, 4, Priority.SOMETIMES)
+                .add(UniformMargins.defaultSpacerVertical(), 0, 5, Priority.NEVER)
+
+                .add(debugOptions(), 0, 6, Priority.SOMETIMES)
+            ;
+
+            DynamicInsets.horizontalUniform(allOptions, OpenPriority::width, UniformMargins.DEFAULT_HORIZONTAL_INSET);
+
+            return allOptions;
         }
 
         private static Uniform generalOptions()
