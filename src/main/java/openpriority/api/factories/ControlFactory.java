@@ -3,6 +3,7 @@ package openpriority.api.factories;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import openpriority.api.Option;
 import openpriority.api.components.controls.HoverLabel;
 import openpriority.api.css.*;
@@ -35,6 +36,12 @@ public class ControlFactory
         });
 
         return checkBox;
+    }
+
+    public static TextArea textArea(String key, IStyle... styles)
+    {
+        TextArea area = new TextArea(Locale.get(key));
+        return IStyle.apply(area, styles);
     }
 
     public static Button button(String key, double maxWidth, Runnable action, IStyle... styles)
