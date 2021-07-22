@@ -67,6 +67,8 @@ public enum Scale
     {
         Platform.runLater(() -> region.setMinWidth(widthBasis.get() * factor));
 
+        DynamicResizable.addListener(() -> region.setMinWidth(widthBasis.get() * factor));
+
         return region;
     }
 
@@ -82,6 +84,8 @@ public enum Scale
     public static <V extends Region> V scaleMinHeight(V region, Supplier<Double> heightBasis, double factor)
     {
         Platform.runLater(() -> region.setMinHeight(heightBasis.get() * factor));
+
+        DynamicResizable.addListener(() -> region.setMinHeight(heightBasis.get() * factor));
 
         return region;
     }

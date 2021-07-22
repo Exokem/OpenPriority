@@ -107,6 +107,14 @@ public final class OpenPriority extends Application
 
         scene.widthProperty().addListener((obs, prev, next) -> Platform.runLater(DynamicResizable::resizeAll));
         scene.heightProperty().addListener((obs, prev, next) -> Platform.runLater(DynamicResizable::resizeAll));
+        scene.setOnKeyPressed(event ->
+        {
+            switch (event.getCode())
+            {
+                case F11 -> OpenPriority.updateStylesheets();
+                case F12 -> OpenPriority.updateLocale();
+            }
+        });
     }
 
     @Override
