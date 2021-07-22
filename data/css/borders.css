@@ -12,8 +12,8 @@
 
 .border-bottom {
   -fx-border-style: solid;
-  -fx-border-color: -ui-2;
-  -fx-border-width: 0 0 1px 0 !important;
+  -fx-border-color: transparent transparent -ui-2 -ui-1;
+  -fx-border-width: 0 0 1px 1px !important;
 }
 
 .border-left {
@@ -24,6 +24,6 @@
 
 .border-lr {
   -fx-border-style: solid;
-  -fx-border-color: -ui-2;
-  -fx-border-width: 0 1px 0 1px;
+  -fx-border-color: transparent -ui-2 transparent -ui-2;
+  -fx-border-width: 1px 1px 1px 1px;
 }

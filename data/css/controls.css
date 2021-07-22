@@ -88,15 +88,21 @@
   -fx-border-color: -ui-2;
 }
 
-.left-margin {
-  /* -fx-border-color: -ui-2;
-  -fx-border-width: 0 1 0 1; */
-  /* -fx-border-offset: 2; */
-}
-
 .section-button-selected {
   -fx-background-color: -ui-2;
   -fx-border-color: -ui-2 -ui-2 -accent-1 -ui-2;
   -fx-border-width: 0px 1px 1px 0px;
   -fx-text-fill: -accent-1;
+}
+
+.text-field, .text-area, .text-area .content {
+  -fx-text-fill: -text-0;
+
+  -fx-border-radius: 0;
+  -fx-border-width: 0;
+  -fx-background-radius: 0;
+  -fx-background-color: -ui-2;
+
+  -fx-font-family: 'IBM Plex Sans';
+  /* -fx-font-size: 15; */
 }

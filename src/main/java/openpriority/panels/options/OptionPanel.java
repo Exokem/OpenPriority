@@ -10,13 +10,10 @@ import openpriority.api.Options;
 import openpriority.api.components.Alignment;
 import openpriority.api.components.Uniform;
 import openpriority.api.components.controls.HoverLabel;
-import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.css.Size;
-import openpriority.api.css.Weight;
 import openpriority.api.factories.ControlFactory;
 import openpriority.api.factories.GridFactory;
-import openpriority.api.responsive.DynamicInsets;
 import openpriority.api.responsive.Locale;
 import openpriority.api.responsive.Scale;
 import openpriority.panels.Display;
@@ -39,7 +36,7 @@ public final class OptionPanel
                 .add(UniformMargins.defaultMarginSide(), 0, 0, Priority.NEVER, Priority.NEVER)
                 .add(UniformMargins.defaultMarginSide(), 2, 0, Priority.NEVER, Priority.NEVER)
 
-                .add(allOptions(), 1, 1, Priority.ALWAYS)
+                .add(allOptions(), 1, 1, Priority.ALWAYS, Priority.ALWAYS)
                 ;
 
             return root;
@@ -47,18 +44,15 @@ public final class OptionPanel
 
         private static Uniform allOptions()
         {
-            HoverLabel optionsLabel = HoverLabel.configure("section-options", Color.TEXT_0, Color.ACCENT_1, Weight.BOLD, Size.LARGE_1);
-
             Uniform allOptions = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
-                .withSpacers(UniformMargins::defaultSpacerVertical, false)
+                .withSpacers(UniformMargins::defaultSpacerVertical)
+                .withPadding(20)
                 .defaultPriorities(Priority.SOMETIMES)
                 .add(SECTION_TITLE_FACTORY.produce("section-options"))
                 .add(generalOptions())
                 .add(interfaceOptions())
                 .add(debugOptions())
                 .build();
-
-            DynamicInsets.horizontalUniform(allOptions, OpenPriority::width, UniformMargins.DEFAULT_HORIZONTAL_INSET);
 
             return allOptions;
         }
@@ -101,6 +95,7 @@ public final class OptionPanel
                 .build();
 
             Uniform generalOptions = MENU_SECTION_BUILDER
+                .defaultPriorities(Priority.ALWAYS)
                 .add(generalLabel, Priority.ALWAYS)
                 .add(localeSelection)
                 .build();
@@ -115,6 +110,7 @@ public final class OptionPanel
             CheckBox showTime = ControlFactory.optionCheckBox("option-show-time", Options.Interface.SHOW_TIME, Display::applyTimeDisplaySetting);
 
             Uniform interfaceOptions = MENU_SECTION_BUILDER
+                .defaultPriorities(Priority.ALWAYS)
                 .add(interfaceLabel)
                 .add(showInformation)
                 .add(showTime)
