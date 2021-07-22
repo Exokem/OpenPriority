@@ -21,6 +21,9 @@
   "action-update-locale": "Update Locale",
   "action-apply-locale": "Apply",
 
+  "default-new-task": "Task",
+  "default-new-task-desc": "My next task.",
+
   "en-gb": "English (UK)",
   "en-us": "English (US)",
   "es-es": "Espa\u00F1ol (Espa\u00F1a)"

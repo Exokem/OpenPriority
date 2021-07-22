@@ -1,23 +1,23 @@
 package openpriority.panels.options;
 
-import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import openpriority.OpenPriority;
 import openpriority.api.Options;
 import openpriority.api.components.Alignment;
 import openpriority.api.components.Uniform;
 import openpriority.api.components.controls.HoverLabel;
+import openpriority.api.components.controls.UniformButton;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.css.Size;
 import openpriority.api.factories.ControlFactory;
 import openpriority.api.factories.GridFactory;
 import openpriority.api.responsive.DynamicRegion;
+import openpriority.api.responsive.IDynamicRegion;
 import openpriority.api.responsive.Locale;
 import openpriority.api.responsive.Scale;
 import openpriority.panels.Display;
@@ -78,16 +78,29 @@ public final class OptionPanel
                 localeSelect.setValue(Locale.get(Options.General.ACTIVE_LOCALE.get().translationKey()));
             });
 
-            Button applyLocale = ControlFactory.dynamicButton("action-apply-locale", OpenPriority::width, Scale.MINOR.adjust(0.5), () ->
-            {
-                Locale.Variant next = Options.General.ACTIVE_LOCALE.get().inverseRetrieve(localeSelect.getValue());
-
-                if (next != Options.General.ACTIVE_LOCALE.get())
+            UniformButton applyLocale = new UniformButton("action-apply-locale")
+                .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_WIDTH, Double.MAX_VALUE)
+                .withAction(() ->
                 {
-                    Options.General.ACTIVE_LOCALE.set(next);
-                    Locale.refreshIndices();
-                }
-            });
+                    Locale.Variant next = Options.General.ACTIVE_LOCALE.get().inverseRetrieve(localeSelect.getValue());
+
+                    if (next != Options.General.ACTIVE_LOCALE.get())
+                    {
+                        Options.General.ACTIVE_LOCALE.set(next);
+                        Locale.refreshIndices();
+                    }
+                });
+
+//            Button applyLocale = ControlFactory.dynamicButton("action-apply-locale", OpenPriority::width, Scale.MINOR.adjust(0.5), () ->
+//            {
+//                Locale.Variant next = Options.General.ACTIVE_LOCALE.get().inverseRetrieve(localeSelect.getValue());
+//
+//                if (next != Options.General.ACTIVE_LOCALE.get())
+//                {
+//                    Options.General.ACTIVE_LOCALE.set(next);
+//                    Locale.refreshIndices();
+//                }
+//            });
 
             Label localeLabel = ControlFactory.label("label-language-select", Size.REGULAR, TEXT0);
 
@@ -100,11 +113,9 @@ public final class OptionPanel
             Uniform localeHolder = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
                 .withGap(20)
                 .add(localeSelection)
-                .add(applyLocale)
+                .add(applyLocale, Priority.ALWAYS)
                 .distributeSpaceEvenly()
                 .build();
-
-            GridPane.setHalignment(applyLocale, HPos.RIGHT);
 
             Uniform generalOptions = MENU_SECTION_BUILDER
                 .defaultPriorities(Priority.ALWAYS)

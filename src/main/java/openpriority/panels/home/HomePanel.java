@@ -1,12 +1,13 @@
 package openpriority.panels.home;
 
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Priority;
 import openpriority.OpenPriority;
 import openpriority.api.components.Alignment;
 import openpriority.api.components.Uniform;
 import openpriority.api.components.controls.SectionButton;
+import openpriority.api.components.controls.UniformTextArea;
+import openpriority.api.components.controls.UniformTextField;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.factories.ControlFactory;
@@ -24,7 +25,8 @@ public final class HomePanel
 
     private static final class Data
     {
-
+        private static UniformTextField TASK_NAME = new UniformTextField("default-new-task", TaskController.tasks.size());
+        private static TextArea TASK_DESC = new UniformTextArea("default-new-task-desc").wrapText().preferRows(3);
     }
 
     private static final class Components
@@ -80,17 +82,12 @@ public final class HomePanel
 
         private static Uniform taskAssign()
         {
-            TextField displayName = new TextField(String.format("%s %d", "default-task-name", TaskController.tasks.size()));
-            TextArea description = new TextArea("default-new-task-desc");
-
-            description.setWrapText(true);
-            description.setPrefRowCount(3);
 
             Uniform columnLeft = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
                 .defaultPriorities(Priority.SOMETIMES)
                 .withGap(20)
 
-                .add(displayName).add(description)
+                .add(Data.TASK_NAME).add(Data.TASK_DESC)
                 .build();
 
 //            UniformScrollPane
