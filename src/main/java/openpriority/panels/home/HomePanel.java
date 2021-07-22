@@ -36,7 +36,7 @@ public final class HomePanel
             Uniform panel = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
                 .defaultPriorities(Priority.NEVER, Priority.ALWAYS)
                 .add(taskView())
-                .add(homeContent(), Priority.SOMETIMES)
+                .add(homeContent(), Priority.ALWAYS)
                 .add(margin)
                 .build(Color.UI_1.join(IStyle.Part.BACKGROUND));
 
@@ -49,7 +49,7 @@ public final class HomePanel
                 .withSpacers(UniformMargins::defaultSpacerVertical)
                 .defaultPriorities(Priority.SOMETIMES)
                 .withPadding(20)
-                .add(SECTION_TITLE_FACTORY.produce("section-home"))
+                .add(SECTION_TITLE_FACTORY.produce("section-home"), Priority.NEVER)
                 .add(overview())
                 .add(categoryAssign())
                 .add(taskAssign())
@@ -61,6 +61,7 @@ public final class HomePanel
         private static Uniform overview()
         {
             Uniform overview = GridFactory.MENU_SECTION_BUILDER
+                .defaultPriorities(Priority.ALWAYS)
                 .add(ControlFactory.HEADING_FACTORY.produce("label-overview"))
                 .build();
 
@@ -70,6 +71,7 @@ public final class HomePanel
         private static Uniform categoryAssign()
         {
             Uniform categoryAssign = GridFactory.MENU_SECTION_BUILDER
+                .defaultPriorities(Priority.ALWAYS)
                 .add(ControlFactory.HEADING_FACTORY.produce("label-assign-categories"))
                 .build();
 

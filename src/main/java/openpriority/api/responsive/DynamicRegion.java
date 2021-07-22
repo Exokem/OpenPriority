@@ -61,7 +61,11 @@ public class DynamicRegion extends Region
 
     public DynamicRegion copy()
     {
-        return new DynamicRegion().height(this.heightBasis, this.heightFactor).width(this.widthBasis, this.widthFactor);
+        DynamicRegion region = new DynamicRegion().height(this.heightBasis, this.heightFactor).width(this.widthBasis, this.widthFactor);
+
+        region.getStyleClass().addAll(this.getStyleClass());
+
+        return region;
     }
 
     public DynamicRegion show()

@@ -4,7 +4,7 @@
   -fx-grid-lines-visible: true;
 }
 
-.debug Line {
+.debug * Line {
   -fx-stroke: pink;
 }
 

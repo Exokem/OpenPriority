@@ -1,25 +1,28 @@
 package openpriority.panels.options;
 
+import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import openpriority.OpenPriority;
 import openpriority.api.Options;
 import openpriority.api.components.Alignment;
 import openpriority.api.components.Uniform;
 import openpriority.api.components.controls.HoverLabel;
+import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.css.Size;
 import openpriority.api.factories.ControlFactory;
 import openpriority.api.factories.GridFactory;
+import openpriority.api.responsive.DynamicRegion;
 import openpriority.api.responsive.Locale;
 import openpriority.api.responsive.Scale;
 import openpriority.panels.Display;
 import openpriority.panels.UniformMargins;
 
-import static openpriority.api.css.Style.BG1;
 import static openpriority.api.css.Style.TEXT0;
 import static openpriority.api.factories.ControlFactory.SECTION_TITLE_FACTORY;
 import static openpriority.api.factories.GridFactory.MENU_SECTION_BUILDER;
@@ -32,38 +35,39 @@ public final class OptionPanel
     {
         private static Uniform panel()
         {
-            Uniform root = GridFactory.autoUniform(0, 3, 2, BG1)
-                .add(UniformMargins.defaultMarginSide(), 0, 0, Priority.NEVER, Priority.NEVER)
-                .add(UniformMargins.defaultMarginSide(), 2, 0, Priority.NEVER, Priority.NEVER)
+            DynamicRegion margin = UniformMargins.defaultMarginSide(Color.UI_0.join(IStyle.Part.BACKGROUND));
 
-                .add(allOptions(), 1, 1, Priority.ALWAYS, Priority.ALWAYS)
-                ;
+            Uniform root = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+                .defaultPriorities(Priority.NEVER, Priority.ALWAYS)
+                .add(margin)
+                .add(optionsContent(), Priority.ALWAYS)
+                .add(margin.copy())
+                .build(Color.UI_1.join(IStyle.Part.BACKGROUND));
 
             return root;
         }
 
-        private static Uniform allOptions()
+        private static Uniform optionsContent()
         {
-            Uniform allOptions = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
+            Uniform optionsContent = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
                 .withSpacers(UniformMargins::defaultSpacerVertical)
-                .withPadding(20)
                 .defaultPriorities(Priority.SOMETIMES)
-                .add(SECTION_TITLE_FACTORY.produce("section-options"))
+                .withPadding(20)
+                .add(SECTION_TITLE_FACTORY.produce("section-options"), Priority.NEVER)
                 .add(generalOptions())
                 .add(interfaceOptions())
                 .add(debugOptions())
-                .build();
+                .build(IStyle.custom("border-lr"));
 
-            return allOptions;
+            return optionsContent;
         }
 
         private static Uniform generalOptions()
         {
-            HoverLabel generalLabel = ControlFactory.HEADING_FACTORY.produce("label-options-general");
-
             ChoiceBox<String> localeSelect = new ChoiceBox<>();
             localeSelect.getItems().addAll(Locale.Variant.translationKeySet());
             localeSelect.setValue(Locale.get(Options.General.ACTIVE_LOCALE.get().translationKey()));
+            localeSelect.setMaxWidth(Double.MAX_VALUE);
             Scale.scaleMinWidth(localeSelect, OpenPriority::width, Scale.MINOR.adjust(0.75));
             IStyle.apply(localeSelect, Size.REGULAR);
 
@@ -90,14 +94,22 @@ public final class OptionPanel
             Uniform localeSelection = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
                 .withGap(20)
                 .add(localeLabel, Priority.NEVER)
-                .add(localeSelect, Priority.SOMETIMES)
-                .add(applyLocale, Priority.ALWAYS, Priority.ALWAYS)
+                .add(localeSelect, Priority.ALWAYS)
                 .build();
+
+            Uniform localeHolder = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+                .withGap(20)
+                .add(localeSelection)
+                .add(applyLocale)
+                .distributeSpaceEvenly()
+                .build();
+
+            GridPane.setHalignment(applyLocale, HPos.RIGHT);
 
             Uniform generalOptions = MENU_SECTION_BUILDER
                 .defaultPriorities(Priority.ALWAYS)
-                .add(generalLabel, Priority.ALWAYS)
-                .add(localeSelection)
+                .add(ControlFactory.HEADING_FACTORY.produce("label-options-general"), Priority.ALWAYS)
+                .add(localeHolder)
                 .build();
 
             return generalOptions;
@@ -134,11 +146,18 @@ public final class OptionPanel
             Button updateCSS = ControlFactory.button("action-update-css", Double.MAX_VALUE, OpenPriority::updateStylesheets);
             Button updateLocale = ControlFactory.button("action-update-locale", Double.MAX_VALUE, Locale::refreshIndices);
 
+            Uniform buttons = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+                .defaultPriorities(Priority.SOMETIMES)
+                .withGap(20)
+                .addAll(updateCSS, updateLocale)
+                .distributeSpaceEvenly()
+                .build();
+
             Uniform debugOptions = MENU_SECTION_BUILDER
                 .defaultPriorities(Priority.ALWAYS)
                 .add(debugLabel)
                 .add(localeDebug)
-                .add(GridFactory.uniformButtonBar(20, updateCSS, updateLocale))
+                .add(buttons)
                 .build();
 
             return debugOptions;

@@ -138,7 +138,8 @@ public final class GridFactory
         {
             for (Node node : nodes)
             {
-                add(node, defaultPriorities);
+                if (defaultPriorities != null) add(node, defaultPriorities);
+                else add(node);
             }
 
             return this;

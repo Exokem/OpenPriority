@@ -6,6 +6,9 @@
   -ui-2: #363337;
   -ui-3: #5b595c;
   -text-0: #dcdcdc;
+
+  -fx-accent: -accent-1;
+  -fx-focus-color: -accent-1;
 }
 
 .background-0 {

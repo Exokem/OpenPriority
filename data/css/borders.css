@@ -24,6 +24,6 @@
 
 .border-lr {
   -fx-border-style: solid;
-  -fx-border-color: transparent -ui-2 transparent -ui-2;
-  -fx-border-width: 1px 1px 1px 1px;
+  -fx-border-color: transparent -ui-2 transparent -ui-2 !important;
+  -fx-border-width: 1px 1px 1px 1px !important;
 }
