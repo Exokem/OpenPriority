@@ -3,7 +3,9 @@ package openpriority.api.factories;
 import javafx.scene.Node;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Rectangle;
+import openpriority.api.annotation.FactoryOperation;
 import openpriority.api.components.Alignment;
 import openpriority.api.components.Uniform;
 import openpriority.api.css.Color;
@@ -12,8 +14,13 @@ import openpriority.api.responsive.DynamicRegion;
 import openpriority.api.responsive.DynamicResizable;
 import openpriority.panels.UniformMargins;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Set;
 import java.util.function.Supplier;
+
+import static openpriority.api.annotation.OperationStage.*;
 
 public final class GridFactory
 {
@@ -108,11 +115,15 @@ public final class GridFactory
         private final LinkedHashMap<Node, Priority[]> content = new LinkedHashMap<>();
         private IStyle[] buildStyles = {};
 
+        private final Set<ColumnConstraints> columnConstraintsSet = new HashSet<>();
+        private final Set<RowConstraints> rowConstraintsSet = new HashSet<>();
+
         private void addInternal(Node child, Priority... priorities)
         {
             content.put(child, priorities);
         }
 
+        @FactoryOperation
         public AlignedUniformBuilder add(Node child, Priority... priorities)
         {
             if (priorities.length == 0 && defaultPriorities != null) priorities = defaultPriorities;
@@ -122,6 +133,7 @@ public final class GridFactory
             return this;
         }
 
+        @FactoryOperation
         public AlignedUniformBuilder addAll(Node... nodes)
         {
             for (Node node : nodes)
@@ -132,18 +144,21 @@ public final class GridFactory
             return this;
         }
 
+        @FactoryOperation
         public AlignedUniformBuilder withPadding(double padding)
         {
             this.padding = padding;
             return this;
         }
 
+        @FactoryOperation(stage = PREADD)
         public AlignedUniformBuilder withSpacers(Supplier<DynamicRegion> spacers)
         {
             this.spacers = spacers;
             return this;
         }
 
+        @FactoryOperation(stage = PREADD)
         public AlignedUniformBuilder withSpacers(Supplier<DynamicRegion> spacers, boolean skipFirst)
         {
             this.spacers = spacers;
@@ -151,12 +166,14 @@ public final class GridFactory
             return this;
         }
 
+        @FactoryOperation
         public AlignedUniformBuilder withGap(double gap)
         {
             this.hGap = this.vGap = gap;
             return this;
         }
 
+        @FactoryOperation
         public AlignedUniformBuilder withGap(double hGap, double vGap)
         {
             this.hGap = hGap;
@@ -164,6 +181,7 @@ public final class GridFactory
             return this;
         }
 
+        @FactoryOperation(stage = PREADD)
         public AlignedUniformBuilder defaultPriorities(Priority... priorities)
         {
             if (priorities.length != 0) this.defaultPriorities = priorities;
@@ -171,12 +189,52 @@ public final class GridFactory
             return this;
         }
 
+        @FactoryOperation
         public AlignedUniformBuilder withStyles(IStyle... buildStyles)
         {
             this.buildStyles = buildStyles;
             return this;
         }
 
+        @FactoryOperation(stage = POSTADD)
+        public AlignedUniformBuilder distributeSpaceEvenly()
+        {
+            double percent = 100.0D / (content.size() - (skipFirst && spacers != null ? 1 : 0));
+
+            switch (axis)
+            {
+                case HORIZONTAL ->
+                    {
+                        ColumnConstraints constraints = new ColumnConstraints();
+                        constraints.setPercentWidth(percent);
+                        columnConstraintsSet.add(constraints);
+                    }
+                case VERTICAL ->
+                    {
+                        RowConstraints constraints = new RowConstraints();
+                        constraints.setPercentHeight(percent);
+                        rowConstraintsSet.add(constraints);
+                    }
+            }
+
+            return this;
+        }
+
+        @FactoryOperation(stage = POSTADD)
+        public AlignedUniformBuilder withColumnConstraints(ColumnConstraints... constraints)
+        {
+            columnConstraintsSet.addAll(Arrays.asList(constraints));
+            return this;
+        }
+
+        @FactoryOperation(stage = POSTADD)
+        public AlignedUniformBuilder withRowConstraints(RowConstraints... constraints)
+        {
+            rowConstraintsSet.addAll(Arrays.asList(constraints));
+            return this;
+        }
+
+        @FactoryOperation(stage = BUILD)
         public Uniform build(IStyle... styles)
         {
             Uniform uniform = new Uniform();
@@ -194,9 +252,24 @@ public final class GridFactory
                 index ++;
             }
 
+            uniform.addColumnConstraints(columnConstraintsSet);
+            columnConstraintsSet.clear();
+
+            uniform.addRowConstraints(rowConstraintsSet);
+            rowConstraintsSet.clear();
+
             content.clear();
 
             return IStyle.apply(IStyle.apply(uniform, styles), buildStyles);
+        }
+
+        @FactoryOperation(stage = BUILD)
+        public Uniform buildWithConstraints(ColumnConstraints columnConstraints, RowConstraints rowConstraints, IStyle... styles)
+        {
+            Uniform uniform = build(styles);
+            uniform.addColumnConstraints(columnConstraints);
+            uniform.addRowConstraints(rowConstraints);
+            return uniform;
         }
     }
 }

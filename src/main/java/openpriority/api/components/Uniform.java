@@ -2,11 +2,17 @@ package openpriority.api.components;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Rectangle;
+import openpriority.api.responsive.IDynamicRegion;
 
-public class Uniform extends GridPane
+import java.util.Arrays;
+import java.util.Collection;
+
+public class Uniform extends GridPane implements IDynamicRegion<Uniform>
 {
     private int columns = 0, rows = 0;
 
@@ -47,6 +53,44 @@ public class Uniform extends GridPane
 
         setPadding(insets);
 
+        return this;
+    }
+
+    public Uniform percentWidth(double percent)
+    {
+        ColumnConstraints constraints = new ColumnConstraints();
+        constraints.setPercentWidth(percent);
+        return this.addColumnConstraints(constraints);
+    }
+
+    public Uniform percentHeight(double percent)
+    {
+        RowConstraints constraints = new RowConstraints();
+        constraints.setPercentHeight(percent);
+        return this.addRowConstraints(constraints);
+    }
+
+    public Uniform addColumnConstraints(ColumnConstraints... constraints)
+    {
+        this.getColumnConstraints().addAll(Arrays.asList(constraints));
+        return this;
+    }
+
+    public Uniform addColumnConstraints(Collection<ColumnConstraints> constraints)
+    {
+        this.getColumnConstraints().addAll(constraints);
+        return this;
+    }
+
+    public Uniform addRowConstraints(RowConstraints... constraints)
+    {
+        this.getRowConstraints().addAll(Arrays.asList(constraints));
+        return this;
+    }
+
+    public Uniform addRowConstraints(Collection<RowConstraints> constraints)
+    {
+        this.getRowConstraints().addAll(constraints);
         return this;
     }
 
@@ -133,5 +177,13 @@ public class Uniform extends GridPane
     public int rows()
     {
         return rows;
+    }
+
+    @Override
+    public Uniform cast(Object object)
+    {
+        if (object instanceof Uniform) return (Uniform) object;
+
+        return null;
     }
 }
