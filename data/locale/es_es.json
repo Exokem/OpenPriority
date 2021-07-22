@@ -1,0 +1,27 @@
+{
+  "section-home": "Inicio",
+  "section-options": "Configuraci\u00F3n",
+
+  "label-overview": "Sumario",
+  "label-assign-categories": "Categor\u00EDas",
+  "label-assign-tasks": "Deberes",
+  "label-options-general": "General",
+  "label-options-interface": "Interfaz",
+  "label-options-debug": "Depurar",
+  "label-language-select": "Idioma:",
+
+  "option-show-information": "Ense\u00F1ar informaci\u00F3n en la cima",
+  "option-show-time": "Ense\u00F1ar tiempo del sistema",
+  "option-locale-debug": "Ense\u00F1ar claves de localizaci\u00F3n",
+
+  "action-new-task-category": "Nuevo Categor\u00EDa de Deberes",
+  "action-new-task": "Nuevo Deber",
+  "action-update-interface": "Actualizar Interfaz",
+  "action-update-css": "Actualizar CSS",
+  "action-update-locale": "Actualizar Claves de Localizaci\u00F3n",
+  "action-apply-locale": "Aplicar",
+
+  "en-gb": "English (UK)",
+  "en-us": "English (US)",
+  "es-es": "Espa\u00F1ol (Espa\u00F1a)"
+}

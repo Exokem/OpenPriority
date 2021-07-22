@@ -88,6 +88,12 @@
   -fx-border-color: -ui-2;
 }
 
+.left-margin {
+  /* -fx-border-color: -ui-2;
+  -fx-border-width: 0 1 0 1; */
+  /* -fx-border-offset: 2; */
+}
+
 .section-button-selected {
   -fx-background-color: -ui-2;
   -fx-border-color: -ui-2 -ui-2 -accent-1 -ui-2;

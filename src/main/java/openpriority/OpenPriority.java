@@ -14,7 +14,6 @@ import openpriority.panels.Display;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -24,7 +23,7 @@ public final class OpenPriority extends Application
     {
         private static final String TITLE = "OpenPriority";
         private static final Set<String> STYLESHEETS = new HashSet<>();
-        private static final List<String> DEFAULT_STYLESHEETS = List.of("fonts", "colors", "panels", "controls");
+//        private static final List<String> DEFAULT_STYLESHEETS = List.of("fonts", "colors", "borders", "panels", "controls");
 
         private static Stage OPEN_PRIORITY;
         private static Uniform CONTENT;
@@ -97,6 +96,7 @@ public final class OpenPriority extends Application
 
         Data.importStylesheet(scene, "fonts");
         Data.importStylesheet(scene, "colors");
+        Data.importStylesheet(scene, "borders");
         Data.importStylesheet(scene, "panels");
         Data.importStylesheet(scene, "controls");
 

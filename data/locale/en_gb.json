@@ -2,15 +2,20 @@
   "section-home": "Home",
   "section-options": "Options",
 
-  "label-options-general": "General Options",
-  "label-options-interface": "Interface Options",
-  "label-options-debug": "Debug Options",
+  "label-overview": "Overview",
+  "label-assign-categories": "Categories",
+  "label-assign-tasks": "Tasks",
+  "label-options-general": "General",
+  "label-options-interface": "Interface",
+  "label-options-debug": "Debug",
   "label-language-select": "Language:",
 
   "option-show-information": "Display top information",
   "option-show-time": "Display system time",
   "option-locale-debug": "Show localisation keys",
 
+  "action-new-task-category": "New Task Category",
+  "action-new-task": "New Task",
   "action-update-interface": "Update Interface",
   "action-update-css": "Update CSS",
   "action-update-locale": "Update Locale",
@@ -18,5 +23,5 @@
 
   "en-gb": "English (UK)",
   "en-us": "English (US)",
-  "es-es": "Spanish (Spain)"
+  "es-es": "Espa\u00F1ol (Espa\u00F1a)"
 }

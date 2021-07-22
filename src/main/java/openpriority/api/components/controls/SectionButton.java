@@ -31,7 +31,9 @@ public class SectionButton extends Button
     {
         super(Locale.get(title));
         this.title = title;
-        Locale.bind(title, this::setTitle);
+        String translated = Locale.bind(title, this::setText);
+        this.setText(translated);
+
         IStyle.apply(this, styles);
         IStyle.apply(this, Weight.REGULAR);
         setSelected(false);
@@ -97,7 +99,6 @@ public class SectionButton extends Button
 
     public void setTitle(String title)
     {
-        this.title = title;
         this.setText(title);
     }
 }

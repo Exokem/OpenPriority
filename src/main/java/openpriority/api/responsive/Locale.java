@@ -23,12 +23,14 @@ public final class Locale
 {
     private static Variant localeVariant = Variant.EN_GB;
 
-    private static final Map<String, Consumer<String>> GLOBAL_REFRESH_APPLICATORS = new HashMap<>();
+    private static final Map<String, Set<Consumer<String>>> GLOBAL_REFRESH_APPLICATORS = new HashMap<>();
     private static final Set<Runnable> SPECIALIZED_REFRESH_APPLICATORS = new HashSet<>();
 
     public static String bind(String key, Consumer<String> applicator)
     {
-        GLOBAL_REFRESH_APPLICATORS.put(key, applicator);
+        if (!GLOBAL_REFRESH_APPLICATORS.containsKey(key)) GLOBAL_REFRESH_APPLICATORS.put(key, new HashSet<>());
+
+        GLOBAL_REFRESH_APPLICATORS.get(key).add(applicator);
 
         return get(key);
     }
@@ -56,7 +58,7 @@ public final class Locale
         OpenPriority.updateLocale();
         for (String key : GLOBAL_REFRESH_APPLICATORS.keySet())
         {
-            GLOBAL_REFRESH_APPLICATORS.get(key).accept(get(key));
+            GLOBAL_REFRESH_APPLICATORS.get(key).forEach(applicator -> applicator.accept(get(key)));
         }
 
         SPECIALIZED_REFRESH_APPLICATORS.forEach(Runnable::run);

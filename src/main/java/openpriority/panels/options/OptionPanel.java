@@ -24,6 +24,7 @@ import openpriority.panels.UniformMargins;
 
 import static openpriority.api.css.Style.BG1;
 import static openpriority.api.css.Style.TEXT0;
+import static openpriority.api.factories.ControlFactory.SECTION_TITLE_FACTORY;
 import static openpriority.api.factories.GridFactory.MENU_SECTION_BUILDER;
 
 public final class OptionPanel
@@ -37,7 +38,6 @@ public final class OptionPanel
             Uniform root = GridFactory.autoUniform(0, 3, 2, BG1)
                 .add(UniformMargins.defaultMarginSide(), 0, 0, Priority.NEVER, Priority.NEVER)
                 .add(UniformMargins.defaultMarginSide(), 2, 0, Priority.NEVER, Priority.NEVER)
-                .add(UniformMargins.defaultMarginTop(), 1, 0, Priority.NEVER)
 
                 .add(allOptions(), 1, 1, Priority.ALWAYS)
                 ;
@@ -49,18 +49,14 @@ public final class OptionPanel
         {
             HoverLabel optionsLabel = HoverLabel.configure("section-options", Color.TEXT_0, Color.ACCENT_1, Weight.BOLD, Size.LARGE_1);
 
-            Uniform allOptions = GridFactory.autoUniform(0, 1, 7, BG1)
-                .add(optionsLabel, 0, 0, Priority.SOMETIMES)
-                .add(UniformMargins.defaultSpacerVertical(), 0, 1, Priority.NEVER)
-
-                .add(generalOptions(), 0, 2, Priority.SOMETIMES)
-                .add(UniformMargins.defaultSpacerVertical(), 0, 3, Priority.NEVER)
-
-                .add(interfaceOptions(), 0, 4, Priority.SOMETIMES)
-                .add(UniformMargins.defaultSpacerVertical(), 0, 5, Priority.NEVER)
-
-                .add(debugOptions(), 0, 6, Priority.SOMETIMES)
-            ;
+            Uniform allOptions = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
+                .withSpacers(UniformMargins::defaultSpacerVertical, false)
+                .defaultPriorities(Priority.SOMETIMES)
+                .add(SECTION_TITLE_FACTORY.produce("section-options"))
+                .add(generalOptions())
+                .add(interfaceOptions())
+                .add(debugOptions())
+                .build();
 
             DynamicInsets.horizontalUniform(allOptions, OpenPriority::width, UniformMargins.DEFAULT_HORIZONTAL_INSET);
 
