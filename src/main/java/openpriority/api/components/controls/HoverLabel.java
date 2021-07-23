@@ -1,7 +1,11 @@
 package openpriority.api.components.controls;
 
 import javafx.animation.FadeTransition;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.util.Duration;
 import openpriority.api.components.Uniform;
 import openpriority.api.css.Color;
@@ -52,8 +56,8 @@ public class HoverLabel extends Uniform
 
         setPickOnBounds(false);
 
-        add(label, 0, 0);
-        add(hoveredLabel, 0, 0);
+        add(label, 0, 0, Priority.ALWAYS, Priority.ALWAYS);
+        add(hoveredLabel, 0, 0, Priority.ALWAYS, Priority.ALWAYS);
     }
 
     public static HoverLabel configure(String text, Color base, Color hovered, IStyle... styles)
@@ -81,5 +85,38 @@ public class HoverLabel extends Uniform
         label.setText(text);
         hoveredLabel.setText(text);
         return this;
+    }
+
+    @Override
+    public HoverLabel cast(Object object)
+    {
+        return object instanceof HoverLabel ? (HoverLabel) object : null;
+    }
+
+    @Override
+    public Uniform alignH(HPos position)
+    {
+        GridPane.setHalignment(label, position);
+        GridPane.setHalignment(hoveredLabel, position);
+
+        return super.alignH(position);
+    }
+
+    @Override
+    public Uniform alignV(VPos position)
+    {
+        GridPane.setValignment(label, position);
+        GridPane.setValignment(hoveredLabel, position);
+
+        return super.alignV(position);
+    }
+
+    @Override
+    public Uniform invokeSizeFunction(SizeFunction function, double value)
+    {
+        function.safeInvoke(label, value);
+        function.safeInvoke(hoveredLabel, value);
+
+        return super.invokeSizeFunction(function, value);
     }
 }

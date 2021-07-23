@@ -2,20 +2,17 @@ package openpriority.api.components;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import openpriority.api.responsive.IDynamicRegion;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Uniform extends GridPane implements IDynamicRegion<Uniform>
 {
-    private int columns = 0, rows = 0;
-
     public Uniform(int columns, int rows)
     {
         this();
@@ -31,6 +28,14 @@ public class Uniform extends GridPane implements IDynamicRegion<Uniform>
         super();
         setSnapToPixel(true);
     }
+
+    private int columns = 0, rows = 0;
+
+    private Alignment alignment;
+
+    private int indices = 0;
+
+    private final Map<String, Region> contentIndex = new HashMap<>();
 
     @Deprecated
     protected Uniform pad(int columns, int rows)
@@ -94,6 +99,23 @@ public class Uniform extends GridPane implements IDynamicRegion<Uniform>
         return this;
     }
 
+    public Uniform align(Alignment axis)
+    {
+        this.alignment = axis;
+        return this;
+    }
+
+    public Uniform add(Node child, Priority... expansions)
+    {
+        switch (alignment)
+        {
+            case VERTICAL -> add(child, 0, indices ++, expansions);
+            case HORIZONTAL -> add(child, indices ++, 0, expansions);
+        }
+
+        return this;
+    }
+
     public Uniform add(Node child, int column, int row, Priority horizontal, Priority vertical)
     {
         return add(child, column, row, 1, 1, horizontal, vertical);
@@ -114,7 +136,14 @@ public class Uniform extends GridPane implements IDynamicRegion<Uniform>
         columns = Math.max(columns, column + 1);
         rows = Math.max(rows, row + 1);
 
+        indices ++;
+
         return this;
+    }
+
+    public Map<String, Region> contentIndex()
+    {
+        return contentIndex;
     }
 
     @Deprecated

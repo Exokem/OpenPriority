@@ -261,6 +261,8 @@ public final class GridFactory
 
             content.clear();
 
+            uniform.align(axis);
+
             return IStyle.apply(IStyle.apply(uniform, styles), buildStyles);
         }
 

@@ -104,6 +104,7 @@ public class ControlFactory
 
     public static final HoverLabelFactory SECTION_TITLE_FACTORY = new HoverLabelFactory(Color.TEXT_0, Color.ACCENT_1, Weight.BOLD, Size.LARGE_1);
     public static final HoverLabelFactory HEADING_FACTORY = new HoverLabelFactory(Color.TEXT_0, Color.ACCENT_1, Weight.SEMIBOLD, Size.LARGE);
+    public static final HoverLabelFactory SELECTOR_LABEL_FACTORY = new HoverLabelFactory(Color.TEXT_0, Color.ACCENT_1, Weight.REGULAR, Size.REGULAR);
 
     public static final class HoverLabelFactory
     {

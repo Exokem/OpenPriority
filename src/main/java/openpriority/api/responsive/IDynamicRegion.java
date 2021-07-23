@@ -1,5 +1,8 @@
 package openpriority.api.responsive;
 
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import openpriority.OPIO;
 import openpriority.api.exception.InvalidInheritanceException;
@@ -41,6 +44,33 @@ public interface IDynamicRegion<V extends Region>
         Region region = toRegion();
 
         function.safeInvoke(region, value);
+
+        return cast(this);
+    }
+
+    default V invokeDynamicSizeFunction(SizeFunction function, Supplier<Double> basis, double factor)
+    {
+        invokeSizeFunction(function, basis.get() * factor);
+
+        Region region = toRegion();
+
+        DynamicResizable.addListener(() -> function.safeInvoke(region, basis.get() * factor));
+
+        return cast(this);
+    }
+
+    default V alignH(HPos position)
+    {
+        Region region = toRegion();
+        GridPane.setHalignment(region, position);
+
+        return cast(this);
+    }
+
+    default V alignV(VPos position)
+    {
+        Region region = toRegion();
+        GridPane.setValignment(region, position);
 
         return cast(this);
     }
