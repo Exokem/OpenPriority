@@ -8,6 +8,7 @@
   "label-options-general": "General",
   "label-options-interface": "Interface",
   "label-options-debug": "Debug",
+  "label-category-select": "Category:",
   "label-language-select": "Language:",
 
   "option-show-information": "Display top information",
@@ -17,6 +18,7 @@
   "action-new-task-category": "New Task Category",
   "action-new-task": "New Task",
   "action-update-interface": "Update Interface",
+  "action-assign-task": "Assign Task",
   "action-update-css": "Update CSS",
   "action-update-locale": "Update Locale",
   "action-apply-locale": "Apply",

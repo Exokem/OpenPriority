@@ -3,8 +3,11 @@ package openpriority.tasks;
 import javafx.scene.layout.Priority;
 import openpriority.api.components.Alignment;
 import openpriority.api.components.Uniform;
+import openpriority.api.css.Color;
+import openpriority.api.css.IStyle;
 import openpriority.api.factories.ControlFactory;
 import openpriority.api.factories.GridFactory;
+import openpriority.internal.TaskController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,8 @@ public class SimpleTask
         this.display = display;
         this.identifier = nextIdentifier ++;
         this.origin = System.currentTimeMillis();
+
+        TaskController.ASSIGNED_TASKS.put(this.toString(), this);
     }
 
     public SimpleTask withDescription(String description)
@@ -46,11 +51,23 @@ public class SimpleTask
         if (componentDisplay != null) return componentDisplay;
 
         componentDisplay = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
+            .withPadding(5)
             .add(ControlFactory.checkBox(display), Priority.ALWAYS)
 //            .add(ControlFactory.label(description), Priority.ALWAYS)
-            .build();
+            .build(IStyle.join(Color.UI_1, IStyle.Part.BACKGROUND));
 
         return componentDisplay;
+    }
+
+    public String title()
+    {
+        return display;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("%s_%d", display, identifier);
     }
 
     public void setCompleted(boolean completed)
@@ -60,6 +77,7 @@ public class SimpleTask
 
     public void delete()
     {
+        TaskController.ASSIGNED_TASKS.remove(this.toString());
         reusableIdentifiers.add(identifier);
     }
 }

@@ -1,21 +1,26 @@
 package openpriority.panels.home;
 
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Priority;
 import openpriority.OpenPriority;
 import openpriority.api.components.Alignment;
 import openpriority.api.components.Uniform;
-import openpriority.api.components.controls.SectionButton;
-import openpriority.api.components.controls.UniformTextArea;
-import openpriority.api.components.controls.UniformTextField;
+import openpriority.api.components.controls.*;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
+import openpriority.api.css.Size;
 import openpriority.api.factories.ControlFactory;
 import openpriority.api.factories.GridFactory;
 import openpriority.api.responsive.DynamicRegion;
+import openpriority.api.responsive.IDynamicRegion;
+import openpriority.api.responsive.Locale;
 import openpriority.api.responsive.Scale;
 import openpriority.internal.TaskController;
 import openpriority.panels.UniformMargins;
+import openpriority.tasks.SimpleTask;
 
 import static openpriority.api.factories.ControlFactory.SECTION_TITLE_FACTORY;
 
@@ -25,8 +30,25 @@ public final class HomePanel
 
     private static final class Data
     {
-        private static UniformTextField TASK_NAME = new UniformTextField("default-new-task", TaskController.tasks.size());
-        private static TextArea TASK_DESC = new UniformTextArea("default-new-task-desc").wrapText().preferRows(3);
+        private static final Uniform TASK_VIEW = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
+            .defaultPriorities(Priority.ALWAYS)
+            .withPadding(5)
+            .withGap(2.5D)
+            .build(Color.UI_0.join(IStyle.Part.BACKGROUND))
+            .limitWidth(OpenPriority::width, UniformMargins.DEFAULT_MARGIN_SIDE_FACTOR);
+
+
+    }
+
+    public static void showTask(SimpleTask task)
+    {
+        Data.TASK_VIEW.add(task.sideDisplay());
+        Data.TASK_VIEW.contentIndex().put(task.toString(), task.sideDisplay());
+    }
+
+    public static void hideTask(SimpleTask task)
+    {
+//        Data.TASK_VIEW
     }
 
     private static final class Components
@@ -35,11 +57,15 @@ public final class HomePanel
         {
             DynamicRegion margin = UniformMargins.defaultMarginSide(Color.UI_0.join(IStyle.Part.BACKGROUND));
 
+            UniformScrollPane taskScroll = new UniformScrollPane(Data.TASK_VIEW)
+                .requireWidth(OpenPriority::width, UniformMargins.DEFAULT_MARGIN_SIDE_FACTOR)
+                .withScrollBarPolicies(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
             Uniform panel = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
                 .defaultPriorities(Priority.NEVER, Priority.ALWAYS)
-                .add(taskView())
+                .add(taskScroll)
                 .add(homeContent(), Priority.ALWAYS)
-                .add(margin)
+                .add(margin.copy())
                 .build(Color.UI_1.join(IStyle.Part.BACKGROUND));
 
             return panel;
@@ -55,7 +81,7 @@ public final class HomePanel
                 .add(overview())
                 .add(categoryAssign())
                 .add(taskAssign())
-                .build(IStyle.custom("border-lr"));
+                .build();
 
             return homeContent;
         }
@@ -82,26 +108,76 @@ public final class HomePanel
 
         private static Uniform taskAssign()
         {
+            final String defaultNewTask = "default-new-task", defaultNewTaskDesc = "default-new-task-desc";
+
+            UniformTextField taskName = new UniformTextField(defaultNewTask, TaskController.tasks.size());
+            TextArea taskDesc = new UniformTextArea(defaultNewTaskDesc).wrapText().preferRows(3);
 
             Uniform columnLeft = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
                 .defaultPriorities(Priority.SOMETIMES)
                 .withGap(20)
 
-                .add(Data.TASK_NAME).add(Data.TASK_DESC)
+                .add(taskName).add(taskDesc)
                 .build();
-
-//            UniformScrollPane
 
             Uniform columnRight = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
                 .defaultPriorities(Priority.SOMETIMES)
                 .withGap(20)
                 .build(Color.UI_1.join(IStyle.Part.BACKGROUND));
 
+            UniformScrollPane componentScroller = new UniformScrollPane(columnRight);
+
             Uniform evenBiColumns = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
                 .defaultPriorities(Priority.SOMETIMES)
                 .withGap(20)
                 .add(columnLeft)
-                .add(columnRight)
+                .add(componentScroller)
+                .distributeSpaceEvenly()
+                .build();
+
+            Uniform categoryLabel = ControlFactory.SELECTOR_LABEL_FACTORY.produce("label-category-select")
+                .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_HEIGHT, Double.MAX_VALUE)
+                .alignV(VPos.CENTER);
+
+            UniformChoiceBox categorySelect = new UniformChoiceBox(Size.REGULAR)
+                .initialise(TaskController.TASK_CATEGORIES.keySet(), null)
+                .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_WIDTH, Double.MAX_VALUE);
+
+            Uniform categorySelection = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+                .withGap(20)
+                .add(categoryLabel, Priority.NEVER)
+                .add(categorySelect, Priority.ALWAYS)
+                .build();
+
+            UniformButton assign = new UniformButton("action-assign-task")
+                .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_WIDTH, Double.MAX_VALUE)
+                .alignH(HPos.RIGHT)
+                .withAction(() ->
+                {
+                    SimpleTask task = SimpleTask.assign(taskName.getText())
+                        .withDescription(taskDesc.getText());
+
+                    Data.TASK_VIEW.add(task.sideDisplay(), Priority.ALWAYS);
+                    String category = categorySelect.getValue();
+
+                    taskName.setText(String.format("%s %d", Locale.get(defaultNewTask), TaskController.ASSIGNED_TASKS.size()));
+                    taskDesc.setText(Locale.get(defaultNewTaskDesc));
+
+                    if (category != null && TaskController.TASK_CATEGORIES.containsKey(category))
+                    {
+                        // Add the new task to the selected category
+                    }
+
+                    else
+                    {
+
+                    }
+                });
+
+            Uniform categoryAssignHolder = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+                .withGap(20)
+                .add(categorySelection)
+                .add(assign, Priority.ALWAYS)
                 .distributeSpaceEvenly()
                 .build();
 
@@ -109,6 +185,7 @@ public final class HomePanel
                 .defaultPriorities(Priority.ALWAYS)
                 .add(ControlFactory.HEADING_FACTORY.produce("label-assign-tasks"))
                 .add(evenBiColumns)
+                .add(categoryAssignHolder)
                 .build();
 
             return taskAssign;

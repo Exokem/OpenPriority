@@ -1,9 +1,8 @@
 package openpriority.panels.options;
 
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Priority;
 import openpriority.OpenPriority;
 import openpriority.api.Options;
@@ -11,6 +10,7 @@ import openpriority.api.components.Alignment;
 import openpriority.api.components.Uniform;
 import openpriority.api.components.controls.HoverLabel;
 import openpriority.api.components.controls.UniformButton;
+import openpriority.api.components.controls.UniformChoiceBox;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.css.Size;
@@ -23,7 +23,6 @@ import openpriority.api.responsive.Scale;
 import openpriority.panels.Display;
 import openpriority.panels.UniformMargins;
 
-import static openpriority.api.css.Style.TEXT0;
 import static openpriority.api.factories.ControlFactory.SECTION_TITLE_FACTORY;
 import static openpriority.api.factories.GridFactory.MENU_SECTION_BUILDER;
 
@@ -57,19 +56,17 @@ public final class OptionPanel
                 .add(generalOptions())
                 .add(interfaceOptions())
                 .add(debugOptions())
-                .build(IStyle.custom("border-lr"));
+                .build();
 
             return optionsContent;
         }
 
         private static Uniform generalOptions()
         {
-            ChoiceBox<String> localeSelect = new ChoiceBox<>();
-            localeSelect.getItems().addAll(Locale.Variant.translationKeySet());
-            localeSelect.setValue(Locale.get(Options.General.ACTIVE_LOCALE.get().translationKey()));
-            localeSelect.setMaxWidth(Double.MAX_VALUE);
-            Scale.scaleMinWidth(localeSelect, OpenPriority::width, Scale.MINOR.adjust(0.75));
-            IStyle.apply(localeSelect, Size.REGULAR);
+            UniformChoiceBox localeSelect = new UniformChoiceBox(Size.REGULAR)
+                .localise(Locale.Variant.translationKeySet(), () -> Locale.get(Options.General.ACTIVE_LOCALE.get().translationKey()))
+                .invokeDynamicSizeFunction(IDynamicRegion.SizeFunction.SET_MIN_WIDTH, OpenPriority::width, Scale.MINOR.adjust(0.75D))
+                .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_WIDTH, Double.MAX_VALUE);
 
             Locale.bind(() ->
             {
@@ -91,22 +88,13 @@ public final class OptionPanel
                     }
                 });
 
-//            Button applyLocale = ControlFactory.dynamicButton("action-apply-locale", OpenPriority::width, Scale.MINOR.adjust(0.5), () ->
-//            {
-//                Locale.Variant next = Options.General.ACTIVE_LOCALE.get().inverseRetrieve(localeSelect.getValue());
-//
-//                if (next != Options.General.ACTIVE_LOCALE.get())
-//                {
-//                    Options.General.ACTIVE_LOCALE.set(next);
-//                    Locale.refreshIndices();
-//                }
-//            });
-
-            Label localeLabel = ControlFactory.label("label-language-select", Size.REGULAR, TEXT0);
+            Uniform localeLabel = ControlFactory.SELECTOR_LABEL_FACTORY.produce("label-language-select")
+                .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_HEIGHT, Double.MAX_VALUE)
+                .alignV(VPos.CENTER);
 
             Uniform localeSelection = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
                 .withGap(20)
-                .add(localeLabel, Priority.NEVER)
+                .add(localeLabel, Priority.NEVER, Priority.ALWAYS)
                 .add(localeSelect, Priority.ALWAYS)
                 .build();
 
