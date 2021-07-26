@@ -1,4 +1,4 @@
-package openpriority.api.components;
+package openpriority.api.components.layouts;
 
 import javafx.scene.Node;
 

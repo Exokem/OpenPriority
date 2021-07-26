@@ -6,7 +6,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import openpriority.api.Options;
-import openpriority.api.components.Uniform;
+import openpriority.api.components.layouts.Uniform;
 import openpriority.api.importers.GeneralImporter;
 import openpriority.api.responsive.DynamicResizable;
 import openpriority.api.responsive.Locale;

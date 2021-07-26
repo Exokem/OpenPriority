@@ -2,9 +2,9 @@ package openpriority.tasks;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.Priority;
-import openpriority.api.components.Alignment;
-import openpriority.api.components.ILinkedUniformDisplayable;
-import openpriority.api.components.Uniform;
+import openpriority.api.components.layouts.Alignment;
+import openpriority.api.components.layouts.ILinkedUniformDisplayable;
+import openpriority.api.components.layouts.Uniform;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.factories.BaseUniformBuilder;
