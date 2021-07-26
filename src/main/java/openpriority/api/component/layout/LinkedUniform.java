@@ -56,7 +56,7 @@ public class LinkedUniform<X extends Node, V extends ILinkedUniformDisplayable<X
         getChildren().clear();
         for (int ix = 0; ix < orderedIndex.size(); ix ++)
         {
-            add(orderedIndex.get(ix).display(), alignment.column(ix), alignment.row(ix), Priority.ALWAYS);
+            add(orderedIndex.get(ix).display(), alignment.column(ix), alignment.row(ix), Priority.ALWAYS, Priority.NEVER);
         }
 
         modified = false;

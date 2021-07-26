@@ -15,6 +15,7 @@ public enum ImageResource implements IResource
     {
         this.section = section;
         this.extension = Extension.PNG;
+        this.variants = variants;
     }
 
     public Section section()

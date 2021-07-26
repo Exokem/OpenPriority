@@ -1,7 +1,9 @@
 package openpriority.task;
 
-import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import openpriority.api.component.control.button.IconButton;
 import openpriority.api.component.layout.Alignment;
 import openpriority.api.component.layout.ILinkedUniformDisplayable;
 import openpriority.api.component.layout.Uniform;
@@ -9,8 +11,9 @@ import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.factory.BaseUniformBuilder;
 import openpriority.api.factory.ControlFactory;
+import openpriority.api.importer.base.ImageResource;
+import openpriority.api.responsive.DynamicResizable;
 import openpriority.internal.TaskController;
-import openpriority.panel.home.HomePanel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,8 @@ public class SimpleTask implements ILinkedUniformDisplayable<Uniform>
     private String display; // Display name of the task
     private String description; // Description of the task
     private Uniform componentDisplay = null;
+    private IconButton hideTask = null;
+    private CheckBox checkBox = null;
 
     private boolean completed = false;
 
@@ -47,29 +52,6 @@ public class SimpleTask implements ILinkedUniformDisplayable<Uniform>
     {
         this.description = description;
         return this;
-    }
-
-    public Uniform sideDisplay()
-    {
-        if (componentDisplay != null) return componentDisplay;
-
-        Button hide = ControlFactory.button("remove", Double.MAX_VALUE, () ->
-        {
-            HomePanel.hideTask(this);
-        });
-
-        Uniform top = BaseUniformBuilder.start(Alignment.HORIZONTAL)
-            .withGap(5)
-            .add(ControlFactory.checkBox(display), Priority.ALWAYS)
-            .add(hide, Priority.SOMETIMES)
-            .build();
-
-        componentDisplay = BaseUniformBuilder.start(Alignment.VERTICAL)
-            .withPadding(5)
-            .add(top, Priority.ALWAYS)
-            .build(IStyle.join(Color.UI_1, IStyle.Part.BACKGROUND));
-
-        return componentDisplay;
     }
 
     public String title()
@@ -99,21 +81,23 @@ public class SimpleTask implements ILinkedUniformDisplayable<Uniform>
     {
         if (componentDisplay != null) return componentDisplay;
 
-        Button hide = ControlFactory.button("remove", Double.MAX_VALUE, () ->
-        {
-            HomePanel.hideTask(this);
-        });
+        checkBox = ControlFactory.checkBox(display);
+        hideTask = new IconButton(ImageResource.CLOSE_TASK);
+
+        DynamicResizable.addDelayedListener(() -> hideTask.resizeSquare(checkBox.getHeight()), () -> checkBox.getHeight() != 0);
 
         Uniform top = BaseUniformBuilder.start(Alignment.HORIZONTAL)
             .withGap(5)
-            .add(ControlFactory.checkBox(display), Priority.ALWAYS)
-            .add(hide, Priority.SOMETIMES)
+            .add(checkBox, Priority.ALWAYS, Priority.NEVER)
+            .add(hideTask, Priority.SOMETIMES, Priority.NEVER)
             .build();
 
         componentDisplay = BaseUniformBuilder.start(Alignment.VERTICAL)
             .withPadding(5)
             .add(top, Priority.ALWAYS)
             .build(IStyle.join(Color.UI_1, IStyle.Part.BACKGROUND));
+
+        GridPane.setVgrow(checkBox, Priority.NEVER);
 
         return componentDisplay;
     }

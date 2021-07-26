@@ -10,6 +10,7 @@ import openpriority.api.component.layout.Uniform;
 import openpriority.api.importer.GeneralImporter;
 import openpriority.api.responsive.DynamicResizable;
 import openpriority.api.responsive.Locale;
+import openpriority.internal.ImageController;
 import openpriority.panel.Display;
 
 import java.io.IOException;
@@ -49,6 +50,7 @@ public final class OpenPriority extends Application
 
         private static void importData()
         {
+            ImageController.retrieveImageResources();
             GeneralImporter.genericImport("data.json", Options::receiveJson);
         }
 
@@ -84,8 +86,6 @@ public final class OpenPriority extends Application
     @Override
     public void start(Stage stage) throws Exception
     {
-        // TODO: read config from file
-
         Data.importData();
         updateLocale();
 
