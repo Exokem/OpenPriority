@@ -23,6 +23,33 @@ public final class DynamicResizable
         LISTENERS.add(listener);
     }
 
+    /**
+     * Delays the introduction of the provided listener {@link Runnable} until the provided condition is met.
+     *
+     * Delaying the initial application of a resizable function may be useful when it depends on a value that has not
+     * yet been set correctly, as in the case where a component A whose dimensions impact another component B will have
+     * width and height 0 before it is completely added and visible.
+     *
+     * @param listener The {@link Runnable} resize function.
+     * @param condition The condition that must be met before the resize function can be applied initially.
+     */
+    public static void addDelayedListener(Runnable listener, Supplier<Boolean> condition)
+    {
+        Platform.runLater(() ->
+        {
+            if (!condition.get())
+            {
+                Platform.runLater(() -> addDelayedListener(listener, condition));
+            }
+
+            else
+            {
+                listener.run();
+                LISTENERS.add(listener);
+            }
+        });
+    }
+
     public static void addWidthListener(Region region, Supplier<Double> sizeProvider)
     {
         addListener(() ->

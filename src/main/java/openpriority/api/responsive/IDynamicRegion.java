@@ -20,6 +20,26 @@ public interface IDynamicRegion<V extends Region>
         else throw new InvalidInheritanceException(this.getClass(), Region.class, IDynamicRegion.class);
     }
 
+    default V requireHeight(double height)
+    {
+        Region region = toRegion();
+
+        region.setMinHeight(height);
+        region.setMaxHeight(height);
+
+        return cast(this);
+    }
+
+    default V requireHeight(Supplier<Double> basis, double factor)
+    {
+        Region region = toRegion();
+
+        DynamicResizable.addListener(() -> region.setMinHeight(basis.get() * factor));
+        DynamicResizable.addListener(() -> region.setMaxHeight(basis.get() * factor));
+
+        return cast(this);
+    }
+
     default V requireWidth(Supplier<Double> basis, double factor)
     {
         Region region = toRegion();
