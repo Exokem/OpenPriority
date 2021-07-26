@@ -20,23 +20,26 @@ import java.util.function.Supplier;
 
 import static openpriority.api.annotation.OperationStage.*;
 
-public class AlignedUniformBuilder
+public class UniformBuilder<V extends Uniform>
 {
-    public static final AlignedUniformBuilder MENU_SECTION_BUILDER = start(Alignment.VERTICAL)
+    public static final UniformBuilder<Uniform> MENU_SECTION_BUILDER = bind(Uniform::new, Alignment.VERTICAL)
         .withPadding(20).withSpacers(UniformMargins::defaultSpacerVertical)
         .withStyles(Color.UI_0.join(IStyle.Part.BACKGROUND));
 
-    public static AlignedUniformBuilder start(Alignment axis)
+    public static <V extends Uniform> UniformBuilder<V> bind(Supplier<V> constructor, Alignment axis)
     {
-        return new AlignedUniformBuilder(axis);
+        return new UniformBuilder<V>(constructor, axis);
     }
 
-    private AlignedUniformBuilder(Alignment axis)
+    protected UniformBuilder(Supplier<V> constructor, Alignment axis)
     {
+        this.constructor = constructor;
         this.axis = axis;
     }
 
+    private final Supplier<V> constructor;
     private final Alignment axis;
+
     private double padding = 0;
     private double hGap, vGap;
     private Uniform uniform;
@@ -57,7 +60,7 @@ public class AlignedUniformBuilder
     }
 
     @FactoryOperation
-    public AlignedUniformBuilder add(Node child, Priority... priorities)
+    public UniformBuilder<V> add(Node child, Priority... priorities)
     {
         if (priorities.length == 0 && defaultPriorities != null) priorities = defaultPriorities;
 
@@ -67,7 +70,7 @@ public class AlignedUniformBuilder
     }
 
     @FactoryOperation
-    public AlignedUniformBuilder addAll(Node... nodes)
+    public UniformBuilder<V> addAll(Node... nodes)
     {
         for (Node node : nodes)
         {
@@ -79,21 +82,21 @@ public class AlignedUniformBuilder
     }
 
     @FactoryOperation
-    public AlignedUniformBuilder withPadding(double padding)
+    public UniformBuilder<V> withPadding(double padding)
     {
         this.padding = padding;
         return this;
     }
 
     @FactoryOperation(stage = PREADD)
-    public AlignedUniformBuilder withSpacers(Supplier<DynamicRegion> spacers)
+    public UniformBuilder<V> withSpacers(Supplier<DynamicRegion> spacers)
     {
         this.spacers = spacers;
         return this;
     }
 
     @FactoryOperation(stage = PREADD)
-    public AlignedUniformBuilder withSpacers(Supplier<DynamicRegion> spacers, boolean skipFirst)
+    public UniformBuilder<V> withSpacers(Supplier<DynamicRegion> spacers, boolean skipFirst)
     {
         this.spacers = spacers;
         this.skipFirst = skipFirst;
@@ -101,14 +104,14 @@ public class AlignedUniformBuilder
     }
 
     @FactoryOperation
-    public AlignedUniformBuilder withGap(double gap)
+    public UniformBuilder<V> withGap(double gap)
     {
         this.hGap = this.vGap = gap;
         return this;
     }
 
     @FactoryOperation
-    public AlignedUniformBuilder withGap(double hGap, double vGap)
+    public UniformBuilder<V> withGap(double hGap, double vGap)
     {
         this.hGap = hGap;
         this.vGap = vGap;
@@ -116,7 +119,7 @@ public class AlignedUniformBuilder
     }
 
     @FactoryOperation(stage = PREADD)
-    public AlignedUniformBuilder defaultPriorities(Priority... priorities)
+    public UniformBuilder<V> defaultPriorities(Priority... priorities)
     {
         if (priorities.length != 0) this.defaultPriorities = priorities;
 
@@ -124,14 +127,14 @@ public class AlignedUniformBuilder
     }
 
     @FactoryOperation
-    public AlignedUniformBuilder withStyles(IStyle... buildStyles)
+    public UniformBuilder<V> withStyles(IStyle... buildStyles)
     {
         this.buildStyles = buildStyles;
         return this;
     }
 
     @FactoryOperation(stage = POSTADD)
-    public AlignedUniformBuilder distributeSpaceEvenly()
+    public UniformBuilder<V> distributeSpaceEvenly()
     {
         double percent = 100.0D / (content.size() - (skipFirst && spacers != null ? 1 : 0));
 
@@ -153,23 +156,28 @@ public class AlignedUniformBuilder
     }
 
     @FactoryOperation(stage = POSTADD)
-    public AlignedUniformBuilder withColumnConstraints(ColumnConstraints... constraints)
+    public UniformBuilder<V> withColumnConstraints(ColumnConstraints... constraints)
     {
         columnConstraintsSet.addAll(Arrays.asList(constraints));
         return this;
     }
 
     @FactoryOperation(stage = POSTADD)
-    public AlignedUniformBuilder withRowConstraints(RowConstraints... constraints)
+    public UniformBuilder<V> withRowConstraints(RowConstraints... constraints)
     {
         rowConstraintsSet.addAll(Arrays.asList(constraints));
         return this;
     }
 
-    @FactoryOperation(stage = BUILD)
-    public Uniform build(IStyle... styles)
+    protected void buildAdd(V uniform, Node node, int column, int row, Priority[] priorities)
     {
-        Uniform uniform = new Uniform();
+        uniform.add(node, column, row, priorities);
+    }
+
+    @FactoryOperation(stage = BUILD)
+    public V build(IStyle... styles)
+    {
+        V uniform = constructor.get();
 
         uniform.setHgap(hGap);
         uniform.setVgap(vGap);
@@ -180,7 +188,7 @@ public class AlignedUniformBuilder
 
         for (Node node : content.keySet())
         {
-            uniform.add(node, axis.column(index), axis.row(index), content.get(node));
+            buildAdd(uniform, node, axis.column(index), axis.row(index), content.get(node));
             index++;
         }
 
@@ -198,9 +206,9 @@ public class AlignedUniformBuilder
     }
 
     @FactoryOperation(stage = BUILD)
-    public Uniform buildWithConstraints(ColumnConstraints columnConstraints, RowConstraints rowConstraints, IStyle... styles)
+    public V buildWithConstraints(ColumnConstraints columnConstraints, RowConstraints rowConstraints, IStyle... styles)
     {
-        Uniform uniform = build(styles);
+        V uniform = build(styles);
         uniform.addColumnConstraints(columnConstraints);
         uniform.addRowConstraints(rowConstraints);
         return uniform;

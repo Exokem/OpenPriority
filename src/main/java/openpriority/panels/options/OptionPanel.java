@@ -14,7 +14,7 @@ import openpriority.api.components.controls.UniformChoiceBox;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.css.Size;
-import openpriority.api.factories.AlignedUniformBuilder;
+import openpriority.api.factories.BaseUniformBuilder;
 import openpriority.api.factories.ControlFactory;
 import openpriority.api.responsive.DynamicRegion;
 import openpriority.api.responsive.IDynamicRegion;
@@ -23,8 +23,8 @@ import openpriority.api.responsive.Scale;
 import openpriority.panels.Display;
 import openpriority.panels.UniformMargins;
 
-import static openpriority.api.factories.AlignedUniformBuilder.MENU_SECTION_BUILDER;
 import static openpriority.api.factories.ControlFactory.SECTION_TITLE_FACTORY;
+import static openpriority.api.factories.UniformBuilder.MENU_SECTION_BUILDER;
 
 public final class OptionPanel
 {
@@ -36,7 +36,7 @@ public final class OptionPanel
         {
             DynamicRegion margin = UniformMargins.defaultMarginSide(Color.UI_0.join(IStyle.Part.BACKGROUND));
 
-            Uniform root = AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+            Uniform root = BaseUniformBuilder.start(Alignment.HORIZONTAL)
                 .defaultPriorities(Priority.NEVER, Priority.ALWAYS)
                 .add(margin)
                 .add(optionsContent(), Priority.ALWAYS)
@@ -48,7 +48,7 @@ public final class OptionPanel
 
         private static Uniform optionsContent()
         {
-            Uniform optionsContent = AlignedUniformBuilder.start(Alignment.VERTICAL)
+            Uniform optionsContent = BaseUniformBuilder.start(Alignment.VERTICAL)
                 .withSpacers(UniformMargins::defaultSpacerVertical)
                 .defaultPriorities(Priority.SOMETIMES)
                 .withPadding(20)
@@ -92,13 +92,13 @@ public final class OptionPanel
                 .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_HEIGHT, Double.MAX_VALUE)
                 .alignV(VPos.CENTER);
 
-            Uniform localeSelection = AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+            Uniform localeSelection = BaseUniformBuilder.start(Alignment.HORIZONTAL)
                 .withGap(20)
                 .add(localeLabel, Priority.NEVER, Priority.ALWAYS)
                 .add(localeSelect, Priority.ALWAYS)
                 .build();
 
-            Uniform localeHolder = AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+            Uniform localeHolder = BaseUniformBuilder.start(Alignment.HORIZONTAL)
                 .withGap(20)
                 .add(localeSelection)
                 .add(applyLocale, Priority.ALWAYS)
@@ -145,7 +145,7 @@ public final class OptionPanel
             Button updateCSS = ControlFactory.button("action-update-css", Double.MAX_VALUE, OpenPriority::updateStylesheets);
             Button updateLocale = ControlFactory.button("action-update-locale", Double.MAX_VALUE, Locale::refreshIndices);
 
-            Uniform buttons = AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+            Uniform buttons = BaseUniformBuilder.start(Alignment.HORIZONTAL)
                 .defaultPriorities(Priority.SOMETIMES)
                 .withGap(20)
                 .addAll(updateCSS, updateLocale)

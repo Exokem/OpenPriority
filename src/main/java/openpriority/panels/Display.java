@@ -13,7 +13,8 @@ import openpriority.api.components.controls.SectionButton;
 import openpriority.api.components.controls.UniformScrollPane;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
-import openpriority.api.factories.AlignedUniformBuilder;
+import openpriority.api.factories.BaseUniformBuilder;
+import openpriority.api.factories.UniformBuilder;
 import openpriority.api.responsive.Scale;
 import openpriority.panels.home.HomePanel;
 import openpriority.panels.options.OptionPanel;
@@ -81,7 +82,7 @@ public final class Display
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        Components.INFORMATION = AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+        Components.INFORMATION = BaseUniformBuilder.start(Alignment.HORIZONTAL)
             .defaultPriorities(Priority.SOMETIMES)
             .add(SectionButton.unhoverable("").limitWidth(Double.MAX_VALUE))
             .build();
@@ -104,7 +105,7 @@ public final class Display
         SectionButton empty = SectionButton.unhoverable("")
             .limitWidth(Double.MAX_VALUE);
 
-        Uniform sections = AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+        Uniform sections = BaseUniformBuilder.start(Alignment.HORIZONTAL)
             .defaultPriorities(Priority.NEVER)
             .addAll(home, tasks)
             .add(empty, Priority.SOMETIMES)
@@ -115,7 +116,7 @@ public final class Display
 
         SECTION_CONTAINER = Scale.preferSize(new UniformScrollPane(ACTIVE_SECTION.region()), Data.WIDTH, Data.HEIGHT);
 
-        AlignedUniformBuilder builder = AlignedUniformBuilder.start(Alignment.VERTICAL)
+        UniformBuilder builder = BaseUniformBuilder.start(Alignment.VERTICAL)
             .defaultPriorities(Priority.ALWAYS);
         if (Options.Interface.SHOW_INFORMATION.get()) builder.add(Components.INFORMATION, Priority.ALWAYS);
 

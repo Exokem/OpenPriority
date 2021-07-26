@@ -21,8 +21,8 @@ public class Uniform extends GridPane implements IDynamicRegion<Uniform>
     private int columns = 0, rows = 0;
     private int indices = 0;
 
-    private Alignment alignment;
-    private final Map<String, Region> contentIndex = new HashMap<>();
+    protected Alignment alignment;
+    private final Map<String, ? extends Region> contentIndex = new HashMap<>();
 
     public final Uniform inset(double inset)
     {
@@ -100,21 +100,15 @@ public class Uniform extends GridPane implements IDynamicRegion<Uniform>
 
     public Uniform add(Node child, int column, int row, int colSpan, int rowSpan, Priority... expansions)
     {
-        Priority horizontal = null, vertical = null;
-
         try
         {
-            horizontal = expansions[0];
-            vertical = expansions[1];
-        } catch (ArrayIndexOutOfBoundsException ignored)
-        {
-
+            GridPane.setHgrow(child, expansions[0]);
+            GridPane.setVgrow(child, expansions[1]);
         }
 
-        super.add(child, column, row, colSpan, rowSpan);
+        catch (ArrayIndexOutOfBoundsException ignored) {}
 
-        GridPane.setHgrow(child, horizontal);
-        GridPane.setVgrow(child, vertical);
+        super.add(child, column, row, colSpan, rowSpan);
 
         columns = Math.max(columns, column + 1);
         rows = Math.max(rows, row + 1);
@@ -124,16 +118,16 @@ public class Uniform extends GridPane implements IDynamicRegion<Uniform>
         return this;
     }
 
-    @Deprecated @Override
+    @Override
     public final void add(Node child, int columnIndex, int rowIndex)
     {
-        super.add(child, columnIndex, rowIndex);
+        add(child, columnIndex, rowIndex, new Priority[]{});
     }
 
-    @Deprecated @Override
+    @Override
     public final void add(Node child, int columnIndex, int rowIndex, int colspan, int rowspan)
     {
-        super.add(child, columnIndex, rowIndex, colspan, rowspan);
+        add(child, columnIndex, rowIndex, colspan, rowspan, new Priority[]{});
     }
 
     @Deprecated @Override
@@ -158,7 +152,7 @@ public class Uniform extends GridPane implements IDynamicRegion<Uniform>
         return rows;
     }
 
-    public Map<String, Region> contentIndex()
+    public Map<String, ? extends Region> contentIndex()
     {
         return contentIndex;
     }

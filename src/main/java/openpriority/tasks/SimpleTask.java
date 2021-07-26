@@ -1,13 +1,15 @@
 package openpriority.tasks;
 
+import javafx.scene.control.Button;
 import javafx.scene.layout.Priority;
 import openpriority.api.components.Alignment;
 import openpriority.api.components.Uniform;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
-import openpriority.api.factories.AlignedUniformBuilder;
+import openpriority.api.factories.BaseUniformBuilder;
 import openpriority.api.factories.ControlFactory;
 import openpriority.internal.TaskController;
+import openpriority.panels.home.HomePanel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +52,20 @@ public class SimpleTask
     {
         if (componentDisplay != null) return componentDisplay;
 
-        componentDisplay = AlignedUniformBuilder.start(Alignment.VERTICAL)
-            .withPadding(5)
+        Button hide = ControlFactory.button("remove", Double.MAX_VALUE, () ->
+        {
+            HomePanel.hideTask(this);
+        });
+
+        Uniform top = BaseUniformBuilder.start(Alignment.HORIZONTAL)
+            .withGap(5)
             .add(ControlFactory.checkBox(display), Priority.ALWAYS)
-//            .add(ControlFactory.label(description), Priority.ALWAYS)
+            .add(hide, Priority.SOMETIMES)
+            .build();
+
+        componentDisplay = BaseUniformBuilder.start(Alignment.VERTICAL)
+            .withPadding(5)
+            .add(top, Priority.ALWAYS)
             .build(IStyle.join(Color.UI_1, IStyle.Part.BACKGROUND));
 
         return componentDisplay;
