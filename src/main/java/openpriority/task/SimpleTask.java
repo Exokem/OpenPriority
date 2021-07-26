@@ -117,10 +117,4 @@ public class SimpleTask implements ILinkedUniformDisplayable<Uniform>
 
         return componentDisplay;
     }
-
-    @Override
-    public String key()
-    {
-        return toString();
-    }
 }

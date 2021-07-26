@@ -1,24 +1,19 @@
 package openpriority.api.component.control;
 
-import javafx.animation.FadeTransition;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.util.Duration;
 import openpriority.api.component.layout.Uniform;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
+import openpriority.api.factory.TransitionFactory;
 import openpriority.api.responsive.Locale;
 
 public class HoverLabel extends Uniform
 {
     private Label label, hoveredLabel;
-
-    private final FadeTransition fade;
-
-    public static final double FADE_DURATION = 450;
 
     private HoverLabel(String text, IStyle... styles)
     {
@@ -27,34 +22,10 @@ public class HoverLabel extends Uniform
         label = new Label(translated);
         hoveredLabel = new Label(translated);
 
-        fade = new FadeTransition();
-        fade.setDuration(Duration.millis(FADE_DURATION));
-        fade.setToValue(1.0D);
-        fade.setFromValue(0.0D);
-        fade.setNode(hoveredLabel);
-
-        FadeTransition altFade = new FadeTransition();
-        altFade.setDuration(Duration.millis(FADE_DURATION));
-        altFade.setToValue(0.0D);
-        altFade.setFromValue(1.0D);
-        altFade.setNode(label);
-
+        TransitionFactory.applyHoverFade(this, hoveredLabel, label, false);
 
         IStyle.apply(label, styles);
         IStyle.apply(hoveredLabel, styles);
-
-        hoveredLabel.setOpacity(0.0D);
-
-        hoverProperty().addListener((v, wsHov, isHov) ->
-        {
-            fade.setRate(isHov ? 1.0D : -1.0D);
-            altFade.setRate(isHov ? 1.0D : -1.0D);
-
-            fade.play();
-            altFade.play();
-        });
-
-        setPickOnBounds(false);
 
         add(label, 0, 0, Priority.ALWAYS, Priority.ALWAYS);
         add(hoveredLabel, 0, 0, Priority.ALWAYS, Priority.ALWAYS);
