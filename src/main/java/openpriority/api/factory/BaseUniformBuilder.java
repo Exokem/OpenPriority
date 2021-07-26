@@ -1,7 +1,7 @@
-package openpriority.api.factories;
+package openpriority.api.factory;
 
-import openpriority.api.components.layouts.Alignment;
-import openpriority.api.components.layouts.Uniform;
+import openpriority.api.component.layout.Alignment;
+import openpriority.api.component.layout.Uniform;
 
 public final class BaseUniformBuilder extends UniformBuilder<Uniform>
 {

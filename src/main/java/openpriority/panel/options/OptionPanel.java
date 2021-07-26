@@ -1,4 +1,4 @@
-package openpriority.panels.options;
+package openpriority.panel.options;
 
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
@@ -6,25 +6,25 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.layout.Priority;
 import openpriority.OpenPriority;
 import openpriority.api.Options;
-import openpriority.api.components.controls.HoverLabel;
-import openpriority.api.components.controls.UniformButton;
-import openpriority.api.components.controls.UniformChoiceBox;
-import openpriority.api.components.layouts.Alignment;
-import openpriority.api.components.layouts.Uniform;
+import openpriority.api.component.control.HoverLabel;
+import openpriority.api.component.control.UniformChoiceBox;
+import openpriority.api.component.control.button.UniformButton;
+import openpriority.api.component.layout.Alignment;
+import openpriority.api.component.layout.Uniform;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.css.Size;
-import openpriority.api.factories.BaseUniformBuilder;
-import openpriority.api.factories.ControlFactory;
+import openpriority.api.factory.BaseUniformBuilder;
+import openpriority.api.factory.ControlFactory;
 import openpriority.api.responsive.DynamicRegion;
 import openpriority.api.responsive.IDynamicRegion;
 import openpriority.api.responsive.Locale;
 import openpriority.api.responsive.Scale;
-import openpriority.panels.Display;
-import openpriority.panels.UniformMargins;
+import openpriority.panel.Display;
+import openpriority.panel.UniformMargins;
 
-import static openpriority.api.factories.ControlFactory.SECTION_TITLE_FACTORY;
-import static openpriority.api.factories.UniformBuilder.MENU_SECTION_BUILDER;
+import static openpriority.api.factory.ControlFactory.SECTION_TITLE_FACTORY;
+import static openpriority.api.factory.UniformBuilder.MENU_SECTION_BUILDER;
 
 public final class OptionPanel
 {

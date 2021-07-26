@@ -1,11 +1,11 @@
-package openpriority.api.factories;
+package openpriority.api.factory;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import openpriority.api.Option;
-import openpriority.api.components.controls.HoverLabel;
+import openpriority.api.component.control.HoverLabel;
 import openpriority.api.css.*;
 import openpriority.api.responsive.Locale;
 import openpriority.api.responsive.Scale;

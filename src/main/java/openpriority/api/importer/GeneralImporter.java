@@ -1,4 +1,4 @@
-package openpriority.api.importers;
+package openpriority.api.importer;
 
 import openpriority.OPIO;
 import openpriority.OpenPriority;

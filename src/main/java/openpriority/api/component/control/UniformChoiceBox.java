@@ -1,4 +1,4 @@
-package openpriority.api.components.controls;
+package openpriority.api.component.control;
 
 import javafx.scene.control.ChoiceBox;
 import openpriority.api.css.IStyle;

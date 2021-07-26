@@ -1,18 +1,18 @@
-package openpriority.api.factories;
+package openpriority.api.factory;
 
 import javafx.scene.Node;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import openpriority.api.annotation.FactoryOperation;
-import openpriority.api.components.layouts.Alignment;
-import openpriority.api.components.layouts.LinkedUniform;
-import openpriority.api.components.layouts.Uniform;
+import openpriority.api.component.layout.Alignment;
+import openpriority.api.component.layout.LinkedUniform;
+import openpriority.api.component.layout.Uniform;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.responsive.DynamicRegion;
-import openpriority.panels.UniformMargins;
-import openpriority.tasks.SimpleTask;
+import openpriority.panel.UniformMargins;
+import openpriority.task.SimpleTask;
 
 import java.util.Arrays;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package openpriority.panels.home;
+package openpriority.panel.home;
 
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -6,25 +6,30 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Priority;
 import openpriority.OpenPriority;
-import openpriority.api.components.controls.*;
-import openpriority.api.components.layouts.Alignment;
-import openpriority.api.components.layouts.LinkedUniform;
-import openpriority.api.components.layouts.Uniform;
+import openpriority.api.component.control.UniformChoiceBox;
+import openpriority.api.component.control.UniformScrollPane;
+import openpriority.api.component.control.UniformTextArea;
+import openpriority.api.component.control.UniformTextField;
+import openpriority.api.component.control.button.SectionButton;
+import openpriority.api.component.control.button.UniformButton;
+import openpriority.api.component.layout.Alignment;
+import openpriority.api.component.layout.LinkedUniform;
+import openpriority.api.component.layout.Uniform;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.css.Size;
-import openpriority.api.factories.BaseUniformBuilder;
-import openpriority.api.factories.ControlFactory;
-import openpriority.api.factories.UniformBuilder;
+import openpriority.api.factory.BaseUniformBuilder;
+import openpriority.api.factory.ControlFactory;
+import openpriority.api.factory.UniformBuilder;
 import openpriority.api.responsive.DynamicRegion;
 import openpriority.api.responsive.IDynamicRegion;
 import openpriority.api.responsive.Locale;
 import openpriority.api.responsive.Scale;
 import openpriority.internal.TaskController;
-import openpriority.panels.UniformMargins;
-import openpriority.tasks.SimpleTask;
+import openpriority.panel.UniformMargins;
+import openpriority.task.SimpleTask;
 
-import static openpriority.api.factories.ControlFactory.SECTION_TITLE_FACTORY;
+import static openpriority.api.factory.ControlFactory.SECTION_TITLE_FACTORY;
 
 public final class HomePanel
 {

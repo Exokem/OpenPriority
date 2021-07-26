@@ -1,4 +1,4 @@
-package openpriority.api.components.controls;
+package openpriority.api.component.control.button;
 
 import javafx.scene.control.Button;
 import openpriority.api.css.IStyle;

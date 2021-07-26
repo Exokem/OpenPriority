@@ -1,4 +1,4 @@
-package openpriority.api.components.controls;
+package openpriority.api.component.control;
 
 import javafx.animation.FadeTransition;
 import javafx.geometry.HPos;
@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.util.Duration;
-import openpriority.api.components.layouts.Uniform;
+import openpriority.api.component.layout.Uniform;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.responsive.Locale;

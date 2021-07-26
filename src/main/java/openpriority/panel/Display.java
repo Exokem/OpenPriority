@@ -1,4 +1,4 @@
-package openpriority.panels;
+package openpriority.panel;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -7,17 +7,17 @@ import javafx.scene.layout.Priority;
 import javafx.util.Duration;
 import openpriority.OpenPriority;
 import openpriority.api.Options;
-import openpriority.api.components.controls.SectionButton;
-import openpriority.api.components.controls.UniformScrollPane;
-import openpriority.api.components.layouts.Alignment;
-import openpriority.api.components.layouts.Uniform;
+import openpriority.api.component.control.UniformScrollPane;
+import openpriority.api.component.control.button.SectionButton;
+import openpriority.api.component.layout.Alignment;
+import openpriority.api.component.layout.Uniform;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
-import openpriority.api.factories.BaseUniformBuilder;
-import openpriority.api.factories.UniformBuilder;
+import openpriority.api.factory.BaseUniformBuilder;
+import openpriority.api.factory.UniformBuilder;
 import openpriority.api.responsive.Scale;
-import openpriority.panels.home.HomePanel;
-import openpriority.panels.options.OptionPanel;
+import openpriority.panel.home.HomePanel;
+import openpriority.panel.options.OptionPanel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

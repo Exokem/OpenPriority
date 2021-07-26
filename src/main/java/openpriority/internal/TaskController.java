@@ -1,6 +1,6 @@
 package openpriority.internal;
 
-import openpriority.tasks.SimpleTask;
+import openpriority.task.SimpleTask;
 
 import java.util.HashMap;
 import java.util.HashSet;

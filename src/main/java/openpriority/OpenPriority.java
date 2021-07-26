@@ -6,11 +6,11 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import openpriority.api.Options;
-import openpriority.api.components.layouts.Uniform;
-import openpriority.api.importers.GeneralImporter;
+import openpriority.api.component.layout.Uniform;
+import openpriority.api.importer.GeneralImporter;
 import openpriority.api.responsive.DynamicResizable;
 import openpriority.api.responsive.Locale;
-import openpriority.panels.Display;
+import openpriority.panel.Display;
 
 import java.io.IOException;
 import java.util.HashSet;

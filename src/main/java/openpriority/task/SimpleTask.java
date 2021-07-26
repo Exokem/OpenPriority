@@ -1,16 +1,16 @@
-package openpriority.tasks;
+package openpriority.task;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.Priority;
-import openpriority.api.components.layouts.Alignment;
-import openpriority.api.components.layouts.ILinkedUniformDisplayable;
-import openpriority.api.components.layouts.Uniform;
+import openpriority.api.component.layout.Alignment;
+import openpriority.api.component.layout.ILinkedUniformDisplayable;
+import openpriority.api.component.layout.Uniform;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
-import openpriority.api.factories.BaseUniformBuilder;
-import openpriority.api.factories.ControlFactory;
+import openpriority.api.factory.BaseUniformBuilder;
+import openpriority.api.factory.ControlFactory;
 import openpriority.internal.TaskController;
-import openpriority.panels.home.HomePanel;
+import openpriority.panel.home.HomePanel;
 
 import java.util.ArrayList;
 import java.util.List;

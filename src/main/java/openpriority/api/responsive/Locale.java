@@ -8,7 +8,7 @@ import com.google.gson.stream.JsonReader;
 import openpriority.OPIO;
 import openpriority.OpenPriority;
 import openpriority.api.Options;
-import openpriority.api.importers.GeneralImporter;
+import openpriority.api.importer.GeneralImporter;
 
 import java.io.File;
 import java.io.FileNotFoundException;

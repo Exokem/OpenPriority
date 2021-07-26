@@ -1,4 +1,4 @@
-package openpriority.panels;
+package openpriority.panel;
 
 import openpriority.OpenPriority;
 import openpriority.api.css.IStyle;
