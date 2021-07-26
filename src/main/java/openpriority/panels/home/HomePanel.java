@@ -32,25 +32,24 @@ public final class HomePanel
 
     private static final class Data
     {
-        private static final Uniform TASK_VIEW = AlignedUniformBuilder.start(Alignment.VERTICAL)
-            .defaultPriorities(Priority.ALWAYS)
+        private static final LinkedUniform<Uniform, SimpleTask> TASK_VIEW = UniformBuilder.TASK_LIST_BUILDER
             .withPadding(5)
-            .withGap(2.5D)
+            .withGap(5)
             .build(Color.UI_0.join(IStyle.Part.BACKGROUND))
-            .limitWidth(OpenPriority::width, UniformMargins.DEFAULT_MARGIN_SIDE_FACTOR);
-
-
+            .limitWidth(OpenPriority::width, UniformMargins.DEFAULT_MARGIN_SIDE_FACTOR)
+            .asLinkedUniform();
     }
 
     public static void showTask(SimpleTask task)
     {
-        Data.TASK_VIEW.add(task.sideDisplay());
-        Data.TASK_VIEW.contentIndex().put(task.toString(), task.sideDisplay());
+        Data.TASK_VIEW.insert(task);
+        Data.TASK_VIEW.refresh();
     }
 
     public static void hideTask(SimpleTask task)
     {
-//        Data.TASK_VIEW
+        Data.TASK_VIEW.remove(task);
+        Data.TASK_VIEW.refresh();
     }
 
     private static final class Components

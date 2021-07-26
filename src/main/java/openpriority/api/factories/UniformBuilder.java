@@ -6,11 +6,13 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import openpriority.api.annotation.FactoryOperation;
 import openpriority.api.components.Alignment;
+import openpriority.api.components.LinkedUniform;
 import openpriority.api.components.Uniform;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.responsive.DynamicRegion;
 import openpriority.panels.UniformMargins;
+import openpriority.tasks.SimpleTask;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -26,9 +28,12 @@ public class UniformBuilder<V extends Uniform>
         .withPadding(20).withSpacers(UniformMargins::defaultSpacerVertical)
         .withStyles(Color.UI_0.join(IStyle.Part.BACKGROUND));
 
+    public static final UniformBuilder<LinkedUniform<Uniform, SimpleTask>>
+        TASK_LIST_BUILDER = new UniformBuilder<>(() -> new LinkedUniform<>(Alignment.VERTICAL), Alignment.VERTICAL);
+
     public static <V extends Uniform> UniformBuilder<V> bind(Supplier<V> constructor, Alignment axis)
     {
-        return new UniformBuilder<V>(constructor, axis);
+        return new UniformBuilder<>(constructor, axis);
     }
 
     protected UniformBuilder(Supplier<V> constructor, Alignment axis)

@@ -77,9 +77,9 @@ public class Uniform extends GridPane implements IDynamicRegion<Uniform>
         return this;
     }
 
-    public LinkedUniform asLinkedUniform()
+    public <X extends Node, V extends ILinkedUniformDisplayable<X>> LinkedUniform<X, V> asLinkedUniform()
     {
-        return (LinkedUniform) this;
+        return (LinkedUniform<X, V>) this;
     }
 
     public final Uniform add(Node child, Priority... expansions)

@@ -3,6 +3,7 @@ package openpriority.tasks;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Priority;
 import openpriority.api.components.Alignment;
+import openpriority.api.components.ILinkedUniformDisplayable;
 import openpriority.api.components.Uniform;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
@@ -14,7 +15,7 @@ import openpriority.panels.home.HomePanel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleTask
+public class SimpleTask implements ILinkedUniformDisplayable<Uniform>
 {
     public static SimpleTask assign(String display)
     {
@@ -91,5 +92,35 @@ public class SimpleTask
     {
         TaskController.ASSIGNED_TASKS.remove(this.toString());
         reusableIdentifiers.add(identifier);
+    }
+
+    @Override
+    public Uniform display()
+    {
+        if (componentDisplay != null) return componentDisplay;
+
+        Button hide = ControlFactory.button("remove", Double.MAX_VALUE, () ->
+        {
+            HomePanel.hideTask(this);
+        });
+
+        Uniform top = BaseUniformBuilder.start(Alignment.HORIZONTAL)
+            .withGap(5)
+            .add(ControlFactory.checkBox(display), Priority.ALWAYS)
+            .add(hide, Priority.SOMETIMES)
+            .build();
+
+        componentDisplay = BaseUniformBuilder.start(Alignment.VERTICAL)
+            .withPadding(5)
+            .add(top, Priority.ALWAYS)
+            .build(IStyle.join(Color.UI_1, IStyle.Part.BACKGROUND));
+
+        return componentDisplay;
+    }
+
+    @Override
+    public String key()
+    {
+        return toString();
     }
 }
