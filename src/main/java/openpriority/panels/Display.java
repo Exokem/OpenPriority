@@ -7,18 +7,19 @@ import javafx.scene.layout.Priority;
 import javafx.util.Duration;
 import openpriority.OpenPriority;
 import openpriority.api.Options;
+import openpriority.api.components.Alignment;
 import openpriority.api.components.Uniform;
 import openpriority.api.components.controls.SectionButton;
 import openpriority.api.components.controls.UniformScrollPane;
-import openpriority.api.factories.GridFactory;
+import openpriority.api.css.Color;
+import openpriority.api.css.IStyle;
+import openpriority.api.factories.AlignedUniformBuilder;
 import openpriority.api.responsive.Scale;
 import openpriority.panels.home.HomePanel;
 import openpriority.panels.options.OptionPanel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-
-import static openpriority.api.css.Style.BG1;
 
 public final class Display
 {
@@ -80,8 +81,10 @@ public final class Display
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        Components.INFORMATION = GridFactory.uniform(0, 2, 1)
-            .add(SectionButton.unhoverable("").limitWidth(Double.MAX_VALUE), 0, 0, Priority.SOMETIMES);
+        Components.INFORMATION = AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+            .defaultPriorities(Priority.SOMETIMES)
+            .add(SectionButton.unhoverable("").limitWidth(Double.MAX_VALUE))
+            .build();
 
         if (Options.Interface.SHOW_TIME.get())
             Components.INFORMATION.add(Components.TIME, 1, 0, Priority.NEVER);
@@ -101,21 +104,25 @@ public final class Display
         SectionButton empty = SectionButton.unhoverable("")
             .limitWidth(Double.MAX_VALUE);
 
-        Uniform sections = GridFactory.uniform(0, 4, 1)
-            .add(home, 0, 0, Priority.NEVER, Priority.NEVER)
-            .add(tasks, 1, 0, Priority.NEVER, Priority.NEVER)
-            .add(empty, 2, 0, Priority.SOMETIMES)
-            .add(options, 3, 0, Priority.NEVER);
+        Uniform sections = AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+            .defaultPriorities(Priority.NEVER)
+            .addAll(home, tasks)
+            .add(empty, Priority.SOMETIMES)
+            .add(options)
+            .build();
 
         ACTIVE_SECTION = home.setSelected(true);
 
         SECTION_CONTAINER = Scale.preferSize(new UniformScrollPane(ACTIVE_SECTION.region()), Data.WIDTH, Data.HEIGHT);
 
-        Uniform content = GridFactory.uniform(0, 1, 3, BG1)
-            .add(sections, 0, 1, Priority.ALWAYS)
-            .add(SECTION_CONTAINER, 0, 2, Priority.ALWAYS, Priority.ALWAYS);
+        AlignedUniformBuilder builder = AlignedUniformBuilder.start(Alignment.VERTICAL)
+            .defaultPriorities(Priority.ALWAYS);
+        if (Options.Interface.SHOW_INFORMATION.get()) builder.add(Components.INFORMATION, Priority.ALWAYS);
 
-        if (Options.Interface.SHOW_INFORMATION.get()) content.add(Components.INFORMATION, 0, 0, Priority.ALWAYS);
+        Uniform content = builder
+            .add(sections)
+            .add(SECTION_CONTAINER, Priority.ALWAYS, Priority.ALWAYS)
+            .build(IStyle.join(Color.UI_1, IStyle.Part.BACKGROUND));
 
         return content;
     }

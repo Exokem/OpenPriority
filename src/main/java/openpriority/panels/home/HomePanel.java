@@ -12,8 +12,8 @@ import openpriority.api.components.controls.*;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.css.Size;
+import openpriority.api.factories.AlignedUniformBuilder;
 import openpriority.api.factories.ControlFactory;
-import openpriority.api.factories.GridFactory;
 import openpriority.api.responsive.DynamicRegion;
 import openpriority.api.responsive.IDynamicRegion;
 import openpriority.api.responsive.Locale;
@@ -30,7 +30,7 @@ public final class HomePanel
 
     private static final class Data
     {
-        private static final Uniform TASK_VIEW = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
+        private static final Uniform TASK_VIEW = AlignedUniformBuilder.start(Alignment.VERTICAL)
             .defaultPriorities(Priority.ALWAYS)
             .withPadding(5)
             .withGap(2.5D)
@@ -61,7 +61,7 @@ public final class HomePanel
                 .requireWidth(OpenPriority::width, UniformMargins.DEFAULT_MARGIN_SIDE_FACTOR)
                 .withScrollBarPolicies(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-            Uniform panel = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+            Uniform panel = AlignedUniformBuilder.start(Alignment.HORIZONTAL)
                 .defaultPriorities(Priority.NEVER, Priority.ALWAYS)
                 .add(taskScroll)
                 .add(homeContent(), Priority.ALWAYS)
@@ -73,7 +73,7 @@ public final class HomePanel
 
         private static Uniform homeContent()
         {
-            Uniform homeContent = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
+            Uniform homeContent = AlignedUniformBuilder.start(Alignment.VERTICAL)
                 .withSpacers(UniformMargins::defaultSpacerVertical)
                 .defaultPriorities(Priority.SOMETIMES)
                 .withPadding(20)
@@ -88,7 +88,7 @@ public final class HomePanel
 
         private static Uniform overview()
         {
-            Uniform overview = GridFactory.MENU_SECTION_BUILDER
+            Uniform overview = AlignedUniformBuilder.MENU_SECTION_BUILDER
                 .defaultPriorities(Priority.ALWAYS)
                 .add(ControlFactory.HEADING_FACTORY.produce("label-overview"))
                 .build();
@@ -98,7 +98,7 @@ public final class HomePanel
 
         private static Uniform categoryAssign()
         {
-            Uniform categoryAssign = GridFactory.MENU_SECTION_BUILDER
+            Uniform categoryAssign = AlignedUniformBuilder.MENU_SECTION_BUILDER
                 .defaultPriorities(Priority.ALWAYS)
                 .add(ControlFactory.HEADING_FACTORY.produce("label-assign-categories"))
                 .build();
@@ -113,21 +113,21 @@ public final class HomePanel
             UniformTextField taskName = new UniformTextField(defaultNewTask, TaskController.tasks.size());
             TextArea taskDesc = new UniformTextArea(defaultNewTaskDesc).wrapText().preferRows(3);
 
-            Uniform columnLeft = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
+            Uniform columnLeft = AlignedUniformBuilder.start(Alignment.VERTICAL)
                 .defaultPriorities(Priority.SOMETIMES)
                 .withGap(20)
 
                 .add(taskName).add(taskDesc)
                 .build();
 
-            Uniform columnRight = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
+            Uniform columnRight = AlignedUniformBuilder.start(Alignment.VERTICAL)
                 .defaultPriorities(Priority.SOMETIMES)
                 .withGap(20)
                 .build(Color.UI_1.join(IStyle.Part.BACKGROUND));
 
             UniformScrollPane componentScroller = new UniformScrollPane(columnRight);
 
-            Uniform evenBiColumns = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+            Uniform evenBiColumns = AlignedUniformBuilder.start(Alignment.HORIZONTAL)
                 .defaultPriorities(Priority.SOMETIMES)
                 .withGap(20)
                 .add(columnLeft)
@@ -143,7 +143,7 @@ public final class HomePanel
                 .initialise(TaskController.TASK_CATEGORIES.keySet(), null)
                 .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_WIDTH, Double.MAX_VALUE);
 
-            Uniform categorySelection = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+            Uniform categorySelection = AlignedUniformBuilder.start(Alignment.HORIZONTAL)
                 .withGap(20)
                 .add(categoryLabel, Priority.NEVER)
                 .add(categorySelect, Priority.ALWAYS)
@@ -174,14 +174,14 @@ public final class HomePanel
                     }
                 });
 
-            Uniform categoryAssignHolder = GridFactory.AlignedUniformBuilder.start(Alignment.HORIZONTAL)
+            Uniform categoryAssignHolder = AlignedUniformBuilder.start(Alignment.HORIZONTAL)
                 .withGap(20)
                 .add(categorySelection)
                 .add(assign, Priority.ALWAYS)
                 .distributeSpaceEvenly()
                 .build();
 
-            Uniform taskAssign = GridFactory.MENU_SECTION_BUILDER
+            Uniform taskAssign = AlignedUniformBuilder.MENU_SECTION_BUILDER
                 .defaultPriorities(Priority.ALWAYS)
                 .add(ControlFactory.HEADING_FACTORY.produce("label-assign-tasks"))
                 .add(evenBiColumns)
@@ -196,7 +196,7 @@ public final class HomePanel
             SectionButton topLabel = SectionButton.hoverable("action-hide-taskview", IStyle.custom("border-bottom"));
             topLabel.setMaxWidth(Double.MAX_VALUE);
 
-            Uniform taskViewPanel = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
+            Uniform taskViewPanel = AlignedUniformBuilder.start(Alignment.VERTICAL)
                 .add(topLabel, Priority.ALWAYS)
                 .build(Color.UI_0.join(IStyle.Part.BACKGROUND))
                 .requireWidth(OpenPriority::width, Scale.MINOR.factor());

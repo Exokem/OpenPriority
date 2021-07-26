@@ -5,8 +5,8 @@ import openpriority.api.components.Alignment;
 import openpriority.api.components.Uniform;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
+import openpriority.api.factories.AlignedUniformBuilder;
 import openpriority.api.factories.ControlFactory;
-import openpriority.api.factories.GridFactory;
 import openpriority.internal.TaskController;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class SimpleTask
     {
         if (componentDisplay != null) return componentDisplay;
 
-        componentDisplay = GridFactory.AlignedUniformBuilder.start(Alignment.VERTICAL)
+        componentDisplay = AlignedUniformBuilder.start(Alignment.VERTICAL)
             .withPadding(5)
             .add(ControlFactory.checkBox(display), Priority.ALWAYS)
 //            .add(ControlFactory.label(description), Priority.ALWAYS)
