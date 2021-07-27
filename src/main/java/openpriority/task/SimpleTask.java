@@ -1,8 +1,9 @@
 package openpriority.task;
 
-import javafx.scene.control.CheckBox;
-import javafx.scene.layout.GridPane;
+import javafx.geometry.Insets;
 import javafx.scene.layout.Priority;
+import openpriority.api.component.control.HoverLabel;
+import openpriority.api.component.control.UniformTextArea;
 import openpriority.api.component.control.button.IconButton;
 import openpriority.api.component.layout.Alignment;
 import openpriority.api.component.layout.ILinkedUniformDisplayable;
@@ -12,8 +13,8 @@ import openpriority.api.css.IStyle;
 import openpriority.api.factory.BaseUniformBuilder;
 import openpriority.api.factory.ControlFactory;
 import openpriority.api.importer.base.ImageResource;
-import openpriority.api.responsive.DynamicResizable;
 import openpriority.internal.TaskController;
+import openpriority.panel.home.HomePanel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,6 @@ public class SimpleTask implements ILinkedUniformDisplayable<Uniform>
     private String display; // Display name of the task
     private String description; // Description of the task
     private Uniform componentDisplay = null;
-    private IconButton hideTask = null;
-    private CheckBox checkBox = null;
 
     private boolean completed = false;
 
@@ -81,23 +80,47 @@ public class SimpleTask implements ILinkedUniformDisplayable<Uniform>
     {
         if (componentDisplay != null) return componentDisplay;
 
-        checkBox = ControlFactory.checkBox(display);
-        hideTask = new IconButton(ImageResource.CLOSE_TASK);
+        HoverLabel label = ControlFactory.SELECTOR_LABEL_FACTORY.produce(display);
+        IconButton completed = new IconButton().bindImage(ImageResource.SELECTION).autoResize(label::getHeight);
 
-        DynamicResizable.addDelayedListener(() -> hideTask.resizeSquare(checkBox.getHeight()), () -> checkBox.getHeight() != 0);
+        UniformTextArea descriptionArea = UniformTextArea.unlocalised(description)
+            .setImmutable(true)
+            .preferRows(3)
+            .wrapText();
+
+        Uniform description = BaseUniformBuilder.start(Alignment.VERTICAL)
+            .withGap(5)
+            .add(descriptionArea, Priority.ALWAYS)
+            .build()
+            .inset(new Insets(5, 0, 0, 0));
+
+        IconButton hideTask = new IconButton().bindImage(ImageResource.CLOSE_TASK).autoResize(label::getHeight)
+            .bindSelectionFunction(selected -> HomePanel.hideTask(this));
+        IconButton expandTask = new IconButton()
+            .bindImage(ImageResource.EXPAND)
+            .autoResize(label::getHeight)
+            .bindSelectionFunction(selected ->
+            {
+                description.setMaxHeight(selected ? Double.MAX_VALUE : 0);
+                description.setVisible(selected);
+            });
 
         Uniform top = BaseUniformBuilder.start(Alignment.HORIZONTAL)
             .withGap(5)
-            .add(checkBox, Priority.ALWAYS, Priority.NEVER)
+            .add(completed, Priority.SOMETIMES, Priority.NEVER)
+            .add(label, Priority.ALWAYS, Priority.NEVER)
+            .add(expandTask, Priority.SOMETIMES, Priority.NEVER)
             .add(hideTask, Priority.SOMETIMES, Priority.NEVER)
             .build();
+
+        description.requireHeight(0);
+        description.setVisible(false);
 
         componentDisplay = BaseUniformBuilder.start(Alignment.VERTICAL)
             .withPadding(5)
             .add(top, Priority.ALWAYS)
+            .add(description, Priority.ALWAYS)
             .build(IStyle.join(Color.UI_1, IStyle.Part.BACKGROUND));
-
-        GridPane.setVgrow(checkBox, Priority.NEVER);
 
         return componentDisplay;
     }

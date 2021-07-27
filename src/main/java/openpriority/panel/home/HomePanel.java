@@ -117,7 +117,7 @@ public final class HomePanel
             final String defaultNewTask = "default-new-task", defaultNewTaskDesc = "default-new-task-desc";
 
             UniformTextField taskName = new UniformTextField(defaultNewTask, TaskController.tasks.size());
-            TextArea taskDesc = new UniformTextArea(defaultNewTaskDesc).wrapText().preferRows(3);
+            TextArea taskDesc = UniformTextArea.localised(defaultNewTaskDesc).wrapText().preferRows(3);
 
             Uniform columnLeft = BaseUniformBuilder.start(Alignment.VERTICAL)
                 .defaultPriorities(Priority.SOMETIMES)

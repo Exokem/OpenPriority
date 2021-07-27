@@ -71,6 +71,12 @@ public class Uniform extends GridPane implements IDynamicRegion<Uniform>
         return this;
     }
 
+    public final Uniform inset(Insets insets)
+    {
+        this.setPadding(insets);
+        return this;
+    }
+
     public final Uniform align(Alignment axis)
     {
         this.alignment = axis;

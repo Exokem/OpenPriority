@@ -95,6 +95,26 @@ public class GeneralImporter
         return false;
     }
 
+    public static File genericRetrieve(String path)
+    {
+        File file = new File(EXTERNAL + path);
+
+        if (file.exists())
+        {
+            try
+            {
+                OPIO.inff("Retrieving file: %s", file.getCanonicalPath());
+            }
+
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return file;
+    }
+
     public static boolean genericImport(String path, Consumer<File> applicator)
     {
         File file = new File(EXTERNAL + path);

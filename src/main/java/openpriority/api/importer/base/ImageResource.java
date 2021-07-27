@@ -5,7 +5,9 @@ import openpriority.api.importer.IResource;
 
 public enum ImageResource implements IResource
 {
-    CLOSE_TASK(Section.ICON, ResourceVariant.HOVERED);
+    CLOSE_TASK(Section.ICON, ResourceVariant.HOVERED),
+    EXPAND(Section.ICON, ResourceVariant.HOVERED, ResourceVariant.SELECTED, ResourceVariant.SELECTED_HOVERED),
+    SELECTION(Section.ICON, ResourceVariant.HOVERED, ResourceVariant.SELECTED, ResourceVariant.SELECTED_HOVERED);
 
     private Section section;
     private Extension extension;
