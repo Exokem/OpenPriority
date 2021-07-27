@@ -12,7 +12,7 @@ import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.responsive.DynamicRegion;
 import openpriority.panel.UniformMargins;
-import openpriority.task.SimpleTask;
+import openpriority.task.Task;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -28,7 +28,7 @@ public class UniformBuilder<V extends Uniform>
         .withPadding(20).withSpacers(UniformMargins::defaultSpacerVertical)
         .withStyles(Color.UI_0.join(IStyle.Part.BACKGROUND));
 
-    public static final UniformBuilder<LinkedUniform<Uniform, SimpleTask>>
+    public static final UniformBuilder<LinkedUniform<Uniform, Task>>
         TASK_LIST_BUILDER = new UniformBuilder<>(() -> new LinkedUniform<>(Alignment.VERTICAL), Alignment.VERTICAL);
 
     public static <V extends Uniform> UniformBuilder<V> bind(Supplier<V> constructor, Alignment axis)

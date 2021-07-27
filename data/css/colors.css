@@ -34,3 +34,7 @@
 .ui-1-background {
   -fx-background-color: -ui-1;
 }
+
+.ui-2-background {
+  -fx-background-color: -ui-2;
+}

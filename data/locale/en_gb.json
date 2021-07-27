@@ -4,7 +4,12 @@
 
   "label-overview": "Overview",
   "label-assign-categories": "Categories",
+
   "label-assign-tasks": "Tasks",
+  "label-component-view": "Task Components",
+  "label-title": "Title",
+  "label-description": "Description",
+
   "label-options-general": "General",
   "label-options-interface": "Interface",
   "label-options-debug": "Debug",
@@ -25,6 +30,8 @@
 
   "default-new-task": "Task",
   "default-new-task-desc": "My next task.",
+  "default-new-component": "Task Component",
+  "default-new-component-desc": "A component of my next task.",
 
   "en-gb": "English (UK)",
   "en-us": "English (US)",

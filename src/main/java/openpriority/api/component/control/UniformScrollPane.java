@@ -1,5 +1,6 @@
 package openpriority.api.component.control;
 
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Region;
@@ -27,6 +28,13 @@ public class UniformScrollPane extends ScrollPane implements IDynamicRegion<Unif
         setContent(content);
 
         IStyle.apply(this, styles);
+    }
+
+    public UniformScrollPane inset(double inset)
+    {
+        setPadding(new Insets(inset));
+
+        return this;
     }
 
     public UniformScrollPane fitContent(boolean width, boolean height)

@@ -6,13 +6,29 @@ import openpriority.api.responsive.Locale;
 
 public class UniformTextField extends TextField
 {
-    public UniformTextField(String key, IStyle... styles)
+    public static UniformTextField localised(String key, IStyle... styles)
     {
-        setText(Locale.get(key));
-//        Locale.bind(key, this::setText);
+        return new UniformTextField(Locale.get(key), styles);
+    }
+
+    public static UniformTextField unlocalised(String key, IStyle... styles)
+    {
+        return new UniformTextField(key, styles);
+    }
+
+    public static UniformTextField localisedNumeric(String key, int value, IStyle... styles)
+    {
+        return new UniformTextField(String.format("%s %d", Locale.get(key), value), styles);
+    }
+
+    private UniformTextField(String defaultText, IStyle... styles)
+    {
+        super(defaultText);
+
         IStyle.apply(this, styles);
     }
 
+    @Deprecated
     public UniformTextField(String key, int value, IStyle... styles)
     {
         setText(String.format("%s %d", Locale.get(key), value));

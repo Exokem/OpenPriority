@@ -19,11 +19,20 @@ import openpriority.panel.home.HomePanel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleTask implements ILinkedUniformDisplayable<Uniform>
+public class Task implements ILinkedUniformDisplayable<Uniform>
 {
-    public static SimpleTask assign(String display)
+    public static Task assign(String display)
     {
-        return new SimpleTask(display);
+        return new Task(display);
+    }
+
+    public static Task simple(String display, String description)
+    {
+        Task task = new Task(display);
+        task.description = description;
+        task.simple = true;
+
+        return task;
     }
 
     private static int nextIdentifier = 0; // Identifier assigned to next created task (also, the number of created tasks)
@@ -31,14 +40,21 @@ public class SimpleTask implements ILinkedUniformDisplayable<Uniform>
 
     private String display; // Display name of the task
     private String description; // Description of the task
-    private Uniform componentDisplay = null;
+    protected Uniform componentDisplay = null;
 
     private boolean completed = false;
+    private boolean simple = true;
 
     private final int identifier; // Immutable identifier assigned on creation
     private final long origin;
 
-    private SimpleTask(String display)
+    protected Task()
+    {
+        identifier = -1;
+        origin = -1;
+    }
+
+    protected Task(String display)
     {
         this.display = display;
         this.identifier = nextIdentifier ++;
@@ -47,7 +63,7 @@ public class SimpleTask implements ILinkedUniformDisplayable<Uniform>
         TaskController.ASSIGNED_TASKS.put(this.toString(), this);
     }
 
-    public SimpleTask withDescription(String description)
+    public Task withDescription(String description)
     {
         this.description = description;
         return this;
