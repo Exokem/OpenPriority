@@ -10,4 +10,9 @@ public interface ILinkedUniformDisplayable<X extends Node>
     {
         return toString();
     }
+
+    default void setSelected(boolean selected)
+    {
+
+    }
 }

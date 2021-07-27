@@ -7,7 +7,9 @@ public enum ImageResource implements IResource
 {
     CLOSE_TASK(Section.ICON, ResourceVariant.HOVERED),
     EXPAND(Section.ICON, ResourceVariant.HOVERED, ResourceVariant.SELECTED, ResourceVariant.SELECTED_HOVERED),
-    SELECTION(Section.ICON, ResourceVariant.HOVERED, ResourceVariant.SELECTED, ResourceVariant.SELECTED_HOVERED);
+    SELECTION(Section.ICON, ResourceVariant.HOVERED, ResourceVariant.SELECTED, ResourceVariant.SELECTED_HOVERED),
+    ADD(Section.ICON, ResourceVariant.HOVERED),
+    SUBTRACT(Section.ICON, ResourceVariant.HOVERED, ResourceVariant.DISABLED);
 
     private Section section;
     private Extension extension;

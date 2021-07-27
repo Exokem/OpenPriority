@@ -26,8 +26,6 @@ public final class Display
 {
     public static class Data
     {
-        public static final double CONSTANT = 1000.0D;
-        private static final double WIDTH = 1920, HEIGHT = 1080;
     }
 
     private static SectionButton ACTIVE_SECTION;
@@ -114,7 +112,7 @@ public final class Display
 
         ACTIVE_SECTION = home.setSelected(true);
 
-        SECTION_CONTAINER = Scale.preferSize(new UniformScrollPane(ACTIVE_SECTION.region()), Data.WIDTH, Data.HEIGHT);
+        SECTION_CONTAINER = Scale.preferSize(new UniformScrollPane(ACTIVE_SECTION.region()), Options.General.PREFERRED_WIDTH.get(), Options.General.PREFERRED_HEIGHT.get());
 
         UniformBuilder builder = BaseUniformBuilder.start(Alignment.VERTICAL)
             .defaultPriorities(Priority.ALWAYS);

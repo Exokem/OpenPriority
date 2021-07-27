@@ -38,6 +38,7 @@ public class IconButton extends Uniform
     private ImageResource imageProvider;
 
     private final BooleanProperty selectedProperty = new SimpleBooleanProperty(false);
+    private final BooleanProperty disabledProperty = new SimpleBooleanProperty(false);
 
     public IconButton bindSelectionFunction(Consumer<Boolean> selectionFunction)
     {
@@ -50,7 +51,8 @@ public class IconButton extends Uniform
         Image baseImage = ImageController.get(imageProvider),
             hoveredImage = ImageController.getVariant(imageProvider, ResourceVariant.HOVERED),
             selectedImage = ImageController.getVariant(imageProvider, ResourceVariant.SELECTED),
-            selectedHoveredImage = ImageController.getVariant(imageProvider, ResourceVariant.SELECTED_HOVERED);
+            selectedHoveredImage = ImageController.getVariant(imageProvider, ResourceVariant.SELECTED_HOVERED),
+            disabledImage = ImageController.getVariant(imageProvider, ResourceVariant.DISABLED);
 
         base.setImage(baseImage);
 
@@ -60,7 +62,15 @@ public class IconButton extends Uniform
             TransitionFactory.applyHoverFade(this, hovered, base, true);
         }
 
-        setOnMouseClicked(value -> selectedProperty.set(!selectedProperty.get()));
+        Runnable selectionEvent = () -> selectedProperty.set(!selectedProperty.get());
+
+        if (disabledImage != null)
+        {
+            disabledProperty.addListener((v, r, disabled) ->
+                setOnMouseClicked(disabled ? value -> {} : value -> selectionEvent.run()));
+        }
+
+        setOnMouseClicked(value -> selectionEvent.run());
 
         selectedProperty.addListener((v, r, selected) ->
         {
@@ -101,4 +111,6 @@ public class IconButton extends Uniform
     {
         return selectedProperty;
     }
+
+    public BooleanProperty getDisabledProperty() { return disabledProperty; }
 }
