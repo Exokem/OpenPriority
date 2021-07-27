@@ -6,11 +6,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Priority;
 import openpriority.OpenPriority;
-import openpriority.api.component.control.UniformChoiceBox;
-import openpriority.api.component.control.UniformScrollPane;
-import openpriority.api.component.control.UniformTextArea;
-import openpriority.api.component.control.UniformTextField;
-import openpriority.api.component.control.button.SectionButton;
+import openpriority.api.Options;
+import openpriority.api.component.control.*;
+import openpriority.api.component.control.button.IconButton;
 import openpriority.api.component.control.button.UniformButton;
 import openpriority.api.component.layout.Alignment;
 import openpriority.api.component.layout.LinkedUniform;
@@ -21,13 +19,14 @@ import openpriority.api.css.Size;
 import openpriority.api.factory.BaseUniformBuilder;
 import openpriority.api.factory.ControlFactory;
 import openpriority.api.factory.UniformBuilder;
+import openpriority.api.importer.base.ImageResource;
 import openpriority.api.responsive.DynamicRegion;
 import openpriority.api.responsive.IDynamicRegion;
 import openpriority.api.responsive.Locale;
-import openpriority.api.responsive.Scale;
 import openpriority.internal.TaskController;
 import openpriority.panel.UniformMargins;
-import openpriority.task.SimpleTask;
+import openpriority.task.Task;
+import openpriority.task.TaskTemplate;
 
 import static openpriority.api.factory.ControlFactory.SECTION_TITLE_FACTORY;
 
@@ -37,7 +36,7 @@ public final class HomePanel
 
     private static final class Data
     {
-        private static final LinkedUniform<Uniform, SimpleTask> TASK_VIEW = UniformBuilder.TASK_LIST_BUILDER
+        private static final LinkedUniform<Uniform, Task> TASK_VIEW = UniformBuilder.TASK_LIST_BUILDER
             .withPadding(5)
             .withGap(5)
             .build(Color.UI_0.join(IStyle.Part.BACKGROUND))
@@ -45,13 +44,13 @@ public final class HomePanel
             .asLinkedUniform();
     }
 
-    public static void showTask(SimpleTask task)
+    public static void showTask(Task task)
     {
         Data.TASK_VIEW.insert(task);
         Data.TASK_VIEW.refresh();
     }
 
-    public static void hideTask(SimpleTask task)
+    public static void hideTask(Task task)
     {
         Data.TASK_VIEW.remove(task);
         Data.TASK_VIEW.refresh();
@@ -116,28 +115,20 @@ public final class HomePanel
         {
             final String defaultNewTask = "default-new-task", defaultNewTaskDesc = "default-new-task-desc";
 
-            UniformTextField taskName = new UniformTextField(defaultNewTask, TaskController.tasks.size());
-            TextArea taskDesc = UniformTextArea.localised(defaultNewTaskDesc).wrapText().preferRows(3);
+            UniformTextField taskName = UniformTextField.localisedNumeric(defaultNewTask, TaskController.tasks.size());
+            TextArea taskDesc = UniformTextArea.localised(defaultNewTaskDesc).wrapText().preferRows(5);
 
             Uniform columnLeft = BaseUniformBuilder.start(Alignment.VERTICAL)
                 .defaultPriorities(Priority.SOMETIMES)
                 .withGap(20)
-
-                .add(taskName).add(taskDesc)
+                .add(taskName).add(taskDesc, Priority.SOMETIMES, Priority.ALWAYS)
                 .build();
-
-            Uniform columnRight = BaseUniformBuilder.start(Alignment.VERTICAL)
-                .defaultPriorities(Priority.SOMETIMES)
-                .withGap(20)
-                .build(Color.UI_1.join(IStyle.Part.BACKGROUND));
-
-            UniformScrollPane componentScroller = new UniformScrollPane(columnRight);
 
             Uniform evenBiColumns = BaseUniformBuilder.start(Alignment.HORIZONTAL)
                 .defaultPriorities(Priority.SOMETIMES)
                 .withGap(20)
-                .add(columnLeft)
-                .add(componentScroller)
+                .add(columnLeft, Priority.SOMETIMES, Priority.ALWAYS)
+                .add(componentScroll())
                 .distributeSpaceEvenly()
                 .build();
 
@@ -150,7 +141,7 @@ public final class HomePanel
                 .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_WIDTH, Double.MAX_VALUE);
 
             Uniform categorySelection = BaseUniformBuilder.start(Alignment.HORIZONTAL)
-                .withGap(20)
+                .withGap(10)
                 .add(categoryLabel, Priority.NEVER)
                 .add(categorySelect, Priority.ALWAYS)
                 .build();
@@ -160,7 +151,7 @@ public final class HomePanel
                 .alignH(HPos.RIGHT)
                 .withAction(() ->
                 {
-                    SimpleTask task = SimpleTask.assign(taskName.getText())
+                    Task task = Task.assign(taskName.getText())
                         .withDescription(taskDesc.getText());
 
                     showTask(task);
@@ -199,21 +190,51 @@ public final class HomePanel
             return taskAssign;
         }
 
-        private static Uniform taskView()
+        private static Uniform componentScroll()
         {
-            SectionButton topLabel = SectionButton.hoverable("action-hide-taskview", IStyle.custom("border-bottom"));
-            topLabel.setMaxWidth(Double.MAX_VALUE);
-
-            Uniform taskViewPanel = BaseUniformBuilder.start(Alignment.VERTICAL)
-                .add(topLabel, Priority.ALWAYS)
+            LinkedUniform<Uniform, TaskTemplate> componentList = UniformBuilder.TASK_LIST_BUILDER
+                .withGap(5)
+                .withPadding(5)
                 .build(Color.UI_0.join(IStyle.Part.BACKGROUND))
-                .requireWidth(OpenPriority::width, Scale.MINOR.factor());
+                .asLinkedUniform();
 
-            taskViewPanel.setPrefHeight(Double.MAX_VALUE);
+            HoverLabel componentViewLabel = ControlFactory.SELECTOR_LABEL_FACTORY.produce("label-component-view");
+            IconButton subtract = new IconButton().bindImage(ImageResource.SUBTRACT).autoResize(componentViewLabel::getHeight);
 
-            Scale.scaleMaxHeight(taskViewPanel, OpenPriority::height, 1.0D);
+            subtract.bindSelectionFunction(selected ->
+            {
+                componentList.removeSelected();
+                componentList.refresh();
+            });
 
-            return taskViewPanel;
+            IconButton add = new IconButton().bindImage(ImageResource.ADD).autoResize(componentViewLabel::getHeight)
+                .bindSelectionFunction(selected ->
+                {
+                    componentList.insert(0, TaskTemplate.template(componentList));
+                    componentList.refresh();
+                });
+
+            Uniform componentOptions = BaseUniformBuilder.start(Alignment.HORIZONTAL)
+                .withGap(5)
+                .add(componentViewLabel, Priority.ALWAYS)
+                .add(subtract)
+                .add(add)
+                .build();
+
+            UniformScrollPane componentScroll = new UniformScrollPane(componentList)
+                .withScrollBarPolicies(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+            Uniform columnRight = BaseUniformBuilder.start(Alignment.VERTICAL)
+                .defaultPriorities(Priority.SOMETIMES)
+                .withPadding(5)
+                .withGap(5)
+                .add(componentOptions)
+                .add(componentScroll, Priority.ALWAYS, Priority.ALWAYS)
+                .build(Color.UI_1.join(IStyle.Part.BACKGROUND));
+
+            columnRight.requireHeight((double) Options.General.PREFERRED_HEIGHT.get() * 0.25);
+
+            return columnRight;
         }
     }
 }
