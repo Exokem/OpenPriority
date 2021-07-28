@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.Priority;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class LinkedUniform<X extends Node, V extends ILinkedUniformDisplayable<X>> extends Uniform
 {
@@ -68,7 +69,7 @@ public class LinkedUniform<X extends Node, V extends ILinkedUniformDisplayable<X
             validationIndex.put(object, ix);
         }
 
-        if (selectedObjectProperty.get() == null) select(orderedIndex.get(0));
+        if (selectedObjectProperty.get() == null && 0 < orderedIndex.size()) select(orderedIndex.get(0));
 
         modified = false;
 
@@ -90,8 +91,8 @@ public class LinkedUniform<X extends Node, V extends ILinkedUniformDisplayable<X
         if (selectedObjectProperty.get() != null)
         {
             selectedObjectProperty.get().setSelected(false);
-            selectedObjectProperty.set(null);
             remove(selectedObjectProperty.get());
+            selectedObjectProperty.set(null);
         }
     }
 
@@ -102,5 +103,10 @@ public class LinkedUniform<X extends Node, V extends ILinkedUniformDisplayable<X
         if (object != null) object.setSelected(true);
 
         selectedObjectProperty.set(object);
+    }
+
+    public void addSelectListener(Consumer<V> receptor)
+    {
+        selectedObjectProperty.addListener((v, r, selected) -> receptor.accept(selected));
     }
 }

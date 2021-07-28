@@ -18,27 +18,32 @@ import java.util.function.Supplier;
 
 public class IconButton extends Uniform
 {
-    public IconButton()
+    public IconButton(ImageResource imageProvider)
     {
         super();
 
         base.setPreserveRatio(true);
         hovered.setPreserveRatio(true);
+        disabled.setPreserveRatio(true);
 
         base.setFitWidth(1);
         hovered.setFitWidth(1);
+        disabled.setFitWidth(1);
 
         add(base, 0, 0, Priority.ALWAYS, Priority.ALWAYS);
         add(hovered, 0, 0, Priority.ALWAYS, Priority.ALWAYS);
+        add(disabled, 0, 0, Priority.ALWAYS, Priority.ALWAYS);
 
+        bindImage(imageProvider);
 
+        functionDisabledProperty.set(false);
     }
 
-    private ImageView base = new ImageView(), hovered = new ImageView();
+    private ImageView base = new ImageView(), hovered = new ImageView(), disabled = new ImageView();
     private ImageResource imageProvider;
 
     private final BooleanProperty selectedProperty = new SimpleBooleanProperty(false);
-    private final BooleanProperty disabledProperty = new SimpleBooleanProperty(false);
+    private final BooleanProperty functionDisabledProperty = new SimpleBooleanProperty(false);
 
     public IconButton bindSelectionFunction(Consumer<Boolean> selectionFunction)
     {
@@ -66,8 +71,15 @@ public class IconButton extends Uniform
 
         if (disabledImage != null)
         {
-            disabledProperty.addListener((v, r, disabled) ->
-                setOnMouseClicked(disabled ? value -> {} : value -> selectionEvent.run()));
+            disabled.setImage(disabledImage);
+
+            functionDisabledProperty.addListener((v, r, disabled) ->
+            {
+                setOnMouseClicked(disabled ? value -> {} : value -> selectionEvent.run());
+                this.disabled.setVisible(disabled);
+                this.base.setVisible(!disabled);
+                this.hovered.setVisible(!disabled);
+            });
         }
 
         setOnMouseClicked(value -> selectionEvent.run());
@@ -97,13 +109,12 @@ public class IconButton extends Uniform
 
         Platform.runLater(() ->
         {
-            base.resize(dimension, dimension);
-            hovered.resize(dimension, dimension);
-
             base.setFitHeight(dimension);
             base.setFitWidth(dimension);
             hovered.setFitHeight(dimension);
             hovered.setFitWidth(dimension);
+            disabled.setFitHeight(dimension);
+            disabled.setFitWidth(dimension);
         });
     }
 
@@ -112,5 +123,5 @@ public class IconButton extends Uniform
         return selectedProperty;
     }
 
-    public BooleanProperty getDisabledProperty() { return disabledProperty; }
+    public BooleanProperty getFunctionDisabledProperty() { return functionDisabledProperty; }
 }

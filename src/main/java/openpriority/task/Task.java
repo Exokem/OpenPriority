@@ -7,6 +7,7 @@ import openpriority.api.component.control.UniformTextArea;
 import openpriority.api.component.control.button.IconButton;
 import openpriority.api.component.layout.Alignment;
 import openpriority.api.component.layout.ILinkedUniformDisplayable;
+import openpriority.api.component.layout.LinkedUniform;
 import openpriority.api.component.layout.Uniform;
 import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
@@ -40,7 +41,8 @@ public class Task implements ILinkedUniformDisplayable<Uniform>
 
     private String display; // Display name of the task
     private String description; // Description of the task
-    protected Uniform componentDisplay = null;
+    protected Uniform totalDisplay = null;
+    protected LinkedUniform<Uniform, Task> componentHolder = null;
 
     private boolean completed = false;
     private boolean simple = true;
@@ -94,10 +96,10 @@ public class Task implements ILinkedUniformDisplayable<Uniform>
     @Override
     public Uniform display()
     {
-        if (componentDisplay != null) return componentDisplay;
+        if (totalDisplay != null) return totalDisplay;
 
         HoverLabel label = ControlFactory.SELECTOR_LABEL_FACTORY.produce(display);
-        IconButton completed = new IconButton().bindImage(ImageResource.SELECTION).autoResize(label::getHeight);
+        IconButton completed = new IconButton(ImageResource.SELECTION).autoResize(label::getHeight);
 
         UniformTextArea descriptionArea = UniformTextArea.unlocalised(description)
             .setImmutable(true)
@@ -110,10 +112,9 @@ public class Task implements ILinkedUniformDisplayable<Uniform>
             .build()
             .inset(new Insets(5, 0, 0, 0));
 
-        IconButton hideTask = new IconButton().bindImage(ImageResource.CLOSE_TASK).autoResize(label::getHeight)
+        IconButton hideTask = new IconButton(ImageResource.CLOSE_TASK).autoResize(label::getHeight)
             .bindSelectionFunction(selected -> HomePanel.hideTask(this));
-        IconButton expandTask = new IconButton()
-            .bindImage(ImageResource.EXPAND)
+        IconButton expandTask = new IconButton(ImageResource.EXPAND)
             .autoResize(label::getHeight)
             .bindSelectionFunction(selected ->
             {
@@ -132,12 +133,12 @@ public class Task implements ILinkedUniformDisplayable<Uniform>
         description.requireHeight(0);
         description.setVisible(false);
 
-        componentDisplay = BaseUniformBuilder.start(Alignment.VERTICAL)
+        totalDisplay = BaseUniformBuilder.start(Alignment.VERTICAL)
             .withPadding(5)
             .add(top, Priority.ALWAYS)
             .add(description, Priority.ALWAYS)
             .build(IStyle.join(Color.UI_1, IStyle.Part.BACKGROUND));
 
-        return componentDisplay;
+        return totalDisplay;
     }
 }

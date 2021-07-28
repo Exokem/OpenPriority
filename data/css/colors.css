@@ -4,6 +4,7 @@
   -ui-0: #221f22;
   -ui-1: #2d2a2e;
   -ui-2: #363337;
+  -ui-2-hov: #413D42;
   -ui-3: #5b595c;
   -text-0: #dcdcdc;
 
@@ -36,5 +37,9 @@
 }
 
 .ui-2-background {
-  -fx-background-color: -ui-2;
+  -fx-background-color: -ui-2 !important;
+}
+
+.ui-2-background:hover {
+  -fx-background-color: -ui-2-hov !important;
 }

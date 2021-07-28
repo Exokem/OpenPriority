@@ -44,9 +44,9 @@ public class TaskTemplate extends Task
     @Override
     public Uniform display()
     {
-        if (this.componentDisplay != null) return componentDisplay;
+        if (this.totalDisplay != null) return totalDisplay;
 
-        componentDisplay = BaseUniformBuilder.start(Alignment.VERTICAL)
+        totalDisplay = BaseUniformBuilder.start(Alignment.VERTICAL)
             .withPadding(5)
             .withGap(5)
             .add(ControlFactory.SELECTOR_LABEL_FACTORY.produce("label-title"))
@@ -55,9 +55,9 @@ public class TaskTemplate extends Task
             .add(description)
             .build(IStyle.join(Color.UI_1, IStyle.Part.BACKGROUND));
 
-        componentDisplay.setOnMouseClicked(value -> container.select(this));
+        totalDisplay.setOnMouseClicked(value -> container.select(this));
 
-        return componentDisplay;
+        return totalDisplay;
     }
 
     @Override

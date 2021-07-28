@@ -6,22 +6,22 @@
   "label-assign-categories": "Categories",
 
   "label-assign-tasks": "Tasks",
-  "label-component-view": "Task Components",
+  "label-component-view": "New Task Components",
   "label-title": "Title",
   "label-description": "Description",
 
   "label-options-general": "General",
   "label-options-interface": "Interface",
   "label-options-debug": "Debug",
-  "label-category-select": "Category:",
+  "label-category-select": "Category",
   "label-language-select": "Language:",
+  "label-new-task": "New Task",
 
   "option-show-information": "Display top information",
   "option-show-time": "Display system time",
   "option-locale-debug": "Show localisation keys",
 
   "action-new-task-category": "New Task Category",
-  "action-new-task": "New Task",
   "action-update-interface": "Update Interface",
   "action-assign-task": "Assign Task",
   "action-update-css": "Update CSS",
