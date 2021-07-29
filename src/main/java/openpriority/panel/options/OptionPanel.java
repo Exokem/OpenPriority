@@ -63,7 +63,7 @@ public final class OptionPanel
 
         private static Uniform generalOptions()
         {
-            UniformChoiceBox localeSelect = new UniformChoiceBox(Size.REGULAR)
+            UniformChoiceBox localeSelect = new UniformChoiceBox(Size.REGULAR, Color.UI_1.join(IStyle.Part.BACKGROUND))
                 .localise(Locale.Variant.translationKeySet(), () -> Locale.get(Options.General.ACTIVE_LOCALE.get().translationKey()))
                 .invokeDynamicSizeFunction(IDynamicRegion.SizeFunction.SET_MIN_WIDTH, OpenPriority::width, Scale.MINOR.adjust(0.75D))
                 .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_WIDTH, Double.MAX_VALUE);

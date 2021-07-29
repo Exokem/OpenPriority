@@ -39,8 +39,11 @@
   -fx-shape: "M-0.25,6.083c0.843-0.758,4.583,4.833,5.75,4.833S14.5-1.5,15.917-0.917c1.292,0.532-8.75,17.083-10.5,17.083C3,16.167-1.083,6.833-0.25,6.083z";
 } */
 
+.arrow, .arrow-button{
+  -fx-background-color: -ui-2;
+}
+
 .choice-box {
-  -fx-background-color: -ui-1;
   -fx-border-radius: 0;
   -fx-background-radius: 0;
   -fx-mark-color: -text-0;
@@ -49,10 +52,6 @@
 
 .choice-box > .label {
   -fx-text-fill: -text-0;
-}
-
-.choice-box:hover {
-  -fx-background-color: -ui-2;
 }
 
 .choice-box .context-menu {
@@ -101,7 +100,7 @@
   -fx-border-radius: 0;
   -fx-border-width: 0;
   -fx-background-radius: 0;
-  -fx-background-color: -ui-2;
+  /* -fx-background-color: -ui-2; */
 
   -fx-font-family: 'IBM Plex Sans';
   -fx-font-size: 15;

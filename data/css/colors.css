@@ -28,18 +28,22 @@
   -fx-text-fill: -text-0;
 }
 
-.ui-0-background {
-  -fx-background-color: -ui-0;
+.ui-0-background, .ui-0-background .content {
+  -fx-background-color: -ui-0 !important;
 }
 
-.ui-1-background {
-  -fx-background-color: -ui-1;
+.ui-1-background, .ui-1-background.content {
+  -fx-background-color: -ui-1 !important;
 }
 
-.ui-2-background {
+.ui-2-background, .ui-2-background.content {
   -fx-background-color: -ui-2 !important;
 }
 
 .ui-2-background:hover {
-  -fx-background-color: -ui-2-hov !important;
+  -fx-background-color: -ui-2-hov;
+}
+
+.accent-1-text {
+  -fx-text-fill: -accent-1 !important;
 }

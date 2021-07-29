@@ -1,9 +1,7 @@
 package openpriority.panel.home;
 
 import javafx.geometry.HPos;
-import javafx.geometry.VPos;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.Priority;
 import openpriority.OpenPriority;
 import openpriority.api.component.control.*;
@@ -43,6 +41,12 @@ public final class HomePanel
             .build(Color.UI_0.join(IStyle.Part.BACKGROUND))
             .limitWidth(OpenPriority::width, UniformMargins.DEFAULT_MARGIN_SIDE_FACTOR)
             .asLinkedUniform();
+
+        private static final LinkedUniform<Uniform, TaskTemplate> COMPONENT_TEMPLATES = UniformBuilder.TASK_LIST_BUILDER
+            .withGap(5)
+            .withPadding(5)
+            .build(Color.UI_0.join(IStyle.Part.BACKGROUND))
+            .asLinkedUniform();
     }
 
     public static void showTask(Task task)
@@ -66,6 +70,8 @@ public final class HomePanel
             UniformScrollPane taskScroll = new UniformScrollPane(Data.TASK_VIEW)
                 .requireWidth(OpenPriority::width, UniformMargins.DEFAULT_MARGIN_SIDE_FACTOR)
                 .withScrollBarPolicies(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+
 
             Uniform panel = BaseUniformBuilder.start(Alignment.HORIZONTAL)
                 .defaultPriorities(Priority.NEVER, Priority.ALWAYS)
@@ -116,23 +122,10 @@ public final class HomePanel
 
         private static Uniform taskAssign()
         {
-            UniformTextField taskName = UniformTextField.localisedNumeric(defaultNewTask, TaskController.tasks.size());
-            TextArea taskDesc = UniformTextArea.localised(defaultNewTaskDesc).wrapText().preferRows(5);
-
-//            Uniform columnLeft = BaseUniformBuilder.start(Alignment.VERTICAL)
-//                .defaultPriorities(Priority.SOMETIMES)
-//                .withGap(20)
-//                .add(taskName).add(taskDesc, Priority.SOMETIMES, Priority.ALWAYS)
-//                .build();
-
-//            Uniform componentScroll = componentScroll();
-
             Uniform columnLeft = taskInformation();
             Uniform columnRight = componentScroll();
 
             DynamicResizable.addDelayedListener(() -> columnRight.requireHeight(columnLeft::getHeight, 1.0D), () -> columnLeft.getHeight() != 0);
-
-//            columnRight.requireHeight((double) Options.General.PREFERRED_HEIGHT.get() * 0.25);
 
             Uniform evenBiColumns = BaseUniformBuilder.start(Alignment.HORIZONTAL)
                 .defaultPriorities(Priority.SOMETIMES)
@@ -142,58 +135,10 @@ public final class HomePanel
                 .distributeSpaceEvenly()
                 .build();
 
-            Uniform categoryLabel = ControlFactory.SELECTOR_LABEL_FACTORY.produce("label-category-select")
-                .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_HEIGHT, Double.MAX_VALUE)
-                .alignV(VPos.CENTER);
-
-            UniformChoiceBox categorySelect = new UniformChoiceBox(Size.REGULAR)
-                .initialise(TaskController.TASK_CATEGORIES.keySet(), null)
-                .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_WIDTH, Double.MAX_VALUE);
-
-            Uniform categorySelection = BaseUniformBuilder.start(Alignment.HORIZONTAL)
-                .withGap(10)
-                .add(categoryLabel, Priority.NEVER)
-                .add(categorySelect, Priority.ALWAYS)
-                .build();
-
-            UniformButton assign = new UniformButton("action-assign-task")
-                .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_WIDTH, Double.MAX_VALUE)
-                .alignH(HPos.RIGHT)
-                .withAction(() ->
-                {
-                    Task task = Task.assign(taskName.getText())
-                        .withDescription(taskDesc.getText());
-
-                    showTask(task);
-
-                    String category = categorySelect.getValue();
-
-                    taskName.setText(String.format("%s %d", Locale.get(defaultNewTask), TaskController.ASSIGNED_TASKS.size()));
-                    taskDesc.setText(Locale.get(defaultNewTaskDesc));
-
-                    if (category != null && TaskController.TASK_CATEGORIES.containsKey(category))
-                    {
-                        // Add the new task to the selected category
-                    }
-
-                    else
-                    {
-
-                    }
-                });
-
-            Uniform categoryAssignHolder = BaseUniformBuilder.start(Alignment.HORIZONTAL)
-                .withGap(20)
-                .add(categorySelection)
-                .add(assign, Priority.ALWAYS)
-                .distributeSpaceEvenly()
-                .build();
-
             Uniform taskAssign = UniformBuilder.MENU_SECTION_BUILDER
                 .defaultPriorities(Priority.ALWAYS)
                 .add(ControlFactory.HEADING_FACTORY.produce("label-assign-tasks"))
                 .add(evenBiColumns)
-//                .add(categoryAssignHolder)
                 .build();
 
             return taskAssign;
@@ -201,37 +146,28 @@ public final class HomePanel
 
         private static Uniform taskInformation()
         {
-            HoverLabel taskInformationLabel = ControlFactory.SELECTOR_LABEL_FACTORY.produce("label-new-task");
+            HoverLabel taskInformationLabel = ControlFactory.SLC_INV.produce("label-new-task-details");
 
-            UniformTextField taskName = UniformTextField.localised("default-new-task");
-            UniformTextArea taskDesc = UniformTextArea.localised("default-new-task-desc").wrapText().preferRows(5);
+            UniformTextField taskName = UniformTextField.localised("default-new-task", Color.UI_0.join(IStyle.Part.BACKGROUND));
+            UniformTextArea taskDesc = UniformTextArea.localised("default-new-task-desc", Color.UI_0.join(IStyle.Part.BACKGROUND)).wrapText().preferRows(5);
 
             Uniform titleBar = BaseUniformBuilder.start(Alignment.HORIZONTAL)
                 .withGap(5)
                 .add(taskInformationLabel, Priority.ALWAYS)
                 .build();
 
-            UniformChoiceBox categorySelect = new UniformChoiceBox(Size.REGULAR, Color.UI_2.join(IStyle.Part.BACKGROUND), Style.HOVERABLE)
+            UniformChoiceBox categorySelect = new UniformChoiceBox(Size.REGULAR, Color.UI_0.join(IStyle.Part.BACKGROUND), Style.HOVERABLE)
                 .initialise(TaskController.TASK_CATEGORIES.keySet(), null)
                 .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_WIDTH, Double.MAX_VALUE);
 
-            Uniform information = BaseUniformBuilder.start(Alignment.VERTICAL)
-                .withPadding(5).withGap(5)
-                .add(ControlFactory.SELECTOR_LABEL_FACTORY.produce("label-title"))
-                .add(taskName)
-                .add(ControlFactory.SELECTOR_LABEL_FACTORY.produce("label-description"))
-                .add(taskDesc)
-                .add(ControlFactory.SELECTOR_LABEL_FACTORY.produce("label-category-select"), Priority.ALWAYS)
-                .add(categorySelect, Priority.ALWAYS)
-                .build(Color.UI_1.join(IStyle.Part.BACKGROUND));
-
-            UniformButton assign = new UniformButton("action-assign-task")
+            UniformButton assign = new UniformButton("action-assign-task", IStyle.join(Color.ACCENT_1, IStyle.Part.TEXT))
                 .invokeSizeFunction(IDynamicRegion.SizeFunction.SET_MAX_WIDTH, Double.MAX_VALUE)
                 .alignH(HPos.RIGHT)
                 .withAction(() ->
                 {
                     Task task = Task.assign(taskName.getText())
-                        .withDescription(taskDesc.getText());
+                        .withDescription(taskDesc.getText())
+                        .withComponents(Data.COMPONENT_TEMPLATES.export());
 
                     showTask(task);
 
@@ -251,23 +187,41 @@ public final class HomePanel
                     }
                 });
 
-            Uniform informationHolder = BaseUniformBuilder.start(Alignment.VERTICAL)
-                .withGap(5)
-                .withPadding(5)
-                .add(information)
-                .build(Color.UI_0.join(IStyle.Part.BACKGROUND));
-
             Uniform leftColumn = BaseUniformBuilder.start(Alignment.VERTICAL)
                 .defaultPriorities(Priority.SOMETIMES)
                 .withPadding(5)
                 .withGap(5)
                 .add(titleBar)
-                .add(informationHolder, Priority.ALWAYS)
                 .build(Color.UI_1.join(IStyle.Part.BACKGROUND));
 
             Uniform leftColumnWrapper = BaseUniformBuilder.start(Alignment.VERTICAL)
                 .withGap(5).defaultPriorities(Priority.ALWAYS)
-                .add(leftColumn).add(assign)
+                .add(leftColumn)
+                .add(BaseUniformBuilder.start(Alignment.VERTICAL)
+                    .defaultPriorities(Priority.ALWAYS)
+                    .withPadding(5)
+                    .withGap(5)
+                    .add(ControlFactory.SLC_INV.produce("label-title"))
+                    .add(taskName)
+                    .build(Color.UI_1.join(IStyle.Part.BACKGROUND))
+                )
+                .add(BaseUniformBuilder.start(Alignment.VERTICAL)
+                    .defaultPriorities(Priority.ALWAYS)
+                    .withPadding(5)
+                    .withGap(5)
+                    .add(ControlFactory.SLC_INV.produce("label-description"))
+                    .add(taskDesc)
+                    .build(Color.UI_1.join(IStyle.Part.BACKGROUND))
+                )
+                .add(BaseUniformBuilder.start(Alignment.VERTICAL)
+                    .defaultPriorities(Priority.ALWAYS)
+                    .withPadding(5)
+                    .withGap(5)
+                    .add(ControlFactory.SLC_INV.produce("label-category-select"), Priority.ALWAYS)
+                    .add(categorySelect, Priority.ALWAYS)
+                    .build(Color.UI_1.join(IStyle.Part.BACKGROUND))
+                )
+                .add(assign)
                 .build();
 
             return leftColumnWrapper;
@@ -275,29 +229,29 @@ public final class HomePanel
 
         private static Uniform componentScroll()
         {
-            LinkedUniform<Uniform, TaskTemplate> componentList = UniformBuilder.TASK_LIST_BUILDER
-                .withGap(5)
-                .withPadding(5)
-                .build(Color.UI_0.join(IStyle.Part.BACKGROUND))
-                .asLinkedUniform();
+//            LinkedUniform<Uniform, TaskTemplate> componentList = UniformBuilder.TASK_LIST_BUILDER
+//                .withGap(5)
+//                .withPadding(5)
+//                .build(Color.UI_0.join(IStyle.Part.BACKGROUND))
+//                .asLinkedUniform();
 
-            HoverLabel componentViewLabel = ControlFactory.SELECTOR_LABEL_FACTORY.produce("label-component-view");
+            HoverLabel componentViewLabel = ControlFactory.SLC_INV.produce("label-component-view");
             IconButton subtract = new IconButton(ImageResource.SUBTRACT).autoResize(componentViewLabel::getHeight);
 
             subtract.bindSelectionFunction(selected ->
             {
-                componentList.removeSelected();
-                componentList.refresh();
+                Data.COMPONENT_TEMPLATES.removeSelected();
+                Data.COMPONENT_TEMPLATES.refresh();
             });
 
             subtract.getFunctionDisabledProperty().set(true);
-            componentList.addSelectListener(selection -> subtract.getFunctionDisabledProperty().set(selection == null));
+            Data.COMPONENT_TEMPLATES.addSelectListener(selection -> subtract.getFunctionDisabledProperty().set(selection == null));
 
             IconButton add = new IconButton(ImageResource.ADD).autoResize(componentViewLabel::getHeight)
                 .bindSelectionFunction(selected ->
                 {
-                    componentList.insert(0, TaskTemplate.template(componentList));
-                    componentList.refresh();
+                    Data.COMPONENT_TEMPLATES.insert(0, TaskTemplate.template(Data.COMPONENT_TEMPLATES));
+                    Data.COMPONENT_TEMPLATES.refresh();
                 });
 
             Uniform componentOptions = BaseUniformBuilder.start(Alignment.HORIZONTAL)
@@ -307,7 +261,7 @@ public final class HomePanel
                 .add(add)
                 .build();
 
-            UniformScrollPane componentScroll = new UniformScrollPane(componentList)
+            UniformScrollPane componentScroll = new UniformScrollPane(Data.COMPONENT_TEMPLATES)
                 .withScrollBarPolicies(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
             Uniform columnRight = BaseUniformBuilder.start(Alignment.VERTICAL)
