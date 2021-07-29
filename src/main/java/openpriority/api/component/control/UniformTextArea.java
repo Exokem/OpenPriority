@@ -41,9 +41,8 @@ public final class UniformTextArea extends TextArea
 
     public UniformTextArea setImmutable(boolean immutable)
     {
-        setFocusTraversable(!immutable);
         setEditable(!immutable);
-
+        focusedProperty().addListener(listener -> setFocused(false));
         return this;
     }
 }

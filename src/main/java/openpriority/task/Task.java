@@ -13,6 +13,7 @@ import openpriority.api.css.Color;
 import openpriority.api.css.IStyle;
 import openpriority.api.factory.BaseUniformBuilder;
 import openpriority.api.factory.ControlFactory;
+import openpriority.api.factory.UniformBuilder;
 import openpriority.api.importer.base.ImageResource;
 import openpriority.internal.TaskController;
 import openpriority.panel.home.HomePanel;
@@ -42,7 +43,12 @@ public class Task implements ILinkedUniformDisplayable<Uniform>
     private String display; // Display name of the task
     private String description; // Description of the task
     protected Uniform totalDisplay = null;
-    protected LinkedUniform<Uniform, Task> componentHolder = null;
+    protected LinkedUniform<Uniform, Task> componentHolder = UniformBuilder.TASK_LIST_BUILDER
+        .withPadding(5)
+        .withGap(5)
+        .build(Color.UI_0.join(IStyle.Part.BACKGROUND))
+//        .limitWidth(OpenPriority::width, UniformMargins.DEFAULT_MARGIN_SIDE_FACTOR)
+        .asLinkedUniform();
 
     private boolean completed = false;
     private boolean simple = true;
@@ -68,6 +74,14 @@ public class Task implements ILinkedUniformDisplayable<Uniform>
     public Task withDescription(String description)
     {
         this.description = description;
+        return this;
+    }
+
+    public Task withComponents(List<TaskTemplate> templates)
+    {
+        templates.forEach(template -> componentHolder.insert(template.asTask()));
+        componentHolder.refresh();
+
         return this;
     }
 
@@ -109,6 +123,7 @@ public class Task implements ILinkedUniformDisplayable<Uniform>
         Uniform description = BaseUniformBuilder.start(Alignment.VERTICAL)
             .withGap(5)
             .add(descriptionArea, Priority.ALWAYS)
+            .add(componentHolder.size() == 0 ? null : componentHolder, Priority.ALWAYS)
             .build()
             .inset(new Insets(5, 0, 0, 0));
 
@@ -120,6 +135,7 @@ public class Task implements ILinkedUniformDisplayable<Uniform>
             {
                 description.setMaxHeight(selected ? Double.MAX_VALUE : 0);
                 description.setVisible(selected);
+                this.delete();
             });
 
         Uniform top = BaseUniformBuilder.start(Alignment.HORIZONTAL)

@@ -65,7 +65,7 @@ public class LinkedUniform<X extends Node, V extends ILinkedUniformDisplayable<X
         {
             V object = orderedIndex.get(ix);
 
-            add(object.display(), alignment.column(ix), alignment.row(ix), Priority.ALWAYS, Priority.NEVER);
+            add(object.display(), alignment.column(ix), alignment.row(ix), Priority.ALWAYS);
             validationIndex.put(object, ix);
         }
 
@@ -74,6 +74,24 @@ public class LinkedUniform<X extends Node, V extends ILinkedUniformDisplayable<X
         modified = false;
 
         return this;
+    }
+
+    public LinkedUniform<X, V> clear()
+    {
+        orderedIndex.clear();
+        validationIndex.clear();
+        getChildren().clear();
+        return this;
+    }
+
+    public List<V> export()
+    {
+        List<V> content = List.copyOf(orderedIndex);
+
+        clear();
+        refresh();
+
+        return content;
     }
 
     public Iterator<V> iterator()

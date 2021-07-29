@@ -25,8 +25,8 @@ public class TaskTemplate extends Task
 
     private final LinkedUniform<Uniform, TaskTemplate> container;
 
-    private UniformTextField title = UniformTextField.localised("default-new-component");
-    private UniformTextArea description = UniformTextArea.localised("default-new-component-desc").preferRows(2);
+    private UniformTextField title = UniformTextField.localised("default-new-component", Color.UI_0.join(IStyle.Part.BACKGROUND));
+    private UniformTextArea description = UniformTextArea.localised("default-new-component-desc", Color.UI_0.join(IStyle.Part.BACKGROUND)).preferRows(2);
 
     public Task asTask()
     {
@@ -49,9 +49,9 @@ public class TaskTemplate extends Task
         totalDisplay = BaseUniformBuilder.start(Alignment.VERTICAL)
             .withPadding(5)
             .withGap(5)
-            .add(ControlFactory.SELECTOR_LABEL_FACTORY.produce("label-title"))
+            .add(ControlFactory.SLC_INV.produce("label-title"))
             .add(title)
-            .add(ControlFactory.SELECTOR_LABEL_FACTORY.produce("label-description"))
+            .add(ControlFactory.SLC_INV.produce("label-description"))
             .add(description)
             .build(IStyle.join(Color.UI_1, IStyle.Part.BACKGROUND));
 

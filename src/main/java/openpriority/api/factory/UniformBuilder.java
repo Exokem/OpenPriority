@@ -67,6 +67,8 @@ public class UniformBuilder<V extends Uniform>
     @FactoryOperation
     public UniformBuilder<V> add(Node child, Priority... priorities)
     {
+        if (child == null) return this;
+
         if (priorities.length == 0 && defaultPriorities != null) priorities = defaultPriorities;
 
         if (spacers != null && (content.size() != 0 || !skipFirst)) addInternal(spacers.get());

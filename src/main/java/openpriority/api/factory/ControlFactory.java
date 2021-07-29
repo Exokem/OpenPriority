@@ -105,6 +105,7 @@ public class ControlFactory
     public static final HoverLabelFactory SECTION_TITLE_FACTORY = new HoverLabelFactory(Color.TEXT_0, Color.ACCENT_1, Weight.BOLD, Size.LARGE_1);
     public static final HoverLabelFactory HEADING_FACTORY = new HoverLabelFactory(Color.TEXT_0, Color.ACCENT_1, Weight.SEMIBOLD, Size.LARGE);
     public static final HoverLabelFactory SELECTOR_LABEL_FACTORY = new HoverLabelFactory(Color.TEXT_0, Color.ACCENT_1, Weight.REGULAR, Size.REGULAR);
+    public static final HoverLabelFactory SLC_INV = new HoverLabelFactory(Color.ACCENT_1, Color.TEXT_0, Weight.REGULAR, Size.REGULAR);
 
     public static final class HoverLabelFactory
     {
@@ -120,9 +121,12 @@ public class ControlFactory
             this.size = size;
         }
 
-        public HoverLabel produce(String key)
+        public HoverLabel produce(String key, IStyle... styles)
         {
-            return HoverLabel.configure(key, normal, hovered, weight, size);
+            HoverLabel label = HoverLabel.configure(key, normal, hovered, weight, size);
+            IStyle.apply(label, styles);
+
+            return label;
         }
     }
 }
